@@ -10,7 +10,7 @@
     >
       <el-input v-model="form.userId" type="hidden" />
       <el-form-item label="头像">
-        <img width="60" height="60">
+        <img width="60" height="60"  alt="头像" src="https://www.w3school.com.cn/i/eg_tulip.jpg">
       </el-form-item>
       <el-form-item label="账号">
         <el-input v-model="form.username" :disabled="true" />
@@ -22,7 +22,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="年龄">
-        <el-input v-model="form.age"  />
+        <el-input v-model="form.age" />
       </el-form-item>
       <el-form-item label="手机号">
         <el-input v-model="form.phone" />
@@ -31,7 +31,7 @@
         <el-input v-model="form.balance" :disabled="true" />
       </el-form-item>
       <el-form-item label="是否是管理员">
-        <el-radio-group v-model="form.status">
+        <el-radio-group v-model="form.isAdmin">
           <el-radio :label="0">Yes</el-radio>
           <el-radio :label="1">No</el-radio>
         </el-radio-group>
