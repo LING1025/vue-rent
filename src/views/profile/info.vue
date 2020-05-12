@@ -36,6 +36,12 @@
           <el-radio :label="1">No</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="选择状态">
+        <el-radio-group v-model="form.status">
+          <el-radio :label="1">正常</el-radio>
+          <el-radio :label="2">禁用</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
       </el-form-item>
@@ -59,7 +65,8 @@ export default {
         age: '',
         phone: '',
         balance: '',
-        isAdmin: ''
+        isAdmin: '',
+        status: ''
       }
     }
   },

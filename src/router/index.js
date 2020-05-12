@@ -64,7 +64,7 @@ export const constantRoutes = [
         path: 'info',
         name: 'ProfileInfo',
         component: () => import('@/views/profile/info'),
-        meta: { title: '修改信息' }
+        meta: { title: '修改个人信息' }
       },
       {
         path: 'infoList',
@@ -76,7 +76,7 @@ export const constantRoutes = [
         path: 'password',
         name: 'ProfilePassword',
         component: () => import('@/views/profile/password'),
-        meta: { title: '修改密码' }
+        meta: { title: '修改个人密码' }
       }
     ]
   },

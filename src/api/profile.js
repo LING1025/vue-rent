@@ -50,7 +50,7 @@ export function getUserList(query) {
     params: {
       username: query.username,
       status: query.status,
-      phone: query.phone
+      isAdmin: query.isAdmin
     }
   })
 }
@@ -64,6 +64,14 @@ export function insertUserList(data) {
   return request({
     url: '/profile/insert',
     method: 'post',
+    data
+  })
+}
+
+export function updateUser(data) {
+  return request({
+    url: '/profile/updateUser',
+    method: 'put',
     data
   })
 }
