@@ -81,6 +81,27 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/staff',
+    component: Layout,
+    redirect: '/staff/maintain',
+    name: 'staff',
+    meta: { title: '员工', icon: 'user' },
+    children: [
+      {
+        path: 'maintain',
+        name: 'StaffMaintain',
+        component: () => import('@/views/staff/maintain'),
+        meta: { title: '员工维护' }
+      },
+      {
+        path: 'agent',
+        name: 'StaffAgent',
+        component: () => import('@/views/staff/agent'),
+        meta: { title: '代理人设置' }
+      }
+    ]
+  },
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

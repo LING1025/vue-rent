@@ -105,7 +105,6 @@
 <script>
 import { getUserList, insertUserList, updateUser, patchStart, patchStop, patchDel } from '@/api/profile'
 import statusOption from '@/variable/status'
-// import Pagination from '@/components/Pagination/index'
 const typeOptions = [
   { key: '0', display_name: 'Yes' },
   { key: '1', display_name: 'No' }
@@ -116,15 +115,6 @@ const sexOptions = [
 ]
 export default {
   name: 'ProfileInfoList',
-  // components: { Pagination },
-  // filters: {
-  //   typeFilter(status) {
-  //     return typeOptions[status - 1].display_name
-  //   },
-  //   statusFilter(status) {
-  //     return statusOption.statusOption3[status - 1].display_name
-  //   }
-  // },
   data() {
     return {
       label: '',
@@ -157,8 +147,6 @@ export default {
       },
       listQuery: {
         status: '',
-        // pageNum: 1,
-        // pageSize: 20,
         username: '',
         isAdmin: ''
       },
@@ -201,7 +189,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.temp.status = statusOption.statusOption3[0].key
-      // this.temp.sex = sexOptions[0].key
+      this.temp.sex = sexOptions[0].key
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()

@@ -33,7 +33,7 @@ const cardStatusOptions = [
   { key: 7, display_name: '停卡' },
   { key: 8, display_name: '退款' },
   { key: 9, display_name: '已转卡' },
-  { key: 10, display_name: '未激活' },
+  { key: 10, display_name: '未激活' }
 ]
 const normal = 1
 const stop = 2
