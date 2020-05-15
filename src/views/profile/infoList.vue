@@ -297,7 +297,7 @@ export default {
             for (const v of this.list) {
               if (v.id === this.temp.userId) {
                 const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
+                this.list.splice(index, 1, this.temp) // 个人理解：此处是修改位于index的元素，并添加this.temp元素替代被修改元素
                 break
               }
             }

@@ -84,7 +84,7 @@ export const constantRoutes = [
     path: '/staff',
     component: Layout,
     redirect: '/staff/maintain',
-    name: 'staff',
+    name: 'Staff',
     meta: { title: '员工', icon: 'user' },
     children: [
       {

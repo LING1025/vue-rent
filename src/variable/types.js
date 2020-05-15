@@ -1,5 +1,5 @@
 
-const orgOption = [
+/* const orgOption = [
   { key: 1, display_name: '运务课' },
   { key: 2, display_name: '上海区' },
   { key: 3, display_name: '上海营业部' },
@@ -127,7 +127,7 @@ const orgOption = [
   { key: 125, display_name: '管理部人事课' },
   { key: 126, display_name: '管理部行政课' },
   { key: 127, display_name: '稽核室' }
-]
+]*/
 
 const titleOption = [
   { key: 1, display_name: '董事长' },
