@@ -33,12 +33,32 @@ export function getDepNameList(query) {
   })
 }
 
+/**
+ *获取角色名称
+ * @param query
+ * @returns {AxiosPromise}
+ */
 export function getRoleNameList(query) {
   return request({
     url: '/roles/query',
     method: 'get',
     params: {
       roleName: query.roleName
+    }
+  })
+}
+
+/**
+ *获取所属组名称
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function getOrgGroupNameList(query) {
+  return request({
+    url: '/orgGroup/query',
+    method: 'get',
+    params: {
+      orgGroupName: query.orgGroupName
     }
   })
 }

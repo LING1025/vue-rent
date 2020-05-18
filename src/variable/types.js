@@ -146,7 +146,7 @@ const titleOption = [
   { key: 14, display_name: '司机' }
 ]
 
-const groupOption = [
+/* const groupOption = [
   { key: 1, display_name: '所属组1' },
   { key: 2, display_name: '所属组2' },
   { key: 3, display_name: '所属组3' },
@@ -157,7 +157,7 @@ const groupOption = [
   { key: 8, display_name: '所属组8' },
   { key: 9, display_name: '所属组9' },
   { key: 10, display_name: '所属组10' }
-]
+]*/
 
 /* const roleOption = [
   { key: 1, display_name: 'Admins', checked: false },
@@ -174,7 +174,7 @@ const groupOption = [
 
 export default {
   // orgOption,
-  titleOption,
-  groupOption
+  titleOption
+  // groupOption
   // roleOption
 }

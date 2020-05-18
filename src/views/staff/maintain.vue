@@ -12,7 +12,7 @@
           <el-col :span="4">
             <el-select v-model="listQuery.orgName" placeholder="部门" class="filter-item" style="width: 100%">
               <el-option v-for="dep in depNameListResponse" :key="dep.key" :label="dep.depName" :value="dep.depName" />
-<!--              <el-option v-for="item in orgOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
+              <!--              <el-option v-for="item in orgOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -46,9 +46,9 @@
             <el-form-item label="姓名" prop="fName">
               <el-input v-model="temp.fName" placeholder="请输入姓名" maxlength="30" clearable oninput="value" />
             </el-form-item>
-            <el-form-item label="身份证" prop="identityCard">
-              <el-input v-model="temp.identityCard" placeholder="请输入身份证" maxlength="18" clearable @change="hint" />
-            </el-form-item>
+            <!--<el-form-item label="身份证" prop="identityCard">
+              <el-input v-model="temp.identityCard" placeholder="请输入身份证" maxlength="18" clearable @change="hint()"/>
+            </el-form-item>-->
             <el-form-item label="部门" prop="orgName">
               <el-select v-model="temp.orgName" placeholder="请选择部门" style="width: 100%;">
                 <el-option v-for="dep in depNameListResponse" :key="dep.key" :label="dep.depName" :value="dep.depName" />
@@ -69,22 +69,21 @@
                 <el-option v-for="item in bossOptions" :key="item.key" :label="item.display_name" :value="item.key" />
               </el-select>
             </el-form-item>
-            <el-form-item label="所属组" prop="group">
-              <el-select v-model="temp.group" placeholder="请选择所属组" style="width: 100%;">
-                <el-option v-for="item in groupOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />
+            <el-form-item label="所属组" prop="groupName">
+              <el-select v-model="temp.groupName" placeholder="请选择所属组" style="width: 100%;">
+                <el-option v-for="group in orgGroupNameListResponse" :key="group.key" :label="group.orgGroupName" :value="group.orgGroupName" />
               </el-select>
             </el-form-item>
             <el-form-item label="角色" prop="role">
               <el-select v-model="temp.role" placeholder="请选择角色" style="width: 100%;" multiple="false">
                 <el-option v-for="role in roleNameListResponse" :key="role.key" :label="role.roleName" :value="role.roleName" />
-                <!--                <el-option v-for="item in roleOptions" :key="item.key" :label="item.display_name" :value="item.display_name"/>-->
               </el-select>
             </el-form-item>
             <el-form-item label="账号" prop="username">
               <el-input v-model="temp.username" placeholder="请输入账号" maxlength="30" clearable oninput="value" />
             </el-form-item>
-            <el-form-item label="分机" prop="fenJi">
-              <el-input v-model="temp.fenJi" placeholder="请输入分机" maxlength="30" clearable oninput="value" />
+            <el-form-item label="分机" prop="mobilePIN">
+              <el-input v-model="temp.mobilePIN" placeholder="请输入分机" maxlength="30" clearable oninput="value" />
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="temp.email" placeholder="请输入邮箱" maxlength="30" clearable oninput="value" />
@@ -106,7 +105,7 @@
 
 <script>
 import typeOption from '@/variable/types'
-import { getEmpList, getDepNameList, getRoleNameList } from '../../api/staff/maintain'
+import { getEmpList, getDepNameList, getRoleNameList, getOrgGroupNameList } from '../../api/staff/maintain'
 
 const bossOptions = [
   { key: '0', display_name: '是' },
@@ -132,22 +131,22 @@ export default {
       },
       // orgOptions: typeOption.orgOption,
       titleOptions: typeOption.titleOption,
-      groupOptions: typeOption.groupOption,
+      // groupOptions: typeOption.groupOption,
       // roleOptions: typeOption.roleOption,
       bossOptions,
       statusOptions,
       temp: {
         empBaseAuto: undefined,
         fName: '',
-        identityCard: '',
+        // identityCard: '',
         orgName: '',
         title: '',
         isOn: '',
         isBoss: '',
-        group: '',
+        groupName: '',
         role: '',
         username: '',
-        fenJi: '',
+        mobilePIN: '',
         email: ''
       },
       listQuery: {
@@ -166,12 +165,17 @@ export default {
       roleNameListParam: {
         roleName: ''
       },
+      /** 所属组名称查询参数*/
+      orgGroupNameListResponse: null,
+      orgGroupNameListParam: {
+        orgGroupName: ''
+      },
       rules: {
         fName: [{ required: true, message: '姓名必填', trigger: 'change' }],
-        identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
+        // identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
         orgName: [{ required: true, message: '部门必选', trigger: 'change' }],
         title: [{ required: true, message: '职级必选', trigger: 'change' }],
-        group: [{ required: true, message: '所属组必选', trigger: 'change' }],
+        groupName: [{ required: true, message: '所属组必选', trigger: 'change' }],
         role: [{ required: true, message: '角色必选', trigger: 'change' }]
       }
     }
@@ -180,6 +184,7 @@ export default {
     this.getList()
     this.getListDepName()
     this.getListRoleName()
+    this.getListOrgGroupName()
   },
   methods: {
     getList() {
@@ -203,19 +208,25 @@ export default {
         this.roleNameListResponse = response.data
       })
     },
+    /** 所属组名称下拉选 */
+    getListOrgGroupName() {
+      getOrgGroupNameList(this.orgGroupNameListParam).then(response => {
+        this.orgGroupNameListResponse = response.data
+      })
+    },
     resetTemp() {
       this.temp = {
         empBaseAuto: undefined,
         fName: '',
-        identityCard: '',
+        // identityCard: '',
         orgName: '',
         title: '',
         isOn: '',
         isBoss: '',
-        group: '',
+        groupName: '',
         role: '',
         username: '',
-        fenJi: '',
+        mobilePIN: '',
         email: ''
       }
     },
@@ -262,15 +273,15 @@ export default {
           this.listLoading = true
         }
       })
-    },
+    }
     /** 身份证输入的验证 */
-    hint() {
+    /* hint() {
       const phoneTest = /^(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)$/
       if (!phoneTest.test(this.temp.identityCard)) {
         this.$message.error('请输入正确的身份证号')
         return false
       }
-    }
+    }*/
   }
 
 }
