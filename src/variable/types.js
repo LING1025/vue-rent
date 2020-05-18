@@ -159,7 +159,7 @@ const groupOption = [
   { key: 10, display_name: '所属组10' }
 ]
 
-const roleOption = [
+/* const roleOption = [
   { key: 1, display_name: 'Admins', checked: false },
   { key: 2, display_name: 'GPS信息维护', checked: false },
   { key: 3, display_name: 'GPS暂借审核', checked: false },
@@ -170,11 +170,11 @@ const roleOption = [
   { key: 8, display_name: '上海总经理', checked: false },
   { key: 9, display_name: '上海营业区经理', checked: false },
   { key: 10, display_name: '上海营业课组长', checked: false }
-]
+]*/
 
 export default {
-  orgOption,
+  // orgOption,
   titleOption,
-  groupOption,
-  roleOption
+  groupOption
+  // roleOption
 }

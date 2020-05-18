@@ -76,7 +76,8 @@
             </el-form-item>
             <el-form-item label="角色" prop="role">
               <el-select v-model="temp.role" placeholder="请选择角色" style="width: 100%;" multiple="false">
-                <el-option v-for="item in roleOptions" :key="item.key" :label="item.display_name" :value="item.display_name"/>
+                <el-option v-for="role in roleNameListResponse" :key="role.key" :label="role.roleName" :value="role.roleName" />
+                <!--                <el-option v-for="item in roleOptions" :key="item.key" :label="item.display_name" :value="item.display_name"/>-->
               </el-select>
             </el-form-item>
             <el-form-item label="账号" prop="username">
@@ -105,7 +106,7 @@
 
 <script>
 import typeOption from '@/variable/types'
-import { getEmpList, getDepNameList } from '../../api/staff/maintain'
+import { getEmpList, getDepNameList, getRoleNameList } from '../../api/staff/maintain'
 
 const bossOptions = [
   { key: '0', display_name: '是' },
@@ -129,10 +130,10 @@ export default {
         update: '编辑',
         create: '新增'
       },
-      orgOptions: typeOption.orgOption,
+      // orgOptions: typeOption.orgOption,
       titleOptions: typeOption.titleOption,
       groupOptions: typeOption.groupOption,
-      roleOptions: typeOption.roleOption,
+      // roleOptions: typeOption.roleOption,
       bossOptions,
       statusOptions,
       temp: {
@@ -152,26 +153,33 @@ export default {
       listQuery: {
         orgName: '',
         fName: '',
-        pageNum: 10,
-        pageSize: 200
+        pageNum: 1,
+        pageSize: 20
       },
       /** 部门名称查询参数 */
       depNameListResponse: null,
       depNameListParam: {
         depName: ''
       },
+      /** 角色名称查询参数 */
+      roleNameListResponse: null,
+      roleNameListParam: {
+        roleName: ''
+      },
       rules: {
         fName: [{ required: true, message: '姓名必填', trigger: 'change' }],
         identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
         orgName: [{ required: true, message: '部门必选', trigger: 'change' }],
         title: [{ required: true, message: '职级必选', trigger: 'change' }],
-        group: [{ required: true, message: '所属组必选', trigger: 'change' }]
+        group: [{ required: true, message: '所属组必选', trigger: 'change' }],
+        role: [{ required: true, message: '角色必选', trigger: 'change' }]
       }
     }
   },
   created() {
     this.getList()
     this.getListDepName()
+    this.getListRoleName()
   },
   methods: {
     getList() {
@@ -187,6 +195,12 @@ export default {
     getListDepName() {
       getDepNameList(this.depNameListParam).then(response => {
         this.depNameListResponse = response.data
+      })
+    },
+    /** 角色名称下拉选 */
+    getListRoleName() {
+      getRoleNameList(this.roleNameListParam).then(response => {
+        this.roleNameListResponse = response.data
       })
     },
     resetTemp() {

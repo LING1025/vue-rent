@@ -32,3 +32,13 @@ export function getDepNameList(query) {
     }
   })
 }
+
+export function getRoleNameList(query) {
+  return request({
+    url: '/roles/query',
+    method: 'get',
+    params: {
+      roleName: query.roleName
+    }
+  })
+}
