@@ -33,8 +33,8 @@
           <el-table-column align="center" label="余额" prop="balance" />
           <el-table-column align="center" label="密码" prop="password" />
           <el-table-column align="center" label="头像" prop="faceUrl" />
-          <el-table-column align="center" label="是否是管理员" prop="isAdmin" />
-          <el-table-column align="center" label="状态" prop="status" />
+          <el-table-column align="center" label="是否是管理员" prop="isAdmin"/>
+          <el-table-column align="center" label="状态" prop="status"/>
           <el-table-column align="center" label="操作" fixed="right" width="360">
             <template slot-scope="{row}">
               <el-button type="info" plain size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { getUserList, insertUserList, updateUser, patchStart, patchStop, patchDel } from '@/api/profile'
+import { getUserList, insertUserList, updateUser, patchStart, patchStop, patchDel } from '../../api/profile'
 import statusOption from '@/variable/status'
 const typeOptions = [
   { key: '0', display_name: 'Yes' },
@@ -115,6 +115,14 @@ const sexOptions = [
 ]
 export default {
   name: 'ProfileInfoList',
+  filters: {
+    sexFilter(sex) {
+      return sexOptions[sex].display_name
+    },
+    isAdminFilter(isAdmin) {
+      return typeOptions[isAdmin].display_name
+    }
+  },
   data() {
     return {
       label: '',
@@ -199,8 +207,6 @@ export default {
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.status = statusOption.statusOption3[this.temp.status - 1].key
-      this.temp.isAdmin = typeOptions[this.temp.isAdmin].key
-      this.temp.sex = sexOptions[this.temp.sex].key
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {

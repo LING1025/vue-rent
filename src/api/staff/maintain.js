@@ -75,3 +75,37 @@ export function insertEmp(data) {
     data
   })
 }
+
+/**
+ * 编辑员工
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function updateEmp(data) {
+  return request({
+    url: '/emp/update',
+    method: 'put',
+    data
+  })
+}
+
+export function patchStart(empBaseAuto) {
+  return request({
+    url: '/emp/start/' + empBaseAuto,
+    method: 'patch'
+  })
+}
+
+export function patchStop(empBaseAuto) {
+  return request({
+    url: '/emp/stop/' + empBaseAuto,
+    method: 'patch'
+  })
+}
+
+export function patchDel(empBaseAuto) {
+  return request({
+    url: '/emp/delete/' + empBaseAuto,
+    method: 'delete'
+  })
+}

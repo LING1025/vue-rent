@@ -27,7 +27,11 @@
           <el-table-column align="center" label="姓名" prop="fname" />
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="职级" prop="title" />
-          <el-table-column align="center" label="是否启用" prop="isOn" />
+          <el-table-column align="center" label="是否启用" prop="isOn">
+            <template slot-scope="scope">
+              <span>{{ scope.row.isOn | isOnFilter }}</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="创建时间" prop="mdt" />
           <el-table-column align="center" label="最后修改时间" prop="muser" />
           <!--<el-table-column align="center" label="创建时间" prop="createTime" />
@@ -35,6 +39,15 @@
           <el-table-column align="center" label="操作" fixed="right" width="360">
             <template slot-scope="{row}">
               <el-button type="info" plain size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
+              <el-button v-if="row.isOn===normal" plain size="small" type="warning" @click="handleModifyStatus(row,stop)">
+                停用
+              </el-button>
+              <el-button v-if="row.isOn===stop" plain size="small" type="success" @click="handleModifyStatus(row,normal)">
+                启用
+              </el-button>
+              <el-button v-if="row.isOn!==del" plain size="small" type="danger" @click="handleModifyStatus(row,del)">
+                删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -50,12 +63,12 @@
               <el-input v-model="temp.identityCard" placeholder="请输入身份证" maxlength="18" clearable @change="hint()"/>
             </el-form-item>-->
             <el-form-item label="部门" prop="orgAuto">
-              <el-select v-model="temp.orgAuto" placeholder="请选择部门" @change="chooseDep" style="width: 100%;">
+              <el-select v-model="temp.orgAuto" placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
                 <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.orgAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="级别" prop="incTitleAuto">
-              <el-select v-model="temp.incTitleAuto" placeholder="请选择级别" @change="chooseTitle" style="width: 100%;">
+              <el-select v-model="temp.incTitleAuto" placeholder="请选择级别" style="width: 100%;" @change="chooseTitle">
                 <el-option v-for="item in titleOptions" :key="item.key" :label="item.display_name" :value="item.key" />
               </el-select>
             </el-form-item>
@@ -71,8 +84,8 @@
             </el-form-item>
             <el-form-item label="所属组" prop="orgGroupName">
               <el-select v-model="temp.orgGroupName" placeholder="请选择所属组" style="width: 100%;">
-<!--                <el-option v-for="item in groupOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
-                <el-option v-for="group in orgGroupListResponse" :key="group.key" :label="group.orgGroupName" :value="group.orgGroupName" />
+                <!--                <el-option v-for="item in groupOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
+                <el-option v-for="group in orgGroupListResponse" :key="group.id" :label="group.orgGroupName" :value="group.orgGroupName" />
               </el-select>
             </el-form-item>
             <el-form-item label="角色" prop="roleName">
@@ -106,7 +119,7 @@
 
 <script>
 import typeOption from '@/variable/types'
-import { getEmpList, getDepNameList, getRoleNameList, getOrgGroupNameList, insertEmp } from '../../api/staff/maintain'
+import { getEmpList, getDepNameList, getRoleNameList, getOrgGroupNameList, insertEmp, updateEmp, patchDel, patchStart, patchStop } from '../../api/staff/maintain'
 
 const bossOptions = [
   { key: '0', display_name: '否' },
@@ -114,10 +127,18 @@ const bossOptions = [
 ]
 const statusOptions = [
   { key: '0', display_name: '停用' },
-  { key: '1', display_name: '启用' }
+  { key: '1', display_name: '正常' }
 ]
+const normal = 1
+const stop = 0
+const del = 2
 export default {
   name: 'StaffMaintain',
+  filters: {
+    isOnFilter(isOn) {
+      return statusOptions[isOn].display_name
+    }
+  },
   data() {
     return {
       maintain: '',
@@ -136,6 +157,9 @@ export default {
       // roleOptions: typeOption.roleOption,
       bossOptions,
       statusOptions,
+      normal,
+      stop,
+      del,
       orgAuto: this.$route.params.orgAuto, // 部门id
       incTitleAuto: this.$route.params.incTitleAuto, // 职位表id
       temp: {
@@ -180,7 +204,7 @@ export default {
         // identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
         orgAuto: [{ required: true, message: '部门必选', trigger: 'change' }],
         incTitleAuto: [{ required: true, message: '职级必选', trigger: 'change' }],
-        groupName: [{ required: true, message: '所属组必选', trigger: 'change' }],
+        orgGroupName: [{ required: true, message: '所属组必选', trigger: 'change' }],
         role: [{ required: true, message: '角色必选', trigger: 'change' }]
       }
     }
@@ -269,13 +293,70 @@ export default {
     /** 编辑 */
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
-      this.temp.isOn = statusOptions[this.temp.isOn].key
-      this.temp.isBoss = bossOptions[this.temp.isBoss].key
+      /* this.temp.isOn = statusOptions[this.temp.isOn].key
+      this.temp.isBoss = bossOptions[this.temp.isBoss].key*/
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    /** 修改状态 */
+    handleModifyStatus(row, status) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.listLoading = true
+      if (status === this.normal) {
+        patchStart(this.temp.empBaseAuto).then(() => {
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.getList()
+        }).catch(() => {
+          this.listLoading = false
+        })
+        row.status = status
+      } else if (status === this.stop) {
+        patchStop(this.temp.empBaseAuto).then(() => {
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.getList()
+        }).catch(() => {
+          this.listLoading = false
+        })
+        row.status = status
+      } else {
+        this.$confirm('是否删除该员工账号?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          patchDel(this.temp.empBaseAuto).then(() => {
+            row.status = status
+            this.dialogFormVisible = false
+            this.listLoading = false
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除操作'
+          })
+          this.listLoading = false
+        })
+      }
     },
     handleFilter() {
       this.getList()
@@ -307,6 +388,25 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.listLoading = true
+          updateEmp(this.temp).then(response => {
+            for (const v of this.list) {
+              if (v.id === this.temp.empBaseAuto) {
+                const index = this.list.indexOf(v)
+                this.list.splice(index, 1, this.temp) // 个人理解：此处是修改位于index的元素，并添加this.temp元素替代被修改元素
+                break
+              }
+            }
+            this.listLoading = false
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+            this.dialogFormVisible = true
+          })
         }
       })
     }
