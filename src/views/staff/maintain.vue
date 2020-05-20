@@ -11,7 +11,7 @@
           </el-col>
           <el-col :span="4">
             <el-select v-model="listQuery.orgName" placeholder="部门" class="filter-item" style="width: 100%">
-              <el-option v-for="dep in depNameListResponse" :key="dep.key" :label="dep.depName" :value="dep.depName" />
+              <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.depName" />
               <!--              <el-option v-for="item in orgOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
             </el-select>
           </el-col>
@@ -43,20 +43,20 @@
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList" />
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-            <el-form-item label="姓名" prop="fName">
-              <el-input v-model="temp.fName" placeholder="请输入姓名" maxlength="30" clearable oninput="value" />
+            <el-form-item label="姓名" prop="fname">
+              <el-input v-model="temp.fname" placeholder="请输入姓名" maxlength="30" clearable oninput="value" />
             </el-form-item>
             <!--<el-form-item label="身份证" prop="identityCard">
               <el-input v-model="temp.identityCard" placeholder="请输入身份证" maxlength="18" clearable @change="hint()"/>
             </el-form-item>-->
-            <el-form-item label="部门" prop="orgName">
-              <el-select v-model="temp.orgName" placeholder="请选择部门" style="width: 100%;">
-                <el-option v-for="dep in depNameListResponse" :key="dep.key" :label="dep.depName" :value="dep.depName" />
+            <el-form-item label="部门" prop="orgAuto">
+              <el-select v-model="temp.orgAuto" placeholder="请选择部门" @change="chooseDep" style="width: 100%;">
+                <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.orgAuto" />
               </el-select>
             </el-form-item>
-            <el-form-item label="级别" prop="title">
-              <el-select v-model="temp.title" placeholder="请选择级别" style="width: 100%;">
-                <el-option v-for="item in titleOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />
+            <el-form-item label="级别" prop="incTitleAuto">
+              <el-select v-model="temp.incTitleAuto" placeholder="请选择级别" @change="chooseTitle" style="width: 100%;">
+                <el-option v-for="item in titleOptions" :key="item.key" :label="item.display_name" :value="item.key" />
               </el-select>
             </el-form-item>
             <el-form-item label="是否启用" prop="isOn">
@@ -69,25 +69,26 @@
                 <el-option v-for="item in bossOptions" :key="item.key" :label="item.display_name" :value="item.key" />
               </el-select>
             </el-form-item>
-            <el-form-item label="所属组" prop="groupName">
-              <el-select v-model="temp.groupName" placeholder="请选择所属组" style="width: 100%;">
-                <el-option v-for="group in orgGroupNameListResponse" :key="group.key" :label="group.orgGroupName" :value="group.orgGroupName" />
+            <el-form-item label="所属组" prop="orgGroupName">
+              <el-select v-model="temp.orgGroupName" placeholder="请选择所属组" style="width: 100%;">
+<!--                <el-option v-for="item in groupOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
+                <el-option v-for="group in orgGroupListResponse" :key="group.key" :label="group.orgGroupName" :value="group.orgGroupName" />
               </el-select>
             </el-form-item>
-            <el-form-item label="角色" prop="role">
-              <el-select v-model="temp.role" placeholder="请选择角色" style="width: 100%;" multiple="false">
-                <el-option v-for="role in roleNameListResponse" :key="role.key" :label="role.roleName" :value="role.roleName" />
+            <el-form-item label="角色" prop="roleName">
+              <el-select v-model="temp.roleName" placeholder="请选择角色" style="width: 100%;"><!--multiple="false"-->
+                <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
             </el-form-item>
             <el-form-item label="账号" prop="username">
               <el-input v-model="temp.username" placeholder="请输入账号" maxlength="30" clearable oninput="value" />
             </el-form-item>
-            <el-form-item label="分机" prop="mobilePIN">
+            <!--<el-form-item label="分机" prop="mobilePIN">
               <el-input v-model="temp.mobilePIN" placeholder="请输入分机" maxlength="30" clearable oninput="value" />
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="temp.email" placeholder="请输入邮箱" maxlength="30" clearable oninput="value" />
-            </el-form-item>
+            </el-form-item>-->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">
@@ -105,15 +106,15 @@
 
 <script>
 import typeOption from '@/variable/types'
-import { getEmpList, getDepNameList, getRoleNameList, getOrgGroupNameList } from '../../api/staff/maintain'
+import { getEmpList, getDepNameList, getRoleNameList, getOrgGroupNameList, insertEmp } from '../../api/staff/maintain'
 
 const bossOptions = [
-  { key: '0', display_name: '是' },
-  { key: '1', display_name: '否' }
+  { key: '0', display_name: '否' },
+  { key: '1', display_name: '是' }
 ]
 const statusOptions = [
-  { key: '0', display_name: '启用' },
-  { key: '1', display_name: '停用' }
+  { key: '0', display_name: '停用' },
+  { key: '1', display_name: '启用' }
 ]
 export default {
   name: 'StaffMaintain',
@@ -135,19 +136,23 @@ export default {
       // roleOptions: typeOption.roleOption,
       bossOptions,
       statusOptions,
+      orgAuto: this.$route.params.orgAuto, // 部门id
+      incTitleAuto: this.$route.params.incTitleAuto, // 职位表id
       temp: {
         empBaseAuto: undefined,
-        fName: '',
+        fname: '',
         // identityCard: '',
         orgName: '',
         title: '',
         isOn: '',
         isBoss: '',
-        groupName: '',
-        role: '',
+        orgGroupName: '',
+        roleName: '',
         username: '',
-        mobilePIN: '',
-        email: ''
+        orgAuto: '',
+        incTitleAuto: ''
+        /* mobilePIN: '',
+        email: ''*/
       },
       listQuery: {
         orgName: '',
@@ -166,15 +171,15 @@ export default {
         roleName: ''
       },
       /** 所属组名称查询参数*/
-      orgGroupNameListResponse: null,
-      orgGroupNameListParam: {
+      orgGroupListResponse: null,
+      orgGroupListParam: {
         orgGroupName: ''
       },
       rules: {
-        fName: [{ required: true, message: '姓名必填', trigger: 'change' }],
+        fname: [{ required: true, message: '姓名必填', trigger: 'change' }],
         // identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
-        orgName: [{ required: true, message: '部门必选', trigger: 'change' }],
-        title: [{ required: true, message: '职级必选', trigger: 'change' }],
+        orgAuto: [{ required: true, message: '部门必选', trigger: 'change' }],
+        incTitleAuto: [{ required: true, message: '职级必选', trigger: 'change' }],
         groupName: [{ required: true, message: '所属组必选', trigger: 'change' }],
         role: [{ required: true, message: '角色必选', trigger: 'change' }]
       }
@@ -210,35 +215,52 @@ export default {
     },
     /** 所属组名称下拉选 */
     getListOrgGroupName() {
-      getOrgGroupNameList(this.orgGroupNameListParam).then(response => {
-        this.orgGroupNameListResponse = response.data
+      getOrgGroupNameList(this.orgGroupListParam).then(response => {
+        this.orgGroupListResponse = response.data
       })
+    },
+    /** 监听部门下拉选，根据下标获取部门id、name*/
+    chooseDep(position) {
+      this.temp.orgAuto = position
+      for (let i = 0; i < this.depNameListResponse.length; i++) {
+        if (this.depNameListResponse[i].id === position) {
+          this.temp.orgName = this.depNameListResponse[i].name
+        }
+      }
+    },
+    /** 监听职位下拉选，根据下标获取职位id、name*/
+    chooseTitle(position) {
+      this.temp.incTitleAuto = position
+      for (let i = 0; i < this.titleOptions.length; i++) {
+        if (this.titleOptions[i].key === position) {
+          this.temp.title = this.titleOptions[i].display_name
+        }
+      }
     },
     resetTemp() {
       this.temp = {
         empBaseAuto: undefined,
-        fName: '',
+        fname: '',
         // identityCard: '',
         orgName: '',
         title: '',
         isOn: '',
         isBoss: '',
-        groupName: '',
-        role: '',
+        orgGroupName: '',
+        roleName: '',
         username: '',
-        mobilePIN: '',
-        email: ''
+        orgAuto: '',
+        incTitleAuto: ''
+        /* mobilePIN: '',
+        email: ''*/
       }
     },
-    /* mounted() {
-      this.temp = setTimeout(this.$refs.tree.setCheckedKeys([]), 1000)
-    },*/
     /** 新建 */
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
-      this.temp.isOn = statusOptions[0].key
-      this.temp.isBoss = bossOptions[1].key
+      this.temp.isOn = statusOptions[1].key
+      this.temp.isBoss = bossOptions[0].key
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -263,6 +285,20 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.listLoading = true
+          this.temp.empBaseAuto = 0
+          insertEmp(this.temp).then(response => {
+            this.list.unshift(this.temp)
+            this.listLoading = false
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+            this.dialogFormVisible = true
+          })
         }
       })
     },

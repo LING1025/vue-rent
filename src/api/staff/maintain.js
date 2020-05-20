@@ -7,7 +7,7 @@ import request from '@/utils/request'
  */
 export function getEmpList(query) {
   return request({
-    url: '/emp/query',
+    url: '/empQuery/query',
     method: 'get',
     params: {
       fName: query.fName,
@@ -25,7 +25,7 @@ export function getEmpList(query) {
  */
 export function getDepNameList(query) {
   return request({
-    url: '/org/query',
+    url: '/empQuery/queryDepName',
     method: 'get',
     params: {
       depName: query.depName
@@ -40,7 +40,7 @@ export function getDepNameList(query) {
  */
 export function getRoleNameList(query) {
   return request({
-    url: '/roles/query',
+    url: '/empQuery/queryRoleName',
     method: 'get',
     params: {
       roleName: query.roleName
@@ -55,10 +55,23 @@ export function getRoleNameList(query) {
  */
 export function getOrgGroupNameList(query) {
   return request({
-    url: '/orgGroup/query',
+    url: '/empQuery/queryOrgGroupName',
     method: 'get',
     params: {
       orgGroupName: query.orgGroupName
     }
+  })
+}
+
+/**
+ * 新建员工
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function insertEmp(data) {
+  return request({
+    url: '/emp/insert',
+    method: 'post',
+    data
   })
 }

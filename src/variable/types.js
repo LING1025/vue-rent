@@ -147,16 +147,16 @@ const titleOption = [
 ]
 
 /* const groupOption = [
-  { key: 1, display_name: '所属组1' },
-  { key: 2, display_name: '所属组2' },
-  { key: 3, display_name: '所属组3' },
-  { key: 4, display_name: '所属组4' },
-  { key: 5, display_name: '所属组5' },
-  { key: 6, display_name: '所属组6' },
-  { key: 7, display_name: '所属组7' },
-  { key: 8, display_name: '所属组8' },
-  { key: 9, display_name: '所属组9' },
-  { key: 10, display_name: '所属组10' }
+  { key: 1, display_name: '上海浦东长租部' },
+  { key: 2, display_name: '上海浦西长租部' },
+  { key: 3, display_name: '上海营业1课' },
+  { key: 4, display_name: '上海营业4课' },
+  { key: 5, display_name: '上海張揚站' },
+  { key: 6, display_name: '上海短租部' },
+  { key: 7, display_name: '上海管理部' },
+  { key: 8, display_name: '广州营业1课' },
+  { key: 9, display_name: '广州营业部' },
+  { key: 10, display_name: '东莞营业部一课' }
 ]*/
 
 /* const roleOption = [
