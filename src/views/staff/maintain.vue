@@ -88,8 +88,8 @@
                 <el-option v-for="group in orgGroupListResponse" :key="group.id" :label="group.orgGroupName" :value="group.orgGroupName" />
               </el-select>
             </el-form-item>
-            <el-form-item label="角色" prop="roleName">
-              <el-select v-model="temp.roleName" placeholder="请选择角色" style="width: 100%;"><!--multiple="false"-->
+            <el-form-item label="角色" prop="roleNames">
+              <el-select v-model="temp.roleNames" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--multiple="false"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
             </el-form-item>
@@ -127,10 +127,11 @@ const bossOptions = [
 ]
 const statusOptions = [
   { key: '0', display_name: '停用' },
-  { key: '1', display_name: '正常' }
+  { key: '1', display_name: '正常' },
+  { key: '2', display_name: '删除' }
 ]
-const normal = 1
 const stop = 0
+const normal = 1
 const del = 2
 export default {
   name: 'StaffMaintain',
@@ -171,7 +172,7 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        roleName: '',
+        roleNames: '',
         username: '',
         orgAuto: '',
         incTitleAuto: ''
@@ -271,7 +272,7 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        roleName: '',
+        roleNames: '',
         username: '',
         orgAuto: '',
         incTitleAuto: ''
@@ -295,6 +296,13 @@ export default {
       this.temp = Object.assign({}, row)
       /* this.temp.isOn = statusOptions[this.temp.isOn].key
       this.temp.isBoss = bossOptions[this.temp.isBoss].key*/
+      this.temp.isOn = statusOptions[this.temp.isOn].key
+      console.log(row.incTitleAuto + '---incTitleAuto')
+      console.log(row.title + '---title')
+      console.log(row.orgName + '---orgName')
+      console.log(row.orgGroupName + '---orgGroupName')
+      console.log(row.roleNames + '---roleNames')
+      console.log(row.isBoss + '---isBoss')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -302,10 +310,10 @@ export default {
       })
     },
     /** 修改状态 */
-    handleModifyStatus(row, status) {
+    handleModifyStatus(row, isOn) {
       this.temp = Object.assign({}, row) // copy obj
       this.listLoading = true
-      if (status === this.normal) {
+      if (isOn === this.normal) {
         patchStart(this.temp.empBaseAuto).then(() => {
           this.dialogFormVisible = false
           this.listLoading = false
@@ -317,8 +325,8 @@ export default {
         }).catch(() => {
           this.listLoading = false
         })
-        row.status = status
-      } else if (status === this.stop) {
+        row.isOn = isOn
+      } else if (isOn === this.stop) {
         patchStop(this.temp.empBaseAuto).then(() => {
           this.dialogFormVisible = false
           this.listLoading = false
@@ -330,7 +338,7 @@ export default {
         }).catch(() => {
           this.listLoading = false
         })
-        row.status = status
+        row.isOn = isOn
       } else {
         this.$confirm('是否删除该员工账号?', '提示', {
           confirmButtonText: '确定',
@@ -338,7 +346,7 @@ export default {
           type: 'warning'
         }).then(() => {
           patchDel(this.temp.empBaseAuto).then(() => {
-            row.status = status
+            row.isOn = isOn
             this.dialogFormVisible = false
             this.listLoading = false
             this.$message({
