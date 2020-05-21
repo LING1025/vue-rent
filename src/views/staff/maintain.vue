@@ -297,12 +297,13 @@ export default {
       /* this.temp.isOn = statusOptions[this.temp.isOn].key
       this.temp.isBoss = bossOptions[this.temp.isBoss].key*/
       this.temp.isOn = statusOptions[this.temp.isOn].key
-      console.log(row.incTitleAuto + '---incTitleAuto')
-      console.log(row.title + '---title')
-      console.log(row.orgName + '---orgName')
-      console.log(row.orgGroupName + '---orgGroupName')
-      console.log(row.roleNames + '---roleNames')
-      console.log(row.isBoss + '---isBoss')
+      console.log(this.temp.orgAuto + 'orgAuto')
+      console.log(this.temp.incTitleAuto + '---incTitleAuto')
+      console.log(this.temp.title + '---title')
+      console.log(this.temp.orgName + '---orgName')
+      console.log(this.temp.orgGroupName + '---orgGroupName')
+      console.log(this.temp.roleNames + '---roleNames')
+      console.log(this.temp.isBoss + '---isBoss')
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {

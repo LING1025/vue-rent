@@ -98,6 +98,12 @@ export const constantRoutes = [
         name: 'StaffAgent',
         component: () => import('@/views/staff/agent'),
         meta: { title: '代理人设置' }
+      },
+      {
+        path: 'resetPwd',
+        name: 'StaffResetPwd',
+        component: () => import('@/views/staff/resetPwd'),
+        meta: { title: '密码重置' }
       }
     ]
   },
