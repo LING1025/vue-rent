@@ -64,7 +64,7 @@
             </el-form-item>-->
             <el-form-item label="部门" prop="orgAuto">
               <el-select v-model="temp.orgAuto" placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
-                <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.orgAuto" />
+                <el-option v-for="dep in depNameListResponse" :key="dep.orgAuto" :label="dep.depName" :value="dep.orgAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="级别" prop="incTitleAuto">
@@ -82,6 +82,7 @@
                 <el-option v-for="item in bossOptions" :key="item.key" :label="item.display_name" :value="item.key" />
               </el-select>
             </el-form-item>
+
             <el-form-item label="所属组" prop="orgGroupName">
               <el-select v-model="temp.orgGroupName" placeholder="请选择所属组" style="width: 100%;">
                 <!--                <el-option v-for="item in groupOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
@@ -92,6 +93,9 @@
               <el-select v-model="temp.roleNames" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--multiple="false"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
+              <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
+                <el-checkbox v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName"/>
+              </el-checkbox-group>-->
             </el-form-item>
             <el-form-item label="账号" prop="username">
               <el-input v-model="temp.username" placeholder="请输入账号" maxlength="30" clearable oninput="value" />
@@ -120,6 +124,7 @@
 <script>
 import typeOption from '@/variable/types'
 import { getEmpList, getDepNameList, getRoleNameList, getOrgGroupNameList, insertEmp, updateEmp, patchDel, patchStart, patchStop } from '../../api/staff/maintain'
+import Pagination from '../../components/Pagination'
 
 const bossOptions = [
   { key: '0', display_name: '否' },
@@ -135,6 +140,7 @@ const normal = 1
 const del = 2
 export default {
   name: 'StaffMaintain',
+  components: { Pagination },
   filters: {
     isOnFilter(isOn) {
       return statusOptions[isOn].display_name
@@ -244,16 +250,16 @@ export default {
         this.orgGroupListResponse = response.data
       })
     },
-    /** 监听部门下拉选，根据下标获取部门id、name*/
+    /** 监听部门下拉选，根据下标获取部门orgAuto、depName*/
     chooseDep(position) {
       this.temp.orgAuto = position
       for (let i = 0; i < this.depNameListResponse.length; i++) {
-        if (this.depNameListResponse[i].id === position) {
-          this.temp.orgName = this.depNameListResponse[i].name
+        if (this.depNameListResponse[i].orgAuto === position) {
+          this.temp.orgName = this.depNameListResponse[i].depName
         }
       }
     },
-    /** 监听职位下拉选，根据下标获取职位id、name*/
+    /** 监听职位下拉选，根据下标获取职位keyo、display_name*/
     chooseTitle(position) {
       this.temp.incTitleAuto = position
       for (let i = 0; i < this.titleOptions.length; i++) {
@@ -294,16 +300,12 @@ export default {
     /** 编辑 */
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
-      /* this.temp.isOn = statusOptions[this.temp.isOn].key
-      this.temp.isBoss = bossOptions[this.temp.isBoss].key*/
       this.temp.isOn = statusOptions[this.temp.isOn].key
-      console.log(this.temp.orgAuto + 'orgAuto')
-      console.log(this.temp.incTitleAuto + '---incTitleAuto')
-      console.log(this.temp.title + '---title')
-      console.log(this.temp.orgName + '---orgName')
-      console.log(this.temp.orgGroupName + '---orgGroupName')
-      console.log(this.temp.roleNames + '---roleNames')
-      console.log(this.temp.isBoss + '---isBoss')
+      this.temp.isBoss = bossOptions[this.temp.isBoss].key
+      console.log('row.orgName')
+      console.log(row.orgName)
+      this.temp.orgAuto = row.orgAuto
+      this.temp.incTitleAuto = row.incTitleAuto
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {

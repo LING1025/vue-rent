@@ -50,8 +50,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <!--        分页条-->
-        <!--        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList" />-->
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
             <el-form-item label="头像" prop="faceUrl">
@@ -97,6 +95,8 @@
             </el-button>
           </div>
         </el-dialog>
+        <!--        分页条-->
+        <pagination/>
       </el-main>
     </el-container>
   </div>
@@ -105,6 +105,8 @@
 <script>
 import { getUserList, insertUserList, updateUser, patchStart, patchStop, patchDel } from '../../api/profile'
 import statusOption from '@/variable/status'
+import Pagination from '../../components/Pagination'
+
 const typeOptions = [
   { key: '0', display_name: 'Yes' },
   { key: '1', display_name: 'No' }
@@ -115,6 +117,7 @@ const sexOptions = [
 ]
 export default {
   name: 'ProfileInfoList',
+  components: { Pagination },
   filters: {
     sexFilter(sex) {
       return sexOptions[sex].display_name
