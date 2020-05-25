@@ -1,12 +1,10 @@
 <template>
   <div class="dashboard-container">
+    <div class="dashboard-text">name: {{ name }}</div>
     <div class="dashboard-logo">
       <img width="272" height="83" alt="logo" src="../../icons/logo.png">
+      <p>长租系统 V2.0</p>
     </div>
-    <div class="dashboard-text2">
-      长租系统 V2.0
-    </div>
-    <div class="dashboard-text">name: {{ name }}</div>
   </div>
 </template>
 
@@ -25,6 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard {
+  position: relative;
   &-container {
     margin: 30px;
   }
@@ -33,13 +32,7 @@ export default {
     line-height: 46px;
   }
   &-logo {
-    position: absolute;
-    right: 0px;
-  }
-  &-text2 {
-    position: absolute;
-    top: 105px;
-    right: 0px;
+    text-align: center;
   }
 }
 </style>
