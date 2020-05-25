@@ -83,14 +83,14 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="所属组" prop="orgGroupName">
-              <el-select v-model="temp.orgGroupName" placeholder="请选择所属组" style="width: 100%;">
+            <el-form-item label="所属组" prop="orgGroupAuto">
+              <el-select v-model="temp.orgGroupAuto" placeholder="请选择所属组" style="width: 100%;" @change="chooseGroupName">
                 <!--                <el-option v-for="item in groupOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
-                <el-option v-for="group in orgGroupListResponse" :key="group.id" :label="group.orgGroupName" :value="group.orgGroupName" />
+                <el-option v-for="group in orgGroupListResponse" :key="group.orgGroupAuto" :label="group.orgGroupName" :value="group.orgGroupAuto" />
               </el-select>
             </el-form-item>
-            <el-form-item label="角色" prop="roleNames">
-              <el-select v-model="temp.roleNames" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--multiple="false"-->
+            <el-form-item label="角色" prop="roles">
+              <el-select v-model="temp.roles" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--multiple="false"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
               <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
@@ -169,6 +169,7 @@ export default {
       del,
       orgAuto: this.$route.params.orgAuto, // 部门id
       incTitleAuto: this.$route.params.incTitleAuto, // 职位表id
+      orgGroupAuto: this.$route.params.orgGroupAuto, // 所属组id
       temp: {
         empBaseAuto: undefined,
         fname: '',
@@ -178,10 +179,11 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        roleNames: '',
+        roles: '',
         username: '',
         orgAuto: '',
-        incTitleAuto: ''
+        incTitleAuto: '',
+        orgGroupAuto: ''
         /* mobilePIN: '',
         email: ''*/
       },
@@ -211,8 +213,8 @@ export default {
         // identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
         orgAuto: [{ required: true, message: '部门必选', trigger: 'change' }],
         incTitleAuto: [{ required: true, message: '职级必选', trigger: 'change' }],
-        orgGroupName: [{ required: true, message: '所属组必选', trigger: 'change' }],
-        role: [{ required: true, message: '角色必选', trigger: 'change' }]
+        orgGroupAuto: [{ required: true, message: '所属组必选', trigger: 'change' }],
+        roles: [{ required: true, message: '角色必选', trigger: 'change' }]
       }
     }
   },
@@ -259,12 +261,21 @@ export default {
         }
       }
     },
-    /** 监听职位下拉选，根据下标获取职位keyo、display_name*/
+    /** 监听职位下拉选，根据下标获取职位key、display_name*/
     chooseTitle(position) {
       this.temp.incTitleAuto = position
       for (let i = 0; i < this.titleOptions.length; i++) {
         if (this.titleOptions[i].key === position) {
           this.temp.title = this.titleOptions[i].display_name
+        }
+      }
+    },
+    /** 监听所属组下拉选，根据下标获取部门orgGroupAuto、orgGroupName*/
+    chooseGroupName(position) {
+      this.temp.orgGroupAuto = position
+      for (let i = 0; i < this.orgGroupListResponse.length; i++) {
+        if (this.orgGroupListResponse[i].orgGroupAuto === position) {
+          this.temp.orgGroupName = this.orgGroupListResponse[i].orgGroupName
         }
       }
     },
@@ -278,10 +289,11 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        roleNames: '',
+        roles: '',
         username: '',
         orgAuto: '',
-        incTitleAuto: ''
+        incTitleAuto: '',
+        orgGroupAuto: ''
         /* mobilePIN: '',
         email: ''*/
       }
@@ -302,10 +314,22 @@ export default {
       this.temp = Object.assign({}, row)
       this.temp.isOn = statusOptions[this.temp.isOn].key
       this.temp.isBoss = bossOptions[this.temp.isBoss].key
-      console.log('row.orgName')
-      console.log(row.orgName)
       this.temp.orgAuto = row.orgAuto
       this.temp.incTitleAuto = row.incTitleAuto
+      console.log('this.temp.orgGroupAuto')
+      console.log(this.temp.orgGroupAuto)
+      console.log('this.temp.orgGroupName')
+      console.log(this.temp.orgGroupName)
+      console.log('this.temp.roles')
+      console.log(this.temp.roles)
+      console.log('row.orgGroupAuto')
+      console.log(row.orgGroupAuto)
+      console.log('row.orgGroupName')
+      console.log(row.orgGroupName)
+      console.log('row.roles')
+      console.log(row.roles)
+      this.temp.orgGroupName = row.orgGroupName
+      this.temp.roles = row.roles
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
