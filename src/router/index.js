@@ -58,7 +58,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/profile/info',
     name: 'Profile',
-    meta: { title: '用户设置', icon: 'user' },
+    meta: { title: '用户设置', icon: 'user1' },
     children: [
       {
         path: 'info',
@@ -85,7 +85,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/staff/maintain',
     name: 'Staff',
-    meta: { title: '员工', icon: 'user' },
+    meta: { title: '员工', icon: 'peoples' },
     children: [
       {
         path: 'maintain',
@@ -104,113 +104,219 @@ export const constantRoutes = [
         name: 'StaffResetPwd',
         component: () => import('@/views/staff/resetPwd'),
         meta: { title: '密码重置' }
-      }
-    ]
-  },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        path: 'dailyWork',
+        name: 'StaffDailyWork',
+        component: () => import('@/views/staff/dailyWork'),
+        meta: { title: '日报作业' }
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
+        path: 'requestForm',
+        name: 'StaffRequestForm',
+        component: () => import('@/views/staff/requestForm'),
+        meta: { title: '需求单' }
+      },
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'taipeiSigned',
+        name: 'StaffTaipeiSigned',
+        component: () => import('@/views/staff/taipeiSigned'),
+        meta: { title: '台北签核' }
+      },
+      {
+        path: 'userInforMain',
+        name: 'StaffUserInforMain',
+        component: () => import('@/views/staff/userInforMain'),
+        meta: { title: '员工联络信息维护' }
+      },
+      {
+        path: 'statement',
+        name: 'StaffStatement',
+        component: () => import('@/views/staff/statement'),
+        meta: { title: '信管报表' }
+      },
+      {
+        path: 'commonSettings',
+        name: 'StaffCommonSettings',
+        component: () => import('@/views/staff/commonSettings'),
+        meta: { title: '常用签和设置' }
+      },
+      {
+        path: 'leaveSystem',
+        name: 'StaffLeaveSystem',
+        component: () => import('@/views/staff/leaveSystem'),
+        meta: { title: '请休假系统' }
       }
     ]
   },
-
+  {
+    path: '/oa',
+    component: Layout,
+    redirect: '/oa/idManage',
+    name: 'OA',
+    meta: { title: 'OA' },
+    children: []
+  },
+  {
+    path: '/client',
+    component: Layout,
+    redirect: '/client/index',
+    name: 'Client',
+    meta: { title: '客户' },
+    children: []
+  },
+  {
+    path: '/manufacturer',
+    component: Layout,
+    redirect: '/manufacturer/index',
+    name: 'Manufacturer',
+    meta: { title: '厂商' },
+    children: []
+  },
+  {
+    path: '/car',
+    component: Layout,
+    redirect: '/car/index',
+    name: 'Car',
+    meta: { title: '车辆' },
+    children: []
+  },
+  {
+    path: '/trial',
+    component: Layout,
+    redirect: '/trial/index',
+    name: 'Trial',
+    meta: { title: '试算' },
+    children: []
+  },
+  {
+    path: '/contract',
+    component: Layout,
+    redirect: '/contract/index',
+    name: 'Contract',
+    meta: { title: '契约' },
+    children: []
+  },
+  {
+    path: '/insurance',
+    component: Layout,
+    redirect: '/insurance/index',
+    name: 'Insurance',
+    meta: { title: '保险' },
+    children: []
+  },
+  {
+    path: '/maintain',
+    component: Layout,
+    redirect: '/maintain/index',
+    name: 'Maintain',
+    meta: { title: '维修' },
+    children: []
+  },
+  {
+    path: '/upLicense',
+    component: Layout,
+    redirect: '/upLicense/index',
+    name: 'UpLicense',
+    meta: { title: '上牌管理' },
+    children: []
+  },
+  {
+    path: '/insurance',
+    component: Layout,
+    redirect: '/insurance/index',
+    name: 'Insurance',
+    meta: { title: '保险管理' },
+    children: []
+  },
+  {
+    path: '/account',
+    component: Layout,
+    redirect: '/account/index',
+    name: 'Account',
+    meta: { title: '应收' },
+    children: []
+  },
+  {
+    path: '/rentOut',
+    component: Layout,
+    redirect: '/rentOut/index',
+    name: 'RentOut',
+    meta: { title: '出租资产' },
+    children: []
+  },
+  {
+    path: '/credit',
+    component: Layout,
+    redirect: '/credit/index',
+    name: 'Credit',
+    meta: { title: '授信系统' },
+    children: []
+  },
+  {
+    path: '/shortRent',
+    component: Layout,
+    redirect: '/shortRent/index',
+    name: 'ShortRent',
+    meta: { title: '短租附驾' },
+    children: []
+  },
+  {
+    path: '/carInsurance',
+    component: Layout,
+    redirect: '/carInsurance/index',
+    name: 'CarInsurance',
+    meta: { title: '车险' },
+    children: []
+  },
+  {
+    path: '/collect',
+    component: Layout,
+    redirect: '/collect/index',
+    name: 'Collect',
+    meta: { title: '催收系统' },
+    children: []
+  },
+  {
+    path: '/control',
+    component: Layout,
+    redirect: '/control/index',
+    name: 'Control',
+    meta: { title: '调度中心' },
+    children: []
+  },
+  {
+    path: '/servicePro',
+    component: Layout,
+    redirect: '/servicePro/index',
+    name: 'ServicePro',
+    meta: { title: '服务派工' },
+    children: []
+  },
+  {
+    path: '/businessCar',
+    component: Layout,
+    redirect: '/businessCar/index',
+    name: 'BusinessCar',
+    meta: { title: '业务用车' },
+    children: []
+  },
+  {
+    path: '/cashOut',
+    component: Layout,
+    redirect: '/cashOut/index',
+    name: 'CashOut',
+    meta: { title: '请款' },
+    children: []
+  },
+  {
+    path: '/breakOff',
+    component: Layout,
+    redirect: '/breakOff/index',
+    name: 'BreakOff',
+    meta: { title: '解约' },
+    children: []
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
