@@ -85,12 +85,11 @@
 
             <el-form-item label="所属组" prop="orgGroupAuto">
               <el-select v-model="temp.orgGroupAuto" placeholder="请选择所属组" style="width: 100%;" @change="chooseGroupName">
-                <!--                <el-option v-for="item in groupOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
                 <el-option v-for="group in orgGroupListResponse" :key="group.orgGroupAuto" :label="group.orgGroupName" :value="group.orgGroupAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="角色" prop="roles">
-              <el-select v-model="temp.roles" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--multiple="false"-->
+              <el-select v-model="temp.roles" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--@change="chooseRoles"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
               <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
@@ -169,6 +168,7 @@ export default {
       del,
       orgAuto: this.$route.params.orgAuto, // 部门id
       incTitleAuto: this.$route.params.incTitleAuto, // 职位表id
+      // rolesAuto: this.$route.params.rolesAuto, // 角色id
       orgGroupAuto: this.$route.params.orgGroupAuto, // 所属组id
       temp: {
         empBaseAuto: undefined,
@@ -179,7 +179,9 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        roles: '',
+        /* rolesAuto: '',
+        roleName: '',*/
+        roles: [],
         username: '',
         orgAuto: '',
         incTitleAuto: '',
@@ -270,6 +272,15 @@ export default {
         }
       }
     },
+    /** 监听角色下拉选，根据下标获取职位rolesAuto、roleName*/
+    /* chooseRoles(position) {
+      this.temp.roles[0] = position
+      for (let i = 0; i < this.roleNameListResponse.length; i++) {
+        if (this.roleNameListResponse[i].rolesAuto === position) {
+          this.temp.roles[1] = this.roleNameListResponse[i].roleName
+        }
+      }
+    },*/
     /** 监听所属组下拉选，根据下标获取部门orgGroupAuto、orgGroupName*/
     chooseGroupName(position) {
       this.temp.orgGroupAuto = position
@@ -289,7 +300,9 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        roles: '',
+        /* rolesAuto: '',
+        roleName: '',*/
+        roles: [],
         username: '',
         orgAuto: '',
         incTitleAuto: '',
@@ -316,20 +329,10 @@ export default {
       this.temp.isBoss = bossOptions[this.temp.isBoss].key
       this.temp.orgAuto = row.orgAuto
       this.temp.incTitleAuto = row.incTitleAuto
-      console.log('this.temp.orgGroupAuto')
-      console.log(this.temp.orgGroupAuto)
-      console.log('this.temp.orgGroupName')
-      console.log(this.temp.orgGroupName)
-      console.log('this.temp.roles')
-      console.log(this.temp.roles)
-      console.log('row.orgGroupAuto')
-      console.log(row.orgGroupAuto)
-      console.log('row.orgGroupName')
-      console.log(row.orgGroupName)
-      console.log('row.roles')
-      console.log(row.roles)
-      this.temp.orgGroupName = row.orgGroupName
+      this.temp.orgGroupAuto = row.orgGroupAuto
       this.temp.roles = row.roles
+      console.log('this.temp.roles' + this.temp.roles)
+      console.log('row.roles' + row.roles)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {

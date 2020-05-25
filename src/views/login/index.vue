@@ -1,7 +1,6 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
       <div class="title-container">
         <h3 class="title">车辆租赁系统</h3>
       </div>
@@ -231,8 +230,7 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-
-  .login-form {
+ .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
