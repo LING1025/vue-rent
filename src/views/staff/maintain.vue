@@ -331,8 +331,7 @@ export default {
       this.temp.incTitleAuto = row.incTitleAuto
       this.temp.orgGroupAuto = row.orgGroupAuto
       this.temp.roles = row.roles
-      console.log('this.temp.roles' + this.temp.roles)
-      console.log('row.roles' + row.roles)
+      console.log(row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
