@@ -53,15 +53,17 @@
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
             <el-form-item label="本人姓名" prop="selfUser">
-              <el-select v-model="temp.selfUser" placeholder="请选择本人姓名" style="width: 100%;" @change="chooseSelf" >
+              <el-select v-model="temp.selfUser" placeholder="请选择本人姓名" style="width: 100%;" @change="chooseSelf">
                 <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="本人部门" prop="selfUSerDept">
-              <el-select v-model="temp.selfUSerDept" placeholder="请选择本人部门" style="width: 100%;"/>
+              <el-select v-model="temp.selfUSerDept" placeholder="请选择本人部门" style="width: 100%;" >
+                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.orgName" :value="item.orgAuto" />
+              </el-select>
             </el-form-item>
             <el-form-item label="代理人姓名" prop="agentUser">
-              <el-select v-model="temp.agentUser" placeholder="请选择代理人姓名" style="width: 100%;" >
+              <el-select v-model="temp.agentUser" placeholder="请选择代理人姓名" style="width: 100%;">
                 <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
               </el-select>
             </el-form-item>
@@ -161,14 +163,28 @@ export default {
       }
     }
   },
+  rules: {
+    selfUser: [{ required: true, message: '本人姓名必选', trigger: 'change' }],
+    // selfUSerDept: [{ required: true, message: '本人部门必选', trigger: 'change' }],
+    agentUser: [{ required: true, message: '代理人姓名必选', trigger: 'change' }],
+    // agentUserDept: [{ required: true, message: '代理人部门必选', trigger: 'change' }],
+    agentCDate: [{ required: true, message: '代理截止日期', trigger: 'change' }]
+  },
   created() {
     this.getList()
     this.getListSelfUser()
   },
   methods: {
     getList() {
-      if (this.nameQuery.names === 1) {
-        console.log('this.nameQuery.names' + this.nameQuery.names)
+      if (this.nameQuery.names === '0') {
+        getSelfList(this.listQuery).then(response => {
+          this.list = response.data.list
+          this.total = response.data.total
+          this.listLoading = false
+        }).catch(() => {
+          this.listLoading = false
+        })
+      } else if (this.nameQuery.names === '1') {
         getAgentList(this.listQuery).then(response => {
           this.list = response.data.list
           this.total = response.data.total
@@ -176,17 +192,7 @@ export default {
         }).catch(() => {
           this.listLoading = false
         })
-        console.log('this.nameQuery.names' + this.nameQuery.names)
       }
-      console.log('this.nameQuery.names' + this.nameQuery.names)
-      getSelfList(this.listQuery).then(response => {
-        this.list = response.data.list
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
-      console.log('this.nameQuery.names' + this.nameQuery.names)
     },
     /** 本人姓名下拉选 */
     getListSelfUser() {
@@ -200,6 +206,7 @@ export default {
       for (let i = 0; i < this.selfUserListResponse.length; i++) {
         if (this.selfUserListResponse[i].selfUser === position) {
           this.temp.selfName = this.selfUserListResponse[i].fName
+          this.getListSelfUser()
         }
       }
     },
