@@ -19,6 +19,21 @@ export function getEmpList(query) {
 }
 
 /**
+ *根据员工id获取员工代理信息
+ * @param empBaseAuto
+ * @returns {AxiosPromise}
+ */
+export function getEmpByFName(query) {
+  return request({
+    url: '/empQuery/queryByFName',
+    method: 'get',
+    params: {
+      fName: query.fName
+    }
+  })
+}
+
+/**
  * 获取部门名称
  * @param query
  * @returns {AxiosPromise}

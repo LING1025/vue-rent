@@ -34,3 +34,40 @@ export function getAgentList(query) {
   })
 }
 
+export function insertAgent(data) {
+  return request({
+    url: '/agent/insert',
+    method: 'post',
+    data
+  })
+}
+
+export function updateAgent(data) {
+  return request({
+    url: '/agent/update',
+    method: 'put',
+    data
+  })
+}
+
+export function patchStart(creditAgentAuto) {
+  return request({
+    url: '/agent/start/' + creditAgentAuto,
+    method: 'patch'
+  })
+}
+
+export function patchStop(creditAgentAuto) {
+  return request({
+    url: '/agent/stop/' + creditAgentAuto,
+    method: 'patch'
+  })
+}
+
+export function patchDel(creditAgentAuto) {
+  return request({
+    url: '/agent/delete/' + creditAgentAuto,
+    method: 'delete'
+  })
+}
+

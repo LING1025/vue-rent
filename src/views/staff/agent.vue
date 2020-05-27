@@ -15,7 +15,7 @@
             <el-input v-model="listQuery.fName" placeholder="姓名" clearable maxlength="30" @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="6">
-            <el-button type="primary" plain icon="el-icon-search" @click="handleFilter==='querySelf'?selfData():agentData()">查询</el-button>
+            <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -31,7 +31,7 @@
               <span>{{ scope.row.isOn | isOnFilter }}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="截止日期" prop="stopDate" />
+          <el-table-column align="center" label="截止日期" prop="agentCDate" />
           <el-table-column align="center" label="操作" fixed="right" width="360">
             <template slot-scope="{row}">
               <el-button type="info" plain size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
@@ -53,13 +53,17 @@
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
             <el-form-item label="本人姓名" prop="selfUser">
-              <el-select v-model="temp.selfUser" placeholder="请选择本人姓名" style="width: 100%;" />
+              <el-select v-model="temp.selfUser" placeholder="请选择本人姓名" style="width: 100%;" @change="chooseSelf" >
+                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
+              </el-select>
             </el-form-item>
             <el-form-item label="本人部门" prop="selfUSerDept">
-              <el-select v-model="temp.selfUSerDept" placeholder="请选择本人部门" style="width: 100%;" />
+              <el-select v-model="temp.selfUSerDept" placeholder="请选择本人部门" style="width: 100%;"/>
             </el-form-item>
             <el-form-item label="代理人姓名" prop="agentUser">
-              <el-select v-model="temp.agentUser" placeholder="请选择代理人姓名" style="width: 100%;" />
+              <el-select v-model="temp.agentUser" placeholder="请选择代理人姓名" style="width: 100%;" >
+                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
+              </el-select>
             </el-form-item>
             <el-form-item label="代理人部门" prop="agentUserDept">
               <el-select v-model="temp.agentUserDept" placeholder="请选择代理人部门" style="width: 100%;" />
@@ -89,14 +93,12 @@
 
 <script>
 import Pagination from '../../components/Pagination/index'
-import { getSelfList, getAgentList } from '../../api/staff/agent'
-
+import { getSelfList, getAgentList, insertAgent, updateAgent, patchDel, patchStart, patchStop } from '../../api/staff/agent'
+import { getEmpByFName } from '../../api/staff/maintain'
 const nameOptions = [
   { key: '0', display_name: '本人姓名' },
   { key: '1', display_name: '代理人姓名' }
 ]
-const self = 0
-const agent1 = 1
 const statusOptions = [
   { key: '0', display_name: '停用' },
   { key: '1', display_name: '正常' },
@@ -125,14 +127,12 @@ export default {
         update: '编辑',
         create: '新增'
       },
-      handleFilter: '',
       nameOptions,
-      self,
-      agent1,
       statusOptions,
       normal,
       stop,
       del,
+      selfUser: this.$route.params.selfUser, // 本人id
       temp: {
         creditAgentAuto: undefined,
         selfUser: '',
@@ -153,15 +153,21 @@ export default {
       },
       nameQuery: {
         names: ''
+      },
+      /** 本人姓名查询 */
+      selfUserListResponse: null,
+      selfUserListParam: {
+        fName: ''
       }
     }
   },
   created() {
     this.getList()
+    this.getListSelfUser()
   },
   methods: {
     getList() {
-      /* if (this.nameQuery.names === agent1) {
+      if (this.nameQuery.names === 1) {
         console.log('this.nameQuery.names' + this.nameQuery.names)
         getAgentList(this.listQuery).then(response => {
           this.list = response.data.list
@@ -171,17 +177,31 @@ export default {
           this.listLoading = false
         })
         console.log('this.nameQuery.names' + this.nameQuery.names)
-      } else if (this.nameQuery.names === self) {
-        console.log('this.nameQuery.names' + this.nameQuery.names)
-        getSelfList(this.listQuery).then(response => {
-          this.list = response.data.list
-          this.total = response.data.total
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-        console.log('this.nameQuery.names' + this.nameQuery.names)
-      }*/
+      }
+      console.log('this.nameQuery.names' + this.nameQuery.names)
+      getSelfList(this.listQuery).then(response => {
+        this.list = response.data.list
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+      console.log('this.nameQuery.names' + this.nameQuery.names)
+    },
+    /** 本人姓名下拉选 */
+    getListSelfUser() {
+      getEmpByFName(this.selfUserListParam).then(response => {
+        this.selfUserListResponse = response.data
+      })
+    },
+    /** 监听本人姓名下拉选，根据下标获取员工empBaseAuto、fName、orgAuto、orgName*/
+    chooseSelf(position) {
+      this.temp.selfUser = position
+      for (let i = 0; i < this.selfUserListResponse.length; i++) {
+        if (this.selfUserListResponse[i].selfUser === position) {
+          this.temp.selfName = this.selfUserListResponse[i].fName
+        }
+      }
     },
     resetTemp() {
       this.temp = {
@@ -198,7 +218,7 @@ export default {
         agentCDate: ''
       }
     },
-    selfData() {
+    /* selfData() {
       getSelfList(this.listQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.total
@@ -215,11 +235,12 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
-    },
+    },*/
     /** 新建 */
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
+      this.temp.isOn = statusOptions[1].key
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -228,6 +249,7 @@ export default {
     /** 编辑 */
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
+      this.temp.isOn = statusOptions[this.temp.isOn].key
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -237,16 +259,110 @@ export default {
     handleFilter() {
       this.getList()
     },
+    /** 修改状态 */
+    handleModifyStatus(row, isOn) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.listLoading = true
+      if (isOn === this.normal) {
+        patchStart(this.temp.creditAgentAuto).then(() => {
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.getList()
+        }).catch(() => {
+          this.listLoading = false
+        })
+        row.isOn = isOn
+      } else if (isOn === this.stop) {
+        patchStop(this.temp.creditAgentAuto).then(() => {
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.getList()
+        }).catch(() => {
+          this.listLoading = false
+        })
+        row.isOn = isOn
+      } else {
+        this.$confirm('是否删除该员工账号?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          patchDel(this.temp.creditAgentAuto).then(() => {
+            row.isOn = isOn
+            this.dialogFormVisible = false
+            this.listLoading = false
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除操作'
+          })
+          this.listLoading = false
+        })
+      }
+    },
     /** 新建 */
     createData() {
       this.$refs['dataForm'].validate((valid) => {
-
+        if (valid) {
+          this.listLoading = true
+          this.temp.creditAgentAuto = 0
+          insertAgent(this.temp).then(response => {
+            this.list.unshift(this.temp)
+            this.listLoading = false
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+            this.dialogFormVisible = true
+          })
+        }
       })
     },
     /** 修改 */
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
-
+        if (valid) {
+          this.listLoading = true
+          updateAgent(this.temp).then(response => {
+            for (const v of this.list) {
+              if (v.id === this.temp.creditAgentAuto) {
+                const index = this.list.indexOf(v)
+                this.list.splice(index, 1, this.temp) // 个人理解：此处是修改位于index的元素，并添加this.temp元素替代被修改元素
+                break
+              }
+            }
+            this.listLoading = false
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+            this.dialogFormVisible = true
+          })
+        }
       })
     }
   }
