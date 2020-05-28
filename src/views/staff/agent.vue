@@ -96,7 +96,7 @@
 </template>>
 
 <script>
-import Pagination from '../../components/Pagination/index'
+import Pagination from '../../components/Pagination'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { getSelfList, getAgentList, insertAgent, updateAgent, patchDel, patchStart, patchStop } from '../../api/staff/agent'
 import { getEmpByFName } from '../../api/staff/maintain'
@@ -190,6 +190,14 @@ export default {
         })
       } else if (this.nameQuery.names === '1') {
         getAgentList(this.listQuery).then(response => {
+          this.list = response.data.list
+          this.total = response.data.total
+          this.listLoading = false
+        }).catch(() => {
+          this.listLoading = false
+        })
+      } else {
+        getSelfList(this.listQuery).then(response => {
           this.list = response.data.list
           this.total = response.data.total
           this.listLoading = false
