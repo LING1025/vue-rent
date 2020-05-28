@@ -58,17 +58,19 @@
               </el-select>
             </el-form-item>
             <el-form-item label="本人部门" prop="selfUSerDept">
-              <el-select v-model="temp.selfUSerDept" placeholder="请选择本人部门" style="width: 100%;" >
-                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.orgName" :value="item.orgAuto" />
+              <el-select v-model="temp.selfUser" placeholder="请选择本人部门" disabled="true" style="width: 100%;">
+                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.orgName" :value="item.empBaseAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="代理人姓名" prop="agentUser">
-              <el-select v-model="temp.agentUser" placeholder="请选择代理人姓名" style="width: 100%;">
+              <el-select v-model="temp.agentUser" placeholder="请选择代理人姓名" style="width: 100%;" @change="chooseAgent">
                 <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="代理人部门" prop="agentUserDept">
-              <el-select v-model="temp.agentUserDept" placeholder="请选择代理人部门" style="width: 100%;" />
+              <el-select v-model="temp.agentUser" placeholder="请选择代理人部门" disabled="true" style="width: 100%;" >
+                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.orgName" :value="item.empBaseAuto" />
+              </el-select>
             </el-form-item>
             <el-form-item label="是否有效" prop="isOn">
               <el-select v-model="temp.isOn" placeholder="请选择是否有效" style="width: 100%;">
@@ -76,7 +78,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="代理截止日期" prop="agentCDate">
-              <el-date-picker v-model="temp.agentCDate" clearable type="date" class="filter-item" placeholder="请选择代理截止日期" style="width: 100%" />
+              <el-date-picker v-model="temp.agentCDate" clearable type="date" placeholder="请选择代理截止日期" style="width: 100%" />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -95,6 +97,7 @@
 
 <script>
 import Pagination from '../../components/Pagination/index'
+import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { getSelfList, getAgentList, insertAgent, updateAgent, patchDel, patchStart, patchStop } from '../../api/staff/agent'
 import { getEmpByFName } from '../../api/staff/maintain'
 const nameOptions = [
@@ -135,6 +138,7 @@ export default {
       stop,
       del,
       selfUser: this.$route.params.selfUser, // 本人id
+      agentUser: this.$route.params.agentUser, // 代理人id
       temp: {
         creditAgentAuto: undefined,
         selfUser: '',
@@ -206,7 +210,19 @@ export default {
       for (let i = 0; i < this.selfUserListResponse.length; i++) {
         if (this.selfUserListResponse[i].selfUser === position) {
           this.temp.selfName = this.selfUserListResponse[i].fName
-          this.getListSelfUser()
+          /* this.selfUserListParam.fName = this.selfUserListResponse[i].fName
+          this.getListSelfUser()*/
+        }
+      }
+    },
+    /** 监听本人姓名下拉选，根据下标获取员工empBaseAuto、fName、orgAuto、orgName*/
+    chooseAgent(position) {
+      this.temp.agentUser = position
+      for (let i = 0; i < this.selfUserListResponse.length; i++) {
+        if (this.selfUserListResponse[i].agentUser === position) {
+          this.temp.agentName = this.selfUserListResponse[i].fName
+          /* this.selfUserListParam.fName = this.selfUserListResponse[i].fName
+          this.getListSelfUser()*/
         }
       }
     },
@@ -225,24 +241,6 @@ export default {
         agentCDate: ''
       }
     },
-    /* selfData() {
-      getSelfList(this.listQuery).then(response => {
-        this.list = response.data.list
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
-    },
-    agentData() {
-      getAgentList(this.listQuery).then(response => {
-        this.list = response.data.list
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
-    },*/
     /** 新建 */
     handleCreate() {
       this.resetTemp()
@@ -327,6 +325,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.temp.agentCDate = format(dateTostring(this.temp.agentCDate))
           this.listLoading = true
           this.temp.creditAgentAuto = 0
           insertAgent(this.temp).then(response => {
@@ -349,6 +348,7 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.temp.agentCDate = format(dateTostring(this.temp.agentCDate))
           this.listLoading = true
           updateAgent(this.temp).then(response => {
             for (const v of this.list) {

@@ -90,7 +90,7 @@
             </el-form-item>
             <el-form-item label="角色" prop="roles">
               <el-select v-model="temp.roles" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--@change="chooseRoles"-->
-                <el-option v-for="role in roleNameListResponse" :key="role.rolesAuto" :label="role.roleName" :value="role.roleName" />
+                <el-option v-for="role in roleNameListResponse" :key="role.roleName" :label="role.roleName" :value="role.roleName" />
               </el-select>
               <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
                 <el-checkbox v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName"/>
