@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 /**
- * 根据本人姓名获取代理数据
+ * 根据本人id获取代理数据
  * @param query
  * @returns {AxiosPromise}
  */
@@ -10,7 +10,7 @@ export function getSelfList(query) {
     url: '/query/queryBySelf',
     method: 'get',
     params: {
-      fName: query.fName,
+      empBaseAuto: query.empBaseAuto,
       pageNum: query.pageNum,
       pageSize: query.pageSize
     }
@@ -18,7 +18,7 @@ export function getSelfList(query) {
 }
 
 /**
- * 根据代理人姓名获取代理数据
+ * 根据代理人id获取代理数据
  * @param query
  * @returns {AxiosPromise}
  */
@@ -27,7 +27,7 @@ export function getAgentList(query) {
     url: '/query/queryByAgent',
     method: 'get',
     params: {
-      fName: query.fName,
+      empBaseAuto: query.empBaseAuto,
       pageNum: query.pageNum,
       pageSize: query.pageSize
     }

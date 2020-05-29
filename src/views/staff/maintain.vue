@@ -90,7 +90,7 @@
             </el-form-item>
             <el-form-item label="角色" prop="roles">
               <el-select v-model="temp.roles" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--@change="chooseRoles"-->
-                <el-option v-for="role in roleNameListResponse" :key="role.roleName" :label="role.roleName" :value="role.roleName" />
+                <el-option v-for="role in roleNameListResponse" :key="role.rolesAuto" :label="role.roleName" :value="role.roleName" />
               </el-select>
               <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
                 <el-checkbox v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName"/>
@@ -179,8 +179,8 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        /* rolesAuto: '',
-        roleName: '',*/
+        rolesAuto: '',
+        roleName: '',
         roles: [],
         username: '',
         orgAuto: '',
@@ -212,6 +212,7 @@ export default {
       },
       rules: {
         fname: [{ required: true, message: '姓名必填', trigger: 'change' }],
+        username: [{ required: true, message: '账号必填', trigger: 'change' }],
         // identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
         orgAuto: [{ required: true, message: '部门必选', trigger: 'change' }],
         incTitleAuto: [{ required: true, message: '职级必选', trigger: 'change' }],
@@ -274,10 +275,10 @@ export default {
     },
     /** 监听角色下拉选，根据下标获取职位rolesAuto、roleName*/
     /* chooseRoles(position) {
-      this.temp.roles[0] = position
+      this.temp.rolesAuto = position
       for (let i = 0; i < this.roleNameListResponse.length; i++) {
         if (this.roleNameListResponse[i].rolesAuto === position) {
-          this.temp.roles[1] = this.roleNameListResponse[i].roleName
+          this.temp.roleName = this.roleNameListResponse[i].roleName
         }
       }
     },*/
@@ -300,8 +301,8 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        /* rolesAuto: '',
-        roleName: '',*/
+        rolesAuto: '',
+        roleName: '',
         // roles: [],
         username: '',
         orgAuto: '',

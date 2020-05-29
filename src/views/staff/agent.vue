@@ -7,12 +7,15 @@
             <el-button style="margin-left: 10px;" type="primary" plain icon="el-icon-edit" @click="handleCreate">新建</el-button>
           </el-col>
           <el-col :span="4">
-            <el-select v-model="nameQuery.names" placeholder="请选择" class="filter-item" style="width: 100%">
+            <el-select v-model="nameQuery.names" placeholder="==请选择==" class="filter-item" style="width: 100%">
               <el-option v-for="item in nameOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
           </el-col>
+          <!-- 下拉框输入模糊查询 -->
           <el-col :span="4">
-            <el-input v-model="listQuery.fName" placeholder="姓名" clearable maxlength="30" @keyup.enter.native="handleFilter" />
+            <el-select v-model="listQuery.empBaseAuto" clearable filterable placeholder="请输入姓名" style="width: 100%;" @keyup.enter.native="handleFilter">
+              <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
+            </el-select>
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -99,7 +102,7 @@
 import Pagination from '../../components/Pagination'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { getSelfList, getAgentList, insertAgent, updateAgent, patchDel, patchStart, patchStop } from '../../api/staff/agent'
-import { getEmpByFName } from '../../api/staff/maintain'
+import { getEmpAgent } from '../../api/staff/maintain'
 const nameOptions = [
   { key: '0', display_name: '本人姓名' },
   { key: '1', display_name: '代理人姓名' }
@@ -139,6 +142,7 @@ export default {
       del,
       selfUser: this.$route.params.selfUser, // 本人id
       agentUser: this.$route.params.agentUser, // 代理人id
+      // empBaseAuto: this.$route.params.empBaseAuto, // 员工id
       temp: {
         creditAgentAuto: undefined,
         selfUser: '',
@@ -153,17 +157,17 @@ export default {
         agentCDate: ''
       },
       listQuery: {
-        fName: '',
+        empBaseAuto: '',
         pageNum: 1,
         pageSize: 20
       },
       nameQuery: {
         names: ''
       },
-      /** 本人姓名查询 */
+      /** 员工id查询（本人姓名/代理人姓名下拉选） */
       selfUserListResponse: null,
       selfUserListParam: {
-        fName: ''
+        empBaseAuto: ''
       }
     }
   },
@@ -206,9 +210,9 @@ export default {
         })
       }
     },
-    /** 本人姓名下拉选 */
+    /** 本人姓名/代理人姓名下拉选 */
     getListSelfUser() {
-      getEmpByFName(this.selfUserListParam).then(response => {
+      getEmpAgent(this.selfUserListParam).then(response => {
         this.selfUserListResponse = response.data
       })
     },
@@ -218,19 +222,15 @@ export default {
       for (let i = 0; i < this.selfUserListResponse.length; i++) {
         if (this.selfUserListResponse[i].selfUser === position) {
           this.temp.selfName = this.selfUserListResponse[i].fName
-          /* this.selfUserListParam.fName = this.selfUserListResponse[i].fName
-          this.getListSelfUser()*/
         }
       }
     },
-    /** 监听本人姓名下拉选，根据下标获取员工empBaseAuto、fName、orgAuto、orgName*/
+    /** 监听代理人姓名下拉选，根据下标获取员工empBaseAuto、fName、orgAuto、orgName*/
     chooseAgent(position) {
       this.temp.agentUser = position
       for (let i = 0; i < this.selfUserListResponse.length; i++) {
         if (this.selfUserListResponse[i].agentUser === position) {
           this.temp.agentName = this.selfUserListResponse[i].fName
-          /* this.selfUserListParam.fName = this.selfUserListResponse[i].fName
-          this.getListSelfUser()*/
         }
       }
     },

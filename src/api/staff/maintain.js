@@ -23,12 +23,12 @@ export function getEmpList(query) {
  * @param empBaseAuto
  * @returns {AxiosPromise}
  */
-export function getEmpByFName(query) {
+export function getEmpAgent(query) {
   return request({
-    url: '/empQuery/queryByFName',
+    url: '/empQuery/queryByEmpBaseAuto',
     method: 'get',
     params: {
-      fName: query.fName
+      empBaseAuto: query.empBaseAuto
     }
   })
 }
