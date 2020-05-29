@@ -11,7 +11,7 @@
               <el-option v-for="item in nameOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
           </el-col>
-          <!-- 下拉框输入模糊查询 -->
+          <!-- 下拉框输入模糊查询 filterable动态模糊搜索下拉框中的选项 -->
           <el-col :span="4">
             <el-select v-model="listQuery.empBaseAuto" clearable filterable placeholder="请输入姓名" style="width: 100%;" @keyup.enter.native="handleFilter">
               <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
@@ -56,7 +56,7 @@
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
             <el-form-item label="本人姓名" prop="selfUser">
-              <el-select v-model="temp.selfUser" placeholder="请选择本人姓名" style="width: 100%;" @change="chooseSelf">
+              <el-select v-model="temp.selfUser" clearable filterable placeholder="请选择本人姓名" style="width: 100%;" @change="chooseSelf">
                 <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
               </el-select>
             </el-form-item>
@@ -66,7 +66,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="代理人姓名" prop="agentUser">
-              <el-select v-model="temp.agentUser" placeholder="请选择代理人姓名" style="width: 100%;" @change="chooseAgent">
+              <el-select v-model="temp.agentUser" clearable filterable placeholder="请选择代理人姓名" style="width: 100%;" @change="chooseAgent">
                 <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
               </el-select>
             </el-form-item>

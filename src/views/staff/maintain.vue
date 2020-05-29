@@ -89,8 +89,8 @@
               </el-select>
             </el-form-item>
             <el-form-item label="角色" prop="roles">
-              <el-select v-model="temp.roles" placeholder="请选择角色" multiple="false" style="width: 100%;"><!--@change="chooseRoles"-->
-                <el-option v-for="role in roleNameListResponse" :key="role.rolesAuto" :label="role.roleName" :value="role.roleName" />
+              <el-select v-model="temp.roles" placeholder="请选择角色" multiple style="width: 100%;"><!--@change="chooseRoles"-->
+                <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
               <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
                 <el-checkbox v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName"/>
@@ -179,8 +179,8 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        rolesAuto: '',
-        roleName: '',
+        /* rolesAuto: '',
+        roleName: '',*/
         roles: [],
         username: '',
         orgAuto: '',
@@ -301,9 +301,9 @@ export default {
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        rolesAuto: '',
-        roleName: '',
-        // roles: [],
+        /* rolesAuto: '',
+        roleName: '',*/
+        roles: [], // 角色名称
         username: '',
         orgAuto: '',
         incTitleAuto: '',
@@ -331,9 +331,7 @@ export default {
       this.temp.orgAuto = row.orgAuto
       this.temp.incTitleAuto = row.incTitleAuto
       this.temp.orgGroupAuto = row.orgGroupAuto
-      console.log(this.temp.roles)
       // this.temp.roles = this.temp.roles.split(',')
-      console.log(row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
