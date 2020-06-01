@@ -168,15 +168,15 @@ export default {
       selfUserListResponse: null,
       selfUserListParam: {
         empBaseAuto: ''
+      },
+      rules: {
+        selfUser: [{ required: true, message: '本人姓名必填', trigger: 'change' }],
+        // selfUSerDept: [{ required: true, message: '本人部门必选', trigger: 'change' }],
+        agentUser: [{ required: true, message: '代理人姓名必填', trigger: 'change' }],
+        // agentUserDept: [{ required: true, message: '代理人部门必选', trigger: 'change' }],
+        agentCDate: [{ required: true, message: '代理截止日期必填', trigger: 'change' }]
       }
     }
-  },
-  rules: {
-    selfUser: [{ required: true, message: '本人姓名必选', trigger: 'change' }],
-    // selfUSerDept: [{ required: true, message: '本人部门必选', trigger: 'change' }],
-    agentUser: [{ required: true, message: '代理人姓名必选', trigger: 'change' }],
-    // agentUserDept: [{ required: true, message: '代理人部门必选', trigger: 'change' }],
-    agentCDate: [{ required: true, message: '代理截止日期', trigger: 'change' }]
   },
   created() {
     this.getList()

@@ -10,7 +10,7 @@
             <el-input v-model="listQuery.username" placeholder="账号" clearable maxlength="30" @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="4">
-            <el-select v-model="listQuery.isAdmin" placeholder="是否是管理员" class="filter-item" style="width: 100%">
+            <el-select v-model="listQuery.isAdmin" placeholder="是否是管理员" class="filter-item" style="width: 100%" @keyup.enter.native="handleFilter">
               <el-option v-for="item in typeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
           </el-col>
@@ -27,19 +27,31 @@
       <el-main>
         <el-table v-loading="listLoading" :data="list" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="账号" prop="username" />
-          <el-table-column align="center" label="性别" prop="sex" />
+          <el-table-column align="center" label="性别" prop="sex">
+            <template slot-scope="scope">
+              <span>{{ scope.row.sex |sexFilter }}</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="年龄" prop="age" />
           <el-table-column align="center" label="手机号" prop="phone" />
           <el-table-column align="center" label="余额" prop="balance" />
           <el-table-column align="center" label="密码" prop="password" />
           <el-table-column align="center" label="头像" prop="faceUrl" />
-          <el-table-column align="center" label="是否是管理员" prop="isAdmin"/>
-          <el-table-column align="center" label="状态" prop="status"/>
+          <el-table-column align="center" label="是否是管理员" prop="isAdmin">
+            <template slot-scope="scope">
+              <span>{{ scope.row.isAdmin | isAdminFilter }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="状态" prop="status">
+            <template slot-scope="scope">
+              <span>{{ scope.row.status | isOnFilter }}</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="操作" fixed="right" width="360">
             <template slot-scope="{row}">
               <el-button type="info" plain size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
               <el-button v-if="row.status===normal" plain size="small" type="warning" @click="handleModifyStatus(row,stop)">
-                禁用
+                停用
               </el-button>
               <el-button v-if="row.status===stop" plain size="small" type="success" @click="handleModifyStatus(row,normal)">
                 启用
@@ -47,6 +59,7 @@
               <el-button v-if="row.status!==del" plain size="small" type="danger" @click="handleModifyStatus(row,del)">
                 删除
               </el-button>
+              <el-button plain size="small" type="success" @click="change(row)">重置密码</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -96,17 +109,24 @@
           </div>
         </el-dialog>
         <!--        分页条-->
-        <pagination/>
+        <pagination />
       </el-main>
     </el-container>
   </div>
 </template>
 
 <script>
-import { getUserList, insertUserList, updateUser, patchStart, patchStop, patchDel } from '../../api/profile'
-import statusOption from '@/variable/status'
+import { getUserList, insertUserList, updateUser, patchStart, patchStop, patchDel, reset } from '../../api/profile'
 import Pagination from '../../components/Pagination'
 
+const statusOptions = [
+  { key: '0', display_name: '停用' },
+  { key: '1', display_name: '正常' },
+  { key: '2', display_name: '删除' }
+]
+const stop = 0
+const normal = 1
+const del = 2
 const typeOptions = [
   { key: '0', display_name: 'Yes' },
   { key: '1', display_name: 'No' }
@@ -119,6 +139,9 @@ export default {
   name: 'ProfileInfoList',
   components: { Pagination },
   filters: {
+    isOnFilter(status) {
+      return statusOptions[status].display_name
+    },
     sexFilter(sex) {
       return sexOptions[sex].display_name
     },
@@ -138,12 +161,16 @@ export default {
         update: '编辑',
         create: '新增'
       },
+      statusOptions,
+      normal,
+      stop,
+      del,
       typeOptions,
-      statusOptions: statusOption.statusOption2,
+      // statusOptions: statusOption.statusOption2,
       sexOptions,
-      normal: statusOption.normal,
+      /* normal: statusOption.normal,
       stop: statusOption.stop,
-      del: statusOption.del,
+      del: statusOption.del,*/
       temp: {
         userId: undefined,
         username: '',
@@ -160,6 +187,10 @@ export default {
         status: '',
         username: '',
         isAdmin: ''
+      },
+      /** 重置密码 */
+      resetPwd: {
+        username: ''
       },
       rules: {
         username: [{ required: true, message: '账号必填', trigger: 'change' }],
@@ -199,8 +230,9 @@ export default {
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
-      this.temp.status = statusOption.statusOption3[0].key
+      this.temp.status = statusOptions[1].key
       this.temp.sex = sexOptions[0].key
+      this.temp.isAdmin = typeOptions[1].key
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -209,7 +241,9 @@ export default {
     /** 编辑 */
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.status = statusOption.statusOption3[this.temp.status - 1].key
+      this.temp.status = statusOptions[this.temp.status].key
+      this.temp.sex = sexOptions[this.temp.sex].key
+      this.temp.isAdmin = typeOptions[this.temp.isAdmin].key
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -247,7 +281,7 @@ export default {
         })
         row.status = status
       } else {
-        this.$confirm('是否删除该账号?', '提示', {
+        this.$confirm('是否删除该员工账号?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -272,6 +306,28 @@ export default {
           this.listLoading = false
         })
       }
+    },
+    /** 重置密码 */
+    change(row) {
+      this.$confirm('是否重置该账户的密码?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.resetPwd.username = row.username
+        reset(this.resetPwd.username).then((response) => {
+          this.$notify({
+            type: 'success',
+            message: response.message
+          })
+          this.getList()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消重置密码'
+        })
+      })
     },
     handleFilter() {
       this.getList()

@@ -10,7 +10,7 @@
             <el-input v-model="listQuery.fName" placeholder="姓名" clearable maxlength="30" @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="4">
-            <el-select v-model="listQuery.orgName" placeholder="部门" class="filter-item" style="width: 100%">
+            <el-select v-model="listQuery.orgName" placeholder="部门" class="filter-item" style="width: 100%" >
               <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.depName" />
               <!--              <el-option v-for="item in orgOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
             </el-select>

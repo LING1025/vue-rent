@@ -96,3 +96,11 @@ export function patchDel(userId) {
     method: 'delete'
   })
 }
+
+/** 重置密码 */
+export function reset(username) {
+  return request({
+    url: '/profile/reset/' + username,
+    method: 'put'
+  })
+}
