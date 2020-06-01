@@ -88,7 +88,7 @@
                 <el-option v-for="group in orgGroupListResponse" :key="group.orgGroupAuto" :label="group.orgGroupName" :value="group.orgGroupAuto" />
               </el-select>
             </el-form-item>
-            <el-form-item label="角色" prop="roles">
+            <el-form-item id="demo" label="角色" prop="roles">
               <el-select v-model="temp.roles" placeholder="请选择角色" multiple style="width: 100%;"><!--@change="chooseRoles"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
@@ -331,7 +331,16 @@ export default {
       this.temp.orgAuto = row.orgAuto
       this.temp.incTitleAuto = row.incTitleAuto
       this.temp.orgGroupAuto = row.orgGroupAuto
-      // this.temp.roles = this.temp.roles.split(',')
+      console.log(row.roles)
+      var car; var i; var x = ''; var ro = []
+      car = row.roles
+      for (i in car) {
+        x = row.roles[i].roleName
+        // console.log(x)
+        ro.push(x)
+        // console.log(ro)
+        this.temp.roles = ro
+      }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
