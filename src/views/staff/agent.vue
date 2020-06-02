@@ -103,10 +103,7 @@ import Pagination from '../../components/Pagination'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { getSelfList, getAgentList, insertAgent, updateAgent, patchDel, patchStart, patchStop } from '../../api/staff/agent'
 import { getEmpAgent } from '../../api/staff/maintain'
-const nameOptions = [
-  { key: '0', display_name: '本人姓名' },
-  { key: '1', display_name: '代理人姓名' }
-]
+
 const statusOptions = [
   { key: '0', display_name: '停用' },
   { key: '1', display_name: '正常' },
@@ -135,7 +132,6 @@ export default {
         update: '编辑',
         create: '新增'
       },
-      nameOptions,
       statusOptions,
       normal,
       stop,
