@@ -32,8 +32,8 @@
               <span>{{ scope.row.isOn | isOnFilter }}</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="创建时间" prop="mdt" />
-          <el-table-column align="center" label="最后修改时间" prop="muser" />
+          <el-table-column align="center" label="创建日期" prop="cDT" />
+          <el-table-column align="center" label="最后修改日期" prop="mDT" />
           <!--<el-table-column align="center" label="创建时间" prop="createTime" />
           <el-table-column align="center" label="最后修改时间" prop="updateTime" />-->
           <el-table-column align="center" label="操作" fixed="right" width="360">
