@@ -49,8 +49,9 @@ export function getUserList(query) {
     method: 'get',
     params: {
       username: query.username,
-      status: query.status,
-      isAdmin: query.isAdmin
+      isOn: query.isOn,
+      pageNum: query.pageNum,
+      pageSize: query.pageSize
     }
   })
 }

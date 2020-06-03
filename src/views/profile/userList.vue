@@ -30,6 +30,16 @@
           <el-table-column align="center" label="操作" fixed="right" width="360">
             <template slot-scope="{row}">
               <el-button type="info" plain size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
+              <el-button v-if="row.isOn===normal" plain size="small" type="warning" @click="handleModifyStatus(row,stop)">
+                停用
+              </el-button>
+              <el-button v-if="row.isOn===stop" plain size="small" type="success" @click="handleModifyStatus(row,normal)">
+                启用
+              </el-button>
+              <el-button v-if="row.isOn!==del" plain size="small" type="danger" @click="handleModifyStatus(row,del)">
+                删除
+              </el-button>
+              <el-button plain size="small" type="success" @click="change(row)">重置密码</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -38,7 +48,7 @@
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList" />
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 500px; margin-left:50px;">
-            <el-form-item label="账号" prop="username">
+            <el-form-item label="用户名" prop="username">
               <el-input v-model="temp.username" maxlength="30" clearable disabled="true" oninput="value" />
             </el-form-item>
             <el-form-item label="是否启用" prop="isOn">
@@ -69,15 +79,21 @@
 
 <script>
 
-import { getUserList } from '../../api/consumer'
+import { getUserList, updateUser, reset, patchDel, patchStart, patchStop } from '../../api/consumer'
+import Pagination from '../../components/Pagination'
 
 const statusOptions = [
   { key: '0', display_name: '停用' },
   { key: '1', display_name: '正常' },
   { key: '2', display_name: '删除' }
 ]
+const stop = 0
+const normal = 1
+const del = 2
+
 export default {
   name: 'ProfileUserList',
+  components: { Pagination },
   data() {
     return {
       agent: '',
@@ -91,6 +107,9 @@ export default {
         create: '新增'
       },
       statusOptions,
+      normal,
+      stop,
+      del,
       temp: {
         userAuto: undefined,
         username: '',
@@ -115,14 +134,132 @@ export default {
     getList() {
       getUserList(this.listQuery).then(response => {
         this.list = response.data.list
+        console.log('response.data.list')
+        console.log(response.data.list)
         this.total = response.data.total
         this.listLoading = false
       }).catch(() => {
         this.listLoading = false
       })
     },
+    /** 编辑 */
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row)
+      this.temp.isOn = statusOptions[this.temp.isOn].key
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    /** 修改状态 */
+    handleModifyStatus(row, isOn) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.listLoading = true
+      if (isOn === this.normal) {
+        patchStart(this.temp.empBaseAuto).then(() => {
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.getList()
+        }).catch(() => {
+          this.listLoading = false
+        })
+        row.isOn = isOn
+      } else if (isOn === this.stop) {
+        patchStop(this.temp.empBaseAuto).then(() => {
+          this.dialogFormVisible = false
+          this.listLoading = false
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          this.getList()
+        }).catch(() => {
+          this.listLoading = false
+        })
+        row.isOn = isOn
+      } else {
+        this.$confirm('是否删除该员工账号?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          patchDel(this.temp.empBaseAuto).then(() => {
+            row.isOn = isOn
+            this.dialogFormVisible = false
+            this.listLoading = false
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除操作'
+          })
+          this.listLoading = false
+        })
+      }
+    },
+    /** 重置密码 */
+    change(row) {
+      this.$confirm('是否重置该账户的密码?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.resetPwd.username = row.username
+        reset(this.resetPwd.username).then((response) => {
+          this.$notify({
+            type: 'success',
+            message: response.message
+          })
+          this.getList()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消重置密码'
+        })
+      })
+    },
     handleFilter() {
       this.getList()
+    },
+    /** 修改 */
+    updateData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.listLoading = true
+          updateUser(this.temp).then(response => {
+            for (const v of this.list) {
+              if (v.id === this.temp.userAuto) {
+                const index = this.list.indexOf(v)
+                this.list.splice(index, 1, this.temp) // 个人理解：此处是修改位于index的元素，并添加this.temp元素替代被修改元素
+                break
+              }
+            }
+            this.listLoading = false
+            this.dialogFormVisible = false
+            this.$message({
+              type: 'success',
+              message: response.message
+            })
+            this.getList()
+          }).catch(() => {
+            this.listLoading = false
+            this.dialogFormVisible = true
+          })
+        }
+      })
     }
   }
 }
