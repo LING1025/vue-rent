@@ -13,6 +13,19 @@ export function info(username) {
 }
 
 /**
+ * 更新个人信息
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function update(data) {
+  return request({
+    url: '/consumer/update',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * 修改密码
  * @param data
  * @returns {AxiosPromise}

@@ -8,15 +8,20 @@
       :model="form"
       label-width="120px"
     >
-      <el-input v-model="form.userAuto" type="hidden" />
+      <el-input v-model="form.userId" type="hidden" />
       <el-form-item label="账号">
         <el-input v-model="form.username" :disabled="true" />
       </el-form-item>
-      <el-form-item label="旧密码">
-        <el-input v-model="form.oldPassword"/>
+      <el-form-item label="分机">
+        <el-input v-model="form.mobilePIN" />
       </el-form-item>
-      <el-form-item label="新密码">
-        <el-input v-model="form.newPassword"/>
+      <el-form-item label="邮箱">
+        <el-input v-model="form.email" />
+      </el-form-item>
+      <el-form-item label="是否启用">
+        <el-select v-model="form.isOn" placeholder="请选择是否启用" style="width: 100%;">
+          <el-option v-for="item in statusOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -26,18 +31,25 @@
 </template>
 
 <script>
-import { info, modifyPassword } from '../../api/consumer'
+import { info, update } from '../../api/consumer'
 
+const statusOptions = [
+  { key: '0', display_name: '停用' },
+  { key: '1', display_name: '正常' },
+  { key: '2', display_name: '删除' }
+]
 export default {
-  name: 'ProfilePwd',
+  name: 'ProfileConsumer',
   data() {
     return {
       formLoading: true,
+      statusOptions,
       form: {
         userAuto: '',
         username: '',
-        oldPassword: '',
-        newPassword: ''
+        mobilePIN: '',
+        email: '',
+        isOn: ''
       }
     }
   },
@@ -53,7 +65,7 @@ export default {
     },
     onSubmit() {
       this.formLoading = true
-      modifyPassword(this.form).then(response => {
+      update(this.form).then(response => {
         this.formLoading = false
         this.$message({
           message: response.message,

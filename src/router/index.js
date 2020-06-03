@@ -56,10 +56,16 @@ export const constantRoutes = [
   {
     path: '/profile',
     component: Layout,
-    redirect: '/profile/userList',
+    redirect: '/profile/consumer',
     name: 'Profile',
     meta: { title: '用户管理', icon: 'user1' },
     children: [
+      {
+        path: 'consumer',
+        name: 'ProfileConsumer',
+        component: () => import('@/views/profile/consumer'),
+        meta: { title: '修改个人信息' }
+      },
       {
         path: 'userList',
         name: 'ProfileUserList',
@@ -71,8 +77,8 @@ export const constantRoutes = [
         name: 'ProfilePwd',
         component: () => import('@/views/profile/pwd'),
         meta: { title: '修改个人密码' }
-      },
-      {
+      }
+      /* {
         path: 'info',
         name: 'ProfileInfo',
         component: () => import('@/views/profile/info'),
@@ -89,7 +95,7 @@ export const constantRoutes = [
         name: 'ProfilePassword',
         component: () => import('@/views/profile/password'),
         meta: { title: '修改个人密码(旧)' }
-      }
+      }*/
     ]
   },
   {
