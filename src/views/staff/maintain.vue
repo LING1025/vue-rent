@@ -99,12 +99,12 @@
             <el-form-item label="账号" prop="username">
               <el-input v-model="temp.username" placeholder="请输入账号" maxlength="30" clearable oninput="value" />
             </el-form-item>
-            <!--<el-form-item label="分机" prop="mobilePIN">
+            <el-form-item label="分机" prop="mobilePIN">
               <el-input v-model="temp.mobilePIN" placeholder="请输入分机" maxlength="30" clearable oninput="value" />
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="temp.email" placeholder="请输入邮箱" maxlength="30" clearable oninput="value" />
-            </el-form-item>-->
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">
@@ -185,9 +185,9 @@ export default {
         username: '',
         orgAuto: '',
         incTitleAuto: '',
-        orgGroupAuto: ''
-        /* mobilePIN: '',
-        email: ''*/
+        orgGroupAuto: '',
+        mobilePIN: '',
+        email: ''
       },
       listQuery: {
         orgName: '',
@@ -217,7 +217,8 @@ export default {
         orgAuto: [{ required: true, message: '部门必选', trigger: 'change' }],
         incTitleAuto: [{ required: true, message: '职级必选', trigger: 'change' }],
         orgGroupAuto: [{ required: true, message: '所属组必选', trigger: 'change' }],
-        roles: [{ required: true, message: '角色必选', trigger: 'change' }]
+        roles: [{ required: true, message: '角色必选', trigger: 'change' }],
+        email: [{ required: true, message: '邮箱必填', trigger: 'change' }]
       }
     }
   },
@@ -307,9 +308,9 @@ export default {
         username: '',
         orgAuto: '',
         incTitleAuto: '',
-        orgGroupAuto: ''
-        /* mobilePIN: '',
-        email: ''*/
+        orgGroupAuto: '',
+        mobilePIN: '',
+        email: ''
       }
     },
     /** 新建 */
