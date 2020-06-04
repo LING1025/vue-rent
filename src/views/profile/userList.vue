@@ -23,8 +23,12 @@
           <el-table-column align="center" label="分机" prop="mobilePIN" />
           <el-table-column align="center" label="邮箱" prop="email" />
           <el-table-column align="center" label="员工序号" prop="empBaseAuto" />
-          <el-table-column align="center" label="员工姓名" prop="fName" />
-          <el-table-column align="center" label="状态" prop="isOn" />
+          <el-table-column align="center" label="员工姓名" prop="fname" />
+          <el-table-column align="center" label="状态" prop="isOn" >
+            <template slot-scope="scope">
+              <span>{{ scope.row.isOn | isOnFilter }}</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="创建日期" prop="cDT" />
           <el-table-column align="center" label="最后修改日期" prop="mDT" />
           <el-table-column align="center" label="操作" fixed="right" width="360">
@@ -94,6 +98,11 @@ const del = 2
 export default {
   name: 'ProfileUserList',
   components: { Pagination },
+  filters: {
+    isOnFilter(isOn) {
+      return statusOptions[isOn].display_name
+    }
+  },
   data() {
     return {
       agent: '',
@@ -124,6 +133,10 @@ export default {
         isOn: '',
         pageNum: 1,
         pageSize: 20
+      },
+      /** 重置密码 */
+      resetPwd: {
+        username: ''
       }
     }
   },
