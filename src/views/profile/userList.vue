@@ -105,7 +105,7 @@ export default {
   },
   data() {
     return {
-      agent: '',
+      userList: '',
       total: 0,
       list: null,
       listLoading: true,

@@ -109,6 +109,12 @@ const statusOptions = [
   { key: '1', display_name: '正常' },
   { key: '2', display_name: '删除' }
 ]
+
+const nameOptions = [
+  { key: '0', display_name: '本人姓名' },
+  { key: '1', display_name: '代理人姓名' }
+]
+
 const stop = 0
 const normal = 1
 const del = 2
@@ -133,6 +139,7 @@ export default {
         create: '新增'
       },
       statusOptions,
+      nameOptions,
       normal,
       stop,
       del,

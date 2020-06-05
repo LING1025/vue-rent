@@ -63,7 +63,7 @@ export default {
   name: 'StaffDailyWork',
   data() {
     return {
-      agent: '',
+      dailyWork: '',
       total: 0,
       list: null,
       listLoading: true,

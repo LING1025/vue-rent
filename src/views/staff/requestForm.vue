@@ -123,7 +123,7 @@ export default {
   name: 'StaffRequestForm',
   data() {
     return {
-      agent: '',
+      requestForm: '',
       total: 0,
       list: null,
       listLoading: true,
