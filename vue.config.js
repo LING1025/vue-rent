@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || '车辆租赁系统' // 网址标题
+const name = defaultSettings.title// 网址标题
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.

@@ -1,14 +1,16 @@
 <template>
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
     <breadcrumb class="breadcrumb-container" />
 
+    <div class="logo">
+      <img width="80" height="50" alt="logo" src="../../assets/images/logo.png">
+    </div>
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-<!--          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">-->
-<!--          <img width="272" height="50" alt="logo" src="../../icons/logo.png">-->
+          <!--          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">-->
+          <!--          <img width="272" height="50" alt="logo" src="../../icons/logo.png">-->
           登录用户名: {{ name }}
           <i class="el-icon-caret-bottom" />
         </div>
@@ -85,6 +87,11 @@ export default {
 
   .breadcrumb-container {
     float: left;
+  }
+
+  .logo{
+    position: absolute;
+    right: 200px;
   }
 
   .right-menu {
