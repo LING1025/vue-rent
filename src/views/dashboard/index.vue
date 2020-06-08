@@ -34,7 +34,7 @@
           <el-table-column align="center" label="回租报件户数" prop="rentPaperNum" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="营业额" prop="realVolume" />
-          <el-table-column align="center" label="租_汰" prop="rentOut" />
+          <!--<el-table-column align="center" label="租_汰" prop="rentOut" />
           <el-table-column align="center" label="租_还" prop="rentBack" />
           <el-table-column align="center" label="维修_Y	" prop="maintainNum" />
           <el-table-column align="center" label="新拓(乘用车)" prop="extension" />
@@ -42,7 +42,7 @@
           <el-table-column align="center" label="通路介绍（乘用车）" prop="instrNum" />
           <el-table-column align="center" label="轻货卡" prop="carGo" />
           <el-table-column align="center" label="到_汰" prop="getOut" />
-          <el-table-column align="center" label="到_还" prop="getBack" />
+          <el-table-column align="center" label="到_还" prop="getBack" />-->
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
