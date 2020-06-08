@@ -17,7 +17,7 @@
             </el-select>
           </el-col>
           <el-col :span="3">
-            <el-select v-model="listQuery.orgType" clearable placeholder="部门" style="width: 100%;" @keyup.enter.native="handleFilter" />
+            <el-select v-model="listQuery.orgName" clearable placeholder="部门" style="width: 100%;" @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="3">
             <el-select v-model="listQuery.userAuto" clearable placeholder="姓名" style="width: 100%;" @keyup.enter.native="handleFilter" />
@@ -31,8 +31,8 @@
         <el-table v-loading="listLoading" :data="list" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="需求单号" prop="iTRequirementAuto" />
           <el-table-column align="center" label="申请人" prop="userAuto" />
-          <el-table-column align="center" label="部门" prop="orgType" />
-          <el-table-column align="center" label="分类" prop="typeMode" />
+          <el-table-column align="center" label="部门" prop="orgName" />
+          <el-table-column align="center" label="分类" prop="typeMode" /><!--两个分类的相加-->
           <el-table-column align="center" label="标题" prop="subject" />
           <el-table-column align="center" label="申请日期" prop="cDT" />
           <el-table-column align="center" label="进度" prop="status" />
@@ -54,8 +54,8 @@
             <el-form-item label="编号" prop="iTRequirementAuto">
               <el-input v-model="temp.iTRequirementAuto" placeholder="请输入编号" maxlength="30" clearable oninput="value" />
             </el-form-item>
-            <el-form-item label="部门" prop="orgType">
-              <el-input v-model="temp.orgType" placeholder="请输入部门" maxlength="30" clearable oninput="value" />
+            <el-form-item label="部门" prop="orgName">
+              <el-input v-model="temp.orgName" placeholder="请输入部门" maxlength="30" clearable oninput="value" />
             </el-form-item>
             <el-form-item label="申请日期" prop="cDT">
               <el-input v-model="temp.cDT" placeholder="请输入申请日期" maxlength="30" clearable oninput="value" />
@@ -153,13 +153,13 @@ export default {
         // memo: '',
         fileName: '',
         cDT: '',
-        typeMode: '',
-        orgType: ''
+        typeMode: '', // 两个分类相加
+        orgName: ''
       },
       listQuery: {
         type: '',
         status: '',
-        orgType: '',
+        orgName: '',
         userAuto: '',
         pageNum: 1,
         pageSize: 20
@@ -167,7 +167,7 @@ export default {
       rules: {
         userAuto: [{ required: true, message: '申请人必填', trigger: 'change' }],
         iTRequirementAuto: [{ required: true, message: '编号必填', trigger: 'change' }],
-        orgType: [{ required: true, message: '部门必填', trigger: 'change' }],
+        orgName: [{ required: true, message: '部门必填', trigger: 'change' }],
         cDT: [{ required: true, message: '申请日期必填', trigger: 'change' }]
       }
     }
@@ -198,7 +198,7 @@ export default {
         fileName: '',
         cDT: '',
         typeMode: '',
-        orgType: ''
+        orgName: ''
       }
     },
     /** 新建 */
