@@ -10,28 +10,36 @@
     <el-container>
       <el-header>
         <el-row>
-          <el-col :span="4">
-            <DateSelect  @keyup.enter.native="handleFilter"/>
-          </el-col>
           <!--<el-col :span="4">
+            <DateSelect @keyup.enter.native="handleFilter" />
+          </el-col>-->
+          <el-col :span="4">
             <el-input v-model="listQuery.year" placeholder="年" clearable maxlength="30" @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="4">
             <el-input v-model="listQuery.month" placeholder="月" clearable maxlength="30" @keyup.enter.native="handleFilter" />
-          </el-col>-->
+          </el-col>
+          <el-col :span="4">
+            <el-input v-model="listQuery.startDate" placeholder="开始日期" clearable maxlength="30" @keyup.enter.native="handleFilter" />
+            <!--            <el-date-picker v-model="listQuery.startDate" clearable type="date" placeholder="请选择开始日期" />-->
+          </el-col>
+          <el-col :span="4">
+            <el-input v-model="listQuery.endDate" placeholder="结束日期" clearable maxlength="30" @keyup.enter.native="handleFilter" />
+            <!--            <el-date-picker v-model="listQuery.endDate" clearable type="date" placeholder="请选择结束日期" />-->
+          </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
           </el-col>
         </el-row>
       </el-header>
       <el-main>
-        <el-table v-loading="listLoading" :data="list" stripe border fit min show-summary style="width: 100%">
+        <el-table v-loading="listLoading" :data="list" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
           <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
           <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
-          <el-table-column align="center" label="回租报件户数" prop="rentPaperNum" />
+          <!--          <el-table-column align="center" label="回租报件户数" prop="rentPaperNum" />-->
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="营业额" prop="realVolume" />
           <!--<el-table-column align="center" label="租_汰" prop="rentOut" />
@@ -45,7 +53,7 @@
           <el-table-column align="center" label="到_还" prop="getBack" />-->
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+              <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -56,13 +64,14 @@
 
 <script>
 // import { mapGetters } from 'vuex'
-import DateSelect from '../../components/DateSelect'
+// import DateSelect from '../../components/DateSelect'
+import { getOne } from '../../api/reportTable/formOne'
 
 export default {
   name: 'Dashboard',
-  components: {
+  /* components: {
     DateSelect
-  },
+  },*/
   /* computed: {
     ...mapGetters([
       'name'
@@ -70,9 +79,14 @@ export default {
   }*/
   data() {
     return {
+      total: 0,
+      list: null,
+      listLoading: true,
       listQuery: {
         year: '',
-        month: ''
+        month: '',
+        startDate: '',
+        endDate: ''
       }
     }
   },
@@ -80,13 +94,20 @@ export default {
     this.getList()
   },
   methods: {
-    handleClick(row) {
-      console.log(row)
-    },
     getList() {
+      getOne(this.listQuery).then(response => {
+        this.list = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
     },
     handleFilter() {
       this.getList()
+    },
+    handleClick(row) {
+      console.log(row)
     }
   }
 }
