@@ -6,9 +6,9 @@ export function getOne(query) {
     method: 'get',
     params: {
       year: query.year,
-      month: query.month,
-      startDate: query.startDate,
-      endDate: query.endDate
+      month: query.month
+      /* startDate: query.startDate,
+      endDate: query.endDate*/
     }
   })
 }

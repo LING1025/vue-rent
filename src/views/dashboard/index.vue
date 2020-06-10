@@ -14,19 +14,25 @@
             <DateSelect @keyup.enter.native="handleFilter" />
           </el-col>-->
           <el-col :span="4">
-            <el-input v-model="listQuery.year" placeholder="年" clearable maxlength="30" @keyup.enter.native="handleFilter" />
+            <el-input v-model="listQuery.year" clearable maxlength="30" @keyup.enter.native="handleFilter" />
+          </el-col>
+          <el-col :span="1">
+            <span>年</span>
           </el-col>
           <el-col :span="4">
-            <el-input v-model="listQuery.month" placeholder="月" clearable maxlength="30" @keyup.enter.native="handleFilter" />
+            <el-input v-model="listQuery.month" clearable maxlength="30" @keyup.enter.native="handleFilter" />
           </el-col>
-          <el-col :span="4">
+          <el-col :span="1">
+            <span>月</span>
+          </el-col>
+          <!--<el-col :span="4">
             <el-input v-model="listQuery.startDate" placeholder="开始日期" clearable maxlength="30" @keyup.enter.native="handleFilter" />
-            <!--            <el-date-picker v-model="listQuery.startDate" clearable type="date" placeholder="请选择开始日期" />-->
+            &lt;!&ndash;            <el-date-picker v-model="listQuery.startDate" clearable type="date" placeholder="请选择开始日期" />&ndash;&gt;
           </el-col>
           <el-col :span="4">
             <el-input v-model="listQuery.endDate" placeholder="结束日期" clearable maxlength="30" @keyup.enter.native="handleFilter" />
-            <!--            <el-date-picker v-model="listQuery.endDate" clearable type="date" placeholder="请选择结束日期" />-->
-          </el-col>
+            &lt;!&ndash;            <el-date-picker v-model="listQuery.endDate" clearable type="date" placeholder="请选择结束日期" />&ndash;&gt;
+          </el-col>-->
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
           </el-col>
@@ -84,9 +90,9 @@ export default {
       listLoading: true,
       listQuery: {
         year: '',
-        month: '',
+        month: ''/*,
         startDate: '',
-        endDate: ''
+        endDate: ''*/
       }
     }
   },
