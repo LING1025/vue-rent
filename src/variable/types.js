@@ -49,11 +49,29 @@ const degreeOption = [
   { key: '2', display_name: '2.重要' },
   { key: '3', display_name: '3.普通' }
 ]
+
+const monthOption = [
+  { key: 1, display_name: '1月' },
+  { key: 2, display_name: '2月' },
+  { key: 3, display_name: '3月' },
+  { key: 4, display_name: '4月' },
+  { key: 5, display_name: '5月' },
+  { key: 6, display_name: '6月' },
+  { key: 7, display_name: '7月' },
+  { key: 8, display_name: '8月' },
+  { key: 9, display_name: '9月' },
+  { key: 10, display_name: '10月' },
+  { key: 11, display_name: '11月' },
+  { key: 12, display_name: '12月' }
+
+]
+
 export default {
   titleOption,
   typeOption,
   statusOption,
   modeOption,
   reasonOption,
-  degreeOption
+  degreeOption,
+  monthOption
 }

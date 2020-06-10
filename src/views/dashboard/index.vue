@@ -10,20 +10,15 @@
     <el-container>
       <el-header>
         <el-row>
-          <!--<el-col :span="4">
-            <DateSelect @keyup.enter.native="handleFilter" />
-          </el-col>-->
           <el-col :span="4">
-            <el-input v-model="listQuery.year" clearable maxlength="30" @keyup.enter.native="handleFilter" />
-          </el-col>
-          <el-col :span="1">
-            <span>年</span>
+            <el-select v-model="listQuery.year" placeholder="请选择年份" @visible-change="yearChange($event)" class="filter-item" style="width: 100%">
+              <el-option v-for="item in years" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
           </el-col>
           <el-col :span="4">
-            <el-input v-model="listQuery.month" clearable maxlength="30" @keyup.enter.native="handleFilter" />
-          </el-col>
-          <el-col :span="1">
-            <span>月</span>
+            <el-select v-model="listQuery.month" placeholder="请选择月份" class="filter-item" style="width: 100%">
+              <el-option v-for="item in monthOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+            </el-select>
           </el-col>
           <!--<el-col :span="4">
             <el-input v-model="listQuery.startDate" placeholder="开始日期" clearable maxlength="30" @keyup.enter.native="handleFilter" />
@@ -70,8 +65,8 @@
 
 <script>
 // import { mapGetters } from 'vuex'
-// import DateSelect from '../../components/DateSelect'
 import { getOne } from '../../api/reportTable/formOne'
+import typeOption from '../../variable/types'
 
 export default {
   name: 'Dashboard',
@@ -88,6 +83,8 @@ export default {
       total: 0,
       list: null,
       listLoading: true,
+      monthOptions: typeOption.monthOption,
+      years: [],
       listQuery: {
         year: '',
         month: ''/*,
@@ -108,6 +105,16 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
+    },
+    yearChange() {
+      var myDate = new Date()
+      var startYear = myDate.getFullYear() - 15// 起始年份
+      var endYear = myDate.getFullYear() + 15// 结束年份
+
+      this.years = []
+      for (var i = startYear; i <= endYear; i++) {
+        this.years.push({ value: (i), label: (i) + '年' })
+      }
     },
     handleFilter() {
       this.getList()
