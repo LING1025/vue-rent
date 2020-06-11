@@ -53,8 +53,8 @@
           <el-table-column align="center" label="到_汰" prop="getOut" />
           <el-table-column align="center" label="到_还" prop="getBack" />-->
           <el-table-column align="center" label="操作" fixed="right">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
+            <template slot-scope>
+              <el-button type="text" size="small" @click="handleClick">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -65,7 +65,7 @@
 
 <script>
 // import { mapGetters } from 'vuex'
-import { getOne } from '../../api/reportTable/formOne'
+import { getOne, getTwo } from '../../api/reportTable/formOne'
 import typeOption from '../../variable/types'
 
 export default {
@@ -119,8 +119,14 @@ export default {
     handleFilter() {
       this.getList()
     },
-    handleClick(row) {
-      console.log(row)
+    handleClick() {
+      getTwo(this.listQuery).then(response => {
+        this.list = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
     }
   }
 }
