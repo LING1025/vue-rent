@@ -10,8 +10,8 @@
     <el-container>
       <el-header>
         <el-row>
-          <el-col :span="4">
-            <el-select v-model="listQuery.year" placeholder="请选择年份" @visible-change="yearChange($event)" class="filter-item" style="width: 100%">
+          <!--<el-col :span="4">
+            <el-select v-model="listQuery.year" placeholder="请选择年份" class="filter-item" style="width: 100%" @visible-change="yearChange($event)">
               <el-option v-for="item in years" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-col>
@@ -19,15 +19,10 @@
             <el-select v-model="listQuery.month" placeholder="请选择月份" class="filter-item" style="width: 100%">
               <el-option v-for="item in monthOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
-          </el-col>
-          <!--<el-col :span="4">
-            <el-input v-model="listQuery.startDate" placeholder="开始日期" clearable maxlength="30" @keyup.enter.native="handleFilter" />
-            &lt;!&ndash;            <el-date-picker v-model="listQuery.startDate" clearable type="date" placeholder="请选择开始日期" />&ndash;&gt;
-          </el-col>
-          <el-col :span="4">
-            <el-input v-model="listQuery.endDate" placeholder="结束日期" clearable maxlength="30" @keyup.enter.native="handleFilter" />
-            &lt;!&ndash;            <el-date-picker v-model="listQuery.endDate" clearable type="date" placeholder="请选择结束日期" />&ndash;&gt;
           </el-col>-->
+          <el-col :span="4">
+            <el-date-picker v-model="testQuery.ym" type="month" value-format="yyyy-M" placeholder="选择月份" @keyup.enter.native="handleFilter"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+          </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
           </el-col>
@@ -53,13 +48,12 @@
           <el-table-column align="center" label="到_汰" prop="getOut" />
           <el-table-column align="center" label="到_还" prop="getBack" />-->
           <el-table-column align="center" label="操作" fixed="right">
-            <template slot-scope>
-              <el-button type="text" size="small" @click="handleClick">查看</el-button>
+            <template slot-scope="row">
+              <el-button type="text" size="small" @click="handleClick(row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
-
-        <el-table v-loading="listLoading" :data="listClick" v-show="this.listClick == null ? false : true"  stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -75,11 +69,14 @@
         </el-table>
       </el-main>
     </el-container>
+    <div id="main" style="width: 1000px; height: 500px" />
   </div>
 </template>
 
 <script>
 // import { mapGetters } from 'vuex'
+// eslint-disable-next-line no-unused-vars
+import echarts from 'echarts'
 import { getOne, getTwo } from '../../api/reportTable/formOne'
 import typeOption from '../../variable/types'
 
@@ -103,17 +100,23 @@ export default {
       years: [],
       listQuery: {
         year: '',
-        month: ''/*,
-        startDate: '',
-        endDate: ''*/
+        month: ''
+      },
+      testQuery: {
+        ym: ''
       }
     }
   },
   created() {
     this.getList()
   },
+  mounted() {
+    this.charts()
+  },
   methods: {
     getList() {
+      this.listQuery.year = this.testQuery.ym.split('-')[0]
+      this.listQuery.month = this.testQuery.ym.split('-')[1]
       getOne(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.data.total
@@ -122,7 +125,8 @@ export default {
         this.listLoading = false
       })
     },
-    yearChange() {
+    // 年份月份下拉拆分
+    /* yearChange() {
       var myDate = new Date()
       var startYear = myDate.getFullYear() - 15// 起始年份
       var endYear = myDate.getFullYear() + 15// 结束年份
@@ -131,11 +135,13 @@ export default {
       for (var i = startYear; i <= endYear; i++) {
         this.years.push({ value: (i), label: (i) + '年' })
       }
-    },
+    },*/
     handleFilter() {
       this.getList()
     },
     handleClick() {
+      this.listQuery.year = this.testQuery.ym.split('-')[0]
+      this.listQuery.month = this.testQuery.ym.split('-')[1]
       getTwo(this.listQuery).then(response => {
         this.listClick = response.data
         this.total = response.data.total
@@ -144,7 +150,56 @@ export default {
         this.listLoading = false
       })
     },
-    handleClickNext() {}
+    handleClickNext() {},
+    charts() {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'))
+      // 绘制图表
+      myChart.setOption({
+        title: {
+          text: '租车台数/试算报件图表'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['报件数', '台数']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '报件数',
+            type: 'line',
+            stack: '总量',
+            data: [10, 12, 40, 23, 30, 52, 36]
+          },
+          {
+            name: '台数',
+            type: 'line',
+            stack: '总量',
+            data: [120, 232, 201, 134, 190, 130, 220]
+          }
+        ]
+      })
+    }
   }
 }
 </script>
