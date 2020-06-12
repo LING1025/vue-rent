@@ -58,6 +58,21 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <el-table v-loading="listLoading" :data="listClick" v-show="this.listClick == null ? false : true"  stripe border fit min style="width: 100%">
+          <el-table-column align="center" label="课" prop="orgName" />
+          <el-table-column align="center" label="目标台数" prop="targetNum" />
+          <el-table-column align="center" label="台数" prop="realNum" />
+          <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
+          <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
+          <el-table-column align="center" label="目标营业额" prop="targetVolume" />
+          <el-table-column align="center" label="营业额" prop="realVolume" />
+          <el-table-column align="center" label="操作" fixed="right">
+            <template slot-scope>
+              <el-button type="text" size="small" @click="handleClickNext">查看</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-main>
     </el-container>
   </div>
@@ -82,6 +97,7 @@ export default {
     return {
       total: 0,
       list: null,
+      listClick: null,
       listLoading: true,
       monthOptions: typeOption.monthOption,
       years: [],
@@ -121,13 +137,14 @@ export default {
     },
     handleClick() {
       getTwo(this.listQuery).then(response => {
-        this.list = response.data
+        this.listClick = response.data
         this.total = response.data.total
         this.listLoading = false
       }).catch(() => {
         this.listLoading = false
       })
-    }
+    },
+    handleClickNext() {}
   }
 }
 </script>
