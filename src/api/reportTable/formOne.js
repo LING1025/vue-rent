@@ -5,15 +5,15 @@ import request from '@/utils/request'
  * @param query
  * @returns {AxiosPromise}
  */
-export function getOne(query) {
+export function getTwo(query) {
   return request({
-    url: '/table/query',
+    url: '/table/queryTwo',
     method: 'get',
     params: {
       year: query.year,
-      month: query.month
-      /* startDate: query.startDate,
-      endDate: query.endDate*/
+      month: query.month,
+      startDate: query.startDate,
+      endDate: query.endDate
     }
   })
 }
@@ -23,13 +23,33 @@ export function getOne(query) {
  * @param query
  * @returns {AxiosPromise}
  */
-export function getTwo(query) {
+export function getOne(query) {
   return request({
-    url: '/table/queryke',
+    url: '/table/queryOne',
     method: 'get',
     params: {
       year: query.year,
-      month: query.month
+      month: query.month,
+      startDate: query.startDate,
+      endDate: query.endDate
+    }
+  })
+}
+
+/**
+ * 获取业代营业报表信息
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function getZero(query) {
+  return request({
+    url: '/table/queryZero',
+    method: 'get',
+    params: {
+      year: query.year,
+      month: query.month,
+      startDate: query.startDate,
+      endDate: query.endDate
     }
   })
 }

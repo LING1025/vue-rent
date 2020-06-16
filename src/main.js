@@ -15,6 +15,7 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import htmlToPdf from '@/utils/htmlToPdf'
+import ECharts from 'echarts'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -35,6 +36,8 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 Vue.use(htmlToPdf)
+Vue.prototype.echarts = ECharts
+Vue.use(ECharts)
 
 new Vue({
   el: '#app',

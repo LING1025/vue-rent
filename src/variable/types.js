@@ -50,6 +50,7 @@ const degreeOption = [
   { key: '3', display_name: '3.普通' }
 ]
 
+// 年份月份下拉拆分
 const monthOption = [
   { key: 1, display_name: '1月' },
   { key: 2, display_name: '2月' },

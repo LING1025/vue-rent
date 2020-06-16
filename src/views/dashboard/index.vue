@@ -21,7 +21,10 @@
             </el-select>
           </el-col>-->
           <el-col :span="4">
-            <el-date-picker v-model="testQuery.ym" type="month" value-format="yyyy-M" placeholder="选择月份" @keyup.enter.native="handleFilter"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="testQuery.startDate" type="date" value-format="yyyy-M-dd" placeholder="选择开始日期" @keyup.enter.native="handleFilter"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+          </el-col>
+          <el-col :span="4">
+            <el-date-picker v-model="testQuery.endDate" type="date" value-format="yyyy-M-dd" placeholder="选择结束日期" @keyup.enter.native="handleFilter"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -67,6 +70,20 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" stripe border fit min style="width: 100%">
+          <el-table-column align="center" label="业代" prop="username" />
+          <el-table-column align="center" label="目标台数" prop="targetNum" />
+          <el-table-column align="center" label="台数" prop="realNum" />
+          <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
+          <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
+          <el-table-column align="center" label="目标营业额" prop="targetVolume" />
+          <el-table-column align="center" label="营业额" prop="realVolume" />
+          <el-table-column align="center" label="操作" fixed="right">
+            <template slot-scope>
+              <el-button type="text" size="small">查看</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-main>
     </el-container>
     <div id="main" style="width: 1000px; height: 500px" />
@@ -77,14 +94,11 @@
 // import { mapGetters } from 'vuex'
 // eslint-disable-next-line no-unused-vars
 import echarts from 'echarts'
-import { getOne, getTwo } from '../../api/reportTable/formOne'
+import { getOne, getTwo, getZero } from '../../api/reportTable/formOne'
 import typeOption from '../../variable/types'
 
 export default {
   name: 'Dashboard',
-  /* components: {
-    DateSelect
-  },*/
   /* computed: {
     ...mapGetters([
       'name'
@@ -95,15 +109,19 @@ export default {
       total: 0,
       list: null,
       listClick: null,
+      listClickNext: null,
       listLoading: true,
       monthOptions: typeOption.monthOption,
       years: [],
       listQuery: {
         year: '',
-        month: ''
+        month: '',
+        startDate: '',
+        endDate: ''
       },
       testQuery: {
-        ym: ''
+        startDate: '',
+        endDate: ''
       }
     }
   },
@@ -115,9 +133,11 @@ export default {
   },
   methods: {
     getList() {
-      this.listQuery.year = this.testQuery.ym.split('-')[0]
-      this.listQuery.month = this.testQuery.ym.split('-')[1]
-      getOne(this.listQuery).then(response => {
+      this.listQuery.year = this.testQuery.startDate.split('-')[0]
+      this.listQuery.month = this.testQuery.startDate.split('-')[1]
+      this.listQuery.startDate = this.testQuery.startDate
+      this.listQuery.endDate = this.testQuery.endDate
+      getTwo(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.data.total
         this.listLoading = false
@@ -140,9 +160,11 @@ export default {
       this.getList()
     },
     handleClick() {
-      this.listQuery.year = this.testQuery.ym.split('-')[0]
-      this.listQuery.month = this.testQuery.ym.split('-')[1]
-      getTwo(this.listQuery).then(response => {
+      this.listQuery.year = this.testQuery.startDate.split('-')[0]
+      this.listQuery.month = this.testQuery.startDate.split('-')[1]
+      this.listQuery.startDate = this.testQuery.startDate
+      this.listQuery.endDate = this.testQuery.endDate
+      getOne(this.listQuery).then(response => {
         this.listClick = response.data
         this.total = response.data.total
         this.listLoading = false
@@ -150,7 +172,19 @@ export default {
         this.listLoading = false
       })
     },
-    handleClickNext() {},
+    handleClickNext() {
+      this.listQuery.year = this.testQuery.startDate.split('-')[0]
+      this.listQuery.month = this.testQuery.startDate.split('-')[1]
+      this.listQuery.startDate = this.testQuery.startDate
+      this.listQuery.endDate = this.testQuery.endDate
+      getZero(this.listQuery).then(response => {
+        this.listClickNext = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     charts() {
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'))
