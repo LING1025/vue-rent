@@ -21,10 +21,10 @@
             </el-select>
           </el-col>-->
           <el-col :span="4">
-            <el-date-picker v-model="testQuery.startDate" type="date" value-format="yyyy-M-dd" placeholder="选择开始日期" @keyup.enter.native="handleFilter"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="testQuery.startDate" type="date" value-format="yyyy-M-dd" placeholder="选择开始日期" @keyup.enter.native="handleFilter" style="width: 100%"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
-            <el-date-picker v-model="testQuery.endDate" type="date" value-format="yyyy-M-dd" placeholder="选择结束日期" @keyup.enter.native="handleFilter"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="testQuery.endDate" type="date" value-format="yyyy-M-dd" placeholder="选择结束日期" @keyup.enter.native="handleFilter" style="width: 100%"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -86,7 +86,7 @@
         </el-table>
       </el-main>
     </el-container>
-    <div id="main" style="width: 1000px; height: 500px" />
+    <div ref="main" class="container" style="width: 1000px; height: 500px" />
   </div>
 </template>
 
@@ -127,9 +127,6 @@ export default {
   },
   created() {
     this.getList()
-  },
-  mounted() {
-    this.charts()
   },
   methods: {
     getList() {
@@ -185,55 +182,59 @@ export default {
         this.listLoading = false
       })
     },
-    charts() {
+    charts(container, option) {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('main'))
+      var myChart = echarts.init(container)
       // 绘制图表
-      myChart.setOption({
-        title: {
-          text: '租车台数/试算报件图表'
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: ['报件数', '台数']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            name: '报件数',
-            type: 'line',
-            stack: '总量',
-            data: [10, 12, 40, 23, 30, 52, 36]
-          },
-          {
-            name: '台数',
-            type: 'line',
-            stack: '总量',
-            data: [120, 232, 201, 134, 190, 130, 220]
-          }
-        ]
-      })
+      myChart.setOption(option)
     }
+  },
+  mounted() {
+    const option = {
+      title: {
+        text: '租车台数/试算报件图表'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['报件数', '台数']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: '报件数',
+          type: 'line',
+          stack: '总量',
+          data: [10, 12, 40, 23, 30, 52, 36]
+        },
+        {
+          name: '台数',
+          type: 'line',
+          stack: '总量',
+          data: [120, 232, 201, 134, 190, 130, 220]
+        }
+      ]
+    }
+    this.charts(this.$refs.main, option)
   }
 }
 </script>

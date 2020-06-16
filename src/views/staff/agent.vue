@@ -7,7 +7,7 @@
             <el-button style="margin-left: 10px;" type="primary" plain icon="el-icon-edit" @click="handleCreate">新建</el-button>
           </el-col>
           <el-col :span="4">
-            <el-select v-model="nameQuery.names" placeholder="==请选择==" class="filter-item" style="width: 100%">
+            <el-select v-model="nameQuery.names" placeholder="==请选择==" style="width: 100%">
               <el-option v-for="item in nameOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
           </el-col>
