@@ -71,7 +71,7 @@
           </el-table-column>
         </el-table>
         <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" stripe border fit min style="width: 100%">
-          <el-table-column align="center" label="业代" prop="username" />
+          <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
           <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
