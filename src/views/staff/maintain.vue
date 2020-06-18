@@ -10,7 +10,7 @@
             <el-input v-model="listQuery.fName" placeholder="姓名" clearable maxlength="30" @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="4">
-            <el-select v-model="listQuery.orgName" placeholder="部门" class="filter-item" style="width: 100%" >
+            <el-select v-model="listQuery.orgName" clearable filterable placeholder="部门" class="filter-item" style="width: 100%" >
               <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.depName" />
               <!--              <el-option v-for="item in orgOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
             </el-select>
@@ -63,7 +63,7 @@
               <el-input v-model="temp.identityCard" placeholder="请输入身份证" maxlength="18" clearable @change="hint()"/>
             </el-form-item>-->
             <el-form-item label="部门" prop="orgAuto">
-              <el-select v-model="temp.orgAuto" placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
+              <el-select v-model="temp.orgAuto" clearable filterable placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
                 <el-option v-for="dep in depNameListResponse" :key="dep.orgAuto" :label="dep.depName" :value="dep.orgAuto" />
               </el-select>
             </el-form-item>
@@ -84,12 +84,12 @@
             </el-form-item>
 
             <el-form-item label="所属组" prop="orgGroupAuto">
-              <el-select v-model="temp.orgGroupAuto" placeholder="请选择所属组" style="width: 100%;" @change="chooseGroupName">
+              <el-select v-model="temp.orgGroupAuto" clearable filterable placeholder="请选择所属组" style="width: 100%;" @change="chooseGroupName">
                 <el-option v-for="group in orgGroupListResponse" :key="group.orgGroupAuto" :label="group.orgGroupName" :value="group.orgGroupAuto" />
               </el-select>
             </el-form-item>
             <el-form-item id="demo" label="角色" prop="roles">
-              <el-select v-model="temp.roles" placeholder="请选择角色" multiple style="width: 100%;"><!--@change="chooseRoles"-->
+              <el-select v-model="temp.roles" clearable filterable placeholder="请选择角色" multiple style="width: 100%;"><!--@change="chooseRoles"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
               <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
