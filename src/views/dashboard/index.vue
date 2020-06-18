@@ -10,21 +10,8 @@
     <el-container>
       <el-header>
         <el-row>
-          <!--<el-col :span="4">
-            <el-select v-model="listQuery.year" placeholder="请选择年份" class="filter-item" style="width: 100%" @visible-change="yearChange($event)">
-              <el-option v-for="item in years" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-col>
           <el-col :span="4">
-            <el-select v-model="listQuery.month" placeholder="请选择月份" class="filter-item" style="width: 100%">
-              <el-option v-for="item in monthOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-            </el-select>
-          </el-col>-->
-          <el-col :span="4">
-            <el-date-picker v-model="testQuery.startDate" type="date" value-format="yyyy-M-dd" placeholder="选择开始日期" @keyup.enter.native="handleFilter" style="width: 100%"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
-          </el-col>
-          <el-col :span="4">
-            <el-date-picker v-model="testQuery.endDate" type="date" value-format="yyyy-M-dd" placeholder="选择结束日期" @keyup.enter.native="handleFilter" style="width: 100%"/><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="testQuery.dateGet" type="month" value-format="yyyy-M-dd" placeholder="请选择月份" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -38,18 +25,8 @@
           <el-table-column align="center" label="台数" prop="realNum" />
           <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
           <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
-          <!--          <el-table-column align="center" label="回租报件户数" prop="rentPaperNum" />-->
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="营业额" prop="realVolume" />
-          <!--<el-table-column align="center" label="租_汰" prop="rentOut" />
-          <el-table-column align="center" label="租_还" prop="rentBack" />
-          <el-table-column align="center" label="维修_Y	" prop="maintainNum" />
-          <el-table-column align="center" label="新拓(乘用车)" prop="extension" />
-          <el-table-column align="center" label="保有" prop="tenure" />
-          <el-table-column align="center" label="通路介绍（乘用车）" prop="instrNum" />
-          <el-table-column align="center" label="轻货卡" prop="carGo" />
-          <el-table-column align="center" label="到_汰" prop="getOut" />
-          <el-table-column align="center" label="到_还" prop="getBack" />-->
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="row">
               <el-button type="text" size="small" @click="handleClick(row)">查看</el-button>
@@ -86,16 +63,16 @@
         </el-table>
       </el-main>
     </el-container>
-    <div ref="main" class="container" style="width: 1000px; height: 500px" />
+    <div id="containerTwo" style="width: 100%; height: 500px" />
+    <div id="containerOne" style="width: 100%; height: 500px" />
+    <div id="containerZero" style="width: 100%; height: 500px" />
   </div>
 </template>
 
 <script>
 // import { mapGetters } from 'vuex'
-// eslint-disable-next-line no-unused-vars
-import echarts from 'echarts'
 import { getOne, getTwo, getZero } from '../../api/reportTable/formOne'
-import typeOption from '../../variable/types'
+// import typeOption from '../../variable/types'
 
 export default {
   name: 'Dashboard',
@@ -111,8 +88,6 @@ export default {
       listClick: null,
       listClickNext: null,
       listLoading: true,
-      monthOptions: typeOption.monthOption,
-      years: [],
       listQuery: {
         year: '',
         month: '',
@@ -120,8 +95,7 @@ export default {
         endDate: ''
       },
       testQuery: {
-        startDate: '',
-        endDate: ''
+        dateGet: new Date()
       }
     }
   },
@@ -130,111 +104,323 @@ export default {
   },
   methods: {
     getList() {
-      this.listQuery.year = this.testQuery.startDate.split('-')[0]
-      this.listQuery.month = this.testQuery.startDate.split('-')[1]
-      this.listQuery.startDate = this.testQuery.startDate
-      this.listQuery.endDate = this.testQuery.endDate
+      this.listQuery.year = this.testQuery.dateGet.split('-')[0]
+      this.listQuery.month = this.testQuery.dateGet.split('-')[1]
+      var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
+      this.listQuery.startDate = this.testQuery.dateGet
+      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 7) + lastDay.toString()
       getTwo(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.data.total
         this.listLoading = false
+        this.drawTwo()
       }).catch(() => {
         this.listLoading = false
       })
     },
-    // 年份月份下拉拆分
-    /* yearChange() {
-      var myDate = new Date()
-      var startYear = myDate.getFullYear() - 15// 起始年份
-      var endYear = myDate.getFullYear() + 15// 结束年份
-
-      this.years = []
-      for (var i = startYear; i <= endYear; i++) {
-        this.years.push({ value: (i), label: (i) + '年' })
-      }
-    },*/
     handleFilter() {
       this.getList()
     },
     handleClick() {
-      this.listQuery.year = this.testQuery.startDate.split('-')[0]
-      this.listQuery.month = this.testQuery.startDate.split('-')[1]
-      this.listQuery.startDate = this.testQuery.startDate
-      this.listQuery.endDate = this.testQuery.endDate
+      this.listQuery.year = this.testQuery.dateGet.split('-')[0]
+      this.listQuery.month = this.testQuery.dateGet.split('-')[1]
+      var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
+      this.listQuery.startDate = this.testQuery.dateGet
+      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 7) + lastDay.toString()
       getOne(this.listQuery).then(response => {
         this.listClick = response.data
         this.total = response.data.total
         this.listLoading = false
+        this.drawOne()
       }).catch(() => {
         this.listLoading = false
       })
     },
     handleClickNext() {
-      this.listQuery.year = this.testQuery.startDate.split('-')[0]
-      this.listQuery.month = this.testQuery.startDate.split('-')[1]
-      this.listQuery.startDate = this.testQuery.startDate
-      this.listQuery.endDate = this.testQuery.endDate
+      this.listQuery.year = this.testQuery.dateGet.split('-')[0]
+      this.listQuery.month = this.testQuery.dateGet.split('-')[1]
+      var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
+      this.listQuery.startDate = this.testQuery.dateGet
+      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 7) + lastDay.toString()
       getZero(this.listQuery).then(response => {
         this.listClickNext = response.data
         this.total = response.data.total
         this.listLoading = false
+        this.drawZero()
       }).catch(() => {
         this.listLoading = false
       })
     },
-    charts(container, option) {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(container)
-      // 绘制图表
-      myChart.setOption(option)
-    }
-  },
-  mounted() {
-    const option = {
-      title: {
-        text: '租车台数/试算报件图表'
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      legend: {
-        data: ['报件数', '台数']
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
+    drawTwo() {
+      var a = []
+      var b = []
+      for (var i = 0; i < this.list.length; i++) {
+        // eslint-disable-next-line eqeqeq
+        if (a.indexOf(this.list[i]) == -1) {
+          a.push(this.list[i].proPaperNum)
         }
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
+        // eslint-disable-next-line eqeqeq
+        if (b.indexOf(this.list[i]) == -1) {
+          b.push(this.list[i].realNum)
+        }
+      }
+      const one = [
         {
-          name: '报件数',
-          type: 'line',
-          stack: '总量',
-          data: [10, 12, 40, 23, 30, 52, 36]
+          date: '2019-08-01',
+          baojianshu: 10,
+          taishu: 20
         },
         {
-          name: '台数',
-          type: 'line',
-          stack: '总量',
-          data: [120, 232, 201, 134, 190, 130, 220]
+          date: '2019-08-02',
+          baojianshu: 30,
+          taishu: 25
+        },
+        {
+          date: '2019-08-03',
+          baojianshu: 17,
+          taishu: 30
+        },
+        {
+          date: '2019-08-04',
+          baojianshu: 60,
+          taishu: 50
+        },
+        {
+          date: '2019-08-05',
+          baojianshu: 50,
+          taishu: 10
         }
       ]
+      // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
+      const charts = this.$echarts.init(document.getElementById('containerTwo'))
+      const option = {
+        title: {
+          text: '租车台数/试算报件图表',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: 20,
+          data: ['报件数', '台数']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          data: one.map(r => r.date),
+          axisLabel: {
+            rotate: 30
+          }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '报件数',
+            type: 'line',
+            data: a
+          },
+          {
+            name: '台数',
+            type: 'line',
+            data: b
+          }
+        ]
+      }
+      // 绘制图表
+      charts.setOption(option)
+    },
+    drawOne() {
+      var a = []
+      var b = []
+      for (var i = 0; i < this.listClick.length; i++) {
+        // eslint-disable-next-line eqeqeq
+        if (a.indexOf(this.listClick[i]) == -1) {
+          a.push(this.listClick[i].proPaperNum)
+        }
+        // eslint-disable-next-line eqeqeq
+        if (b.indexOf(this.listClick[i]) == -1) {
+          b.push(this.listClick[i].realNum)
+        }
+      }
+      const one = [
+        {
+          date: '2019-08-01',
+          baojianshu: 10,
+          taishu: 20
+        },
+        {
+          date: '2019-08-02',
+          baojianshu: 30,
+          taishu: 25
+        },
+        {
+          date: '2019-08-03',
+          baojianshu: 17,
+          taishu: 30
+        },
+        {
+          date: '2019-08-04',
+          baojianshu: 60,
+          taishu: 50
+        },
+        {
+          date: '2019-08-05',
+          baojianshu: 50,
+          taishu: 10
+        }
+      ]
+      // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
+      const charts = this.$echarts.init(document.getElementById('containerOne'))
+      const option = {
+        title: {
+          text: '租车台数/试算报件图表',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: 20,
+          data: ['报件数', '台数']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          data: one.map(r => r.date),
+          axisLabel: {
+            rotate: 30
+          }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '报件数',
+            type: 'line',
+            data: a
+          },
+          {
+            name: '台数',
+            type: 'line',
+            data: b
+          }
+        ]
+      }
+      // 绘制图表
+      charts.setOption(option)
+    },
+    drawZero() {
+      var a = []
+      var b = []
+      for (var i = 0; i < this.listClickNext.length; i++) {
+        // eslint-disable-next-line eqeqeq
+        if (a.indexOf(this.listClickNext[i]) == -1) {
+          a.push(this.listClickNext[i].proPaperNum)
+        }
+        // eslint-disable-next-line eqeqeq
+        if (b.indexOf(this.listClickNext[i]) == -1) {
+          b.push(this.listClickNext[i].realNum)
+        }
+      }
+      const one = [
+        {
+          date: '2019-08-01',
+          baojianshu: 10,
+          taishu: 20
+        },
+        {
+          date: '2019-08-02',
+          baojianshu: 30,
+          taishu: 25
+        },
+        {
+          date: '2019-08-03',
+          baojianshu: 17,
+          taishu: 30
+        },
+        {
+          date: '2019-08-04',
+          baojianshu: 60,
+          taishu: 50
+        },
+        {
+          date: '2019-08-05',
+          baojianshu: 50,
+          taishu: 10
+        }
+      ]
+      // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
+      const charts = this.$echarts.init(document.getElementById('containerZero'))
+      const option = {
+        title: {
+          text: '租车台数/试算报件图表',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: 20,
+          data: ['报件数', '台数']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          data: one.map(r => r.date),
+          axisLabel: {
+            rotate: 30
+          }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '报件数',
+            type: 'line',
+            data: a
+          },
+          {
+            name: '台数',
+            type: 'line',
+            data: b
+          }
+        ]
+      }
+      // 绘制图表
+      charts.setOption(option)
     }
-    this.charts(this.$refs.main, option)
   }
 }
 </script>

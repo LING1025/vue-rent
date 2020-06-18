@@ -332,7 +332,6 @@ export default {
       this.temp.orgAuto = row.orgAuto
       this.temp.incTitleAuto = row.incTitleAuto
       this.temp.orgGroupAuto = row.orgGroupAuto
-      console.log(row.roles)
       var car; var i; var x = ''; var ro = []
       car = row.roles
       for (i in car) {
