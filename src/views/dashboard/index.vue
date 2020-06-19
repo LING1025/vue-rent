@@ -11,7 +11,7 @@
       <el-header>
         <el-row>
           <el-col :span="4">
-            <el-date-picker v-model="testQuery.dateGet" type="month" value-format="yyyy-M-dd" placeholder="请选择月份" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="testQuery.dateGet" type="month" value-format="yyyy-MM-dd" placeholder="请选择月份" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -19,7 +19,7 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="250" show-summary stripe border fit min style="width: 100%">
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -33,7 +33,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="250" show-summary stripe border fit min style="width: 100%">
           <el-table-column align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -47,7 +47,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="250" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -108,7 +108,7 @@ export default {
       this.listQuery.month = this.testQuery.dateGet.split('-')[1]
       var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
       this.listQuery.startDate = this.testQuery.dateGet
-      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 7) + lastDay.toString()
+      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 8) + lastDay.toString()
     },
     getList() {
       this.queryDouble()
