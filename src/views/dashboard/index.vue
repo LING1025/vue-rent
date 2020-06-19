@@ -33,7 +33,19 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="250" show-summary stripe border fit min style="width: 100%">
+        <el-table
+          v-show="this.listClick == null ? false : true"
+          v-loading="listLoading"
+          :data="listClick"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          height="250"
+          show-summary
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
           <el-table-column align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
