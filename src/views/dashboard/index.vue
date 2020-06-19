@@ -19,7 +19,7 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table v-loading="listLoading" :data="list" stripe border fit min style="width: 100%">
+        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#006699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -33,7 +33,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" :header-cell-style="{background:'#006699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -47,7 +47,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#006699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -77,10 +77,10 @@ import { getOne, getTwo, getZero } from '../../api/reportTable/formOne'
 export default {
   name: 'Dashboard',
   /* computed: {
-    ...mapGetters([
-      'name'
-    ])
-  }*/
+      ...mapGetters([
+        'name'
+      ])
+    }*/
   data() {
     return {
       total: 0,
@@ -154,6 +154,7 @@ export default {
     drawTwo() {
       var a = []
       var b = []
+      var c = []
       for (var i = 0; i < this.list.length; i++) {
         // eslint-disable-next-line eqeqeq
         if (a.indexOf(this.list[i]) == -1) {
@@ -163,34 +164,11 @@ export default {
         if (b.indexOf(this.list[i]) == -1) {
           b.push(this.list[i].realNum)
         }
-      }
-      const one = [
-        {
-          date: '2019-08-01',
-          baojianshu: 10,
-          taishu: 20
-        },
-        {
-          date: '2019-08-02',
-          baojianshu: 30,
-          taishu: 25
-        },
-        {
-          date: '2019-08-03',
-          baojianshu: 17,
-          taishu: 30
-        },
-        {
-          date: '2019-08-04',
-          baojianshu: 60,
-          taishu: 50
-        },
-        {
-          date: '2019-08-05',
-          baojianshu: 50,
-          taishu: 10
+        // eslint-disable-next-line eqeqeq
+        if (c.indexOf(this.list[i]) == -1) {
+          c.push(this.list[i].orgName)
         }
-      ]
+      }
       // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
       const charts = this.$echarts.init(document.getElementById('containerTwo'))
       const option = {
@@ -217,13 +195,14 @@ export default {
           }
         },
         xAxis: {
-          data: one.map(r => r.date),
+          data: c,
           axisLabel: {
             rotate: 30
           }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          name: '报件数/台数'
         },
         series: [
           {
@@ -244,6 +223,7 @@ export default {
     drawOne() {
       var a = []
       var b = []
+      var c = []
       for (var i = 0; i < this.listClick.length; i++) {
         // eslint-disable-next-line eqeqeq
         if (a.indexOf(this.listClick[i]) == -1) {
@@ -253,34 +233,11 @@ export default {
         if (b.indexOf(this.listClick[i]) == -1) {
           b.push(this.listClick[i].realNum)
         }
-      }
-      const one = [
-        {
-          date: '2019-08-01',
-          baojianshu: 10,
-          taishu: 20
-        },
-        {
-          date: '2019-08-02',
-          baojianshu: 30,
-          taishu: 25
-        },
-        {
-          date: '2019-08-03',
-          baojianshu: 17,
-          taishu: 30
-        },
-        {
-          date: '2019-08-04',
-          baojianshu: 60,
-          taishu: 50
-        },
-        {
-          date: '2019-08-05',
-          baojianshu: 50,
-          taishu: 10
+        // eslint-disable-next-line eqeqeq
+        if (c.indexOf(this.listClick[i]) == -1) {
+          c.push(this.listClick[i].orgName)
         }
-      ]
+      }
       // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
       const charts = this.$echarts.init(document.getElementById('containerOne'))
       const option = {
@@ -307,13 +264,14 @@ export default {
           }
         },
         xAxis: {
-          data: one.map(r => r.date),
+          data: c,
           axisLabel: {
             rotate: 30
           }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          name: '报件数/台数'
         },
         series: [
           {
@@ -334,6 +292,7 @@ export default {
     drawZero() {
       var a = []
       var b = []
+      var c = []
       for (var i = 0; i < this.listClickNext.length; i++) {
         // eslint-disable-next-line eqeqeq
         if (a.indexOf(this.listClickNext[i]) == -1) {
@@ -343,34 +302,11 @@ export default {
         if (b.indexOf(this.listClickNext[i]) == -1) {
           b.push(this.listClickNext[i].realNum)
         }
-      }
-      const one = [
-        {
-          date: '2019-08-01',
-          baojianshu: 10,
-          taishu: 20
-        },
-        {
-          date: '2019-08-02',
-          baojianshu: 30,
-          taishu: 25
-        },
-        {
-          date: '2019-08-03',
-          baojianshu: 17,
-          taishu: 30
-        },
-        {
-          date: '2019-08-04',
-          baojianshu: 60,
-          taishu: 50
-        },
-        {
-          date: '2019-08-05',
-          baojianshu: 50,
-          taishu: 10
+        // eslint-disable-next-line eqeqeq
+        if (c.indexOf(this.listClickNext[i]) == -1) {
+          c.push(this.listClickNext[i].fname)
         }
-      ]
+      }
       // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
       const charts = this.$echarts.init(document.getElementById('containerZero'))
       const option = {
@@ -397,13 +333,14 @@ export default {
           }
         },
         xAxis: {
-          data: one.map(r => r.date),
+          data: c,
           axisLabel: {
             rotate: 30
           }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          name: '报件数/台数'
         },
         series: [
           {
@@ -426,20 +363,20 @@ export default {
 </script>
 
 <style scoped>
-/*.dashboard {
-  position: relative;
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-  &-logo {
-    position: absolute;
-    top: 80px;
-    left: 160px;
-    text-align: center;
-  }
-}*/
+  /*.dashboard {
+    position: relative;
+    &-container {
+      margin: 30px;
+    }
+    &-text {
+      font-size: 30px;
+      line-height: 46px;
+    }
+    &-logo {
+      position: absolute;
+      top: 80px;
+      left: 160px;
+      text-align: center;
+    }
+  }*/
 </style>
