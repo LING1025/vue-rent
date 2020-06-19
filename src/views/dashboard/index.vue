@@ -19,7 +19,7 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#006699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -33,7 +33,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" :header-cell-style="{background:'#006699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClick == null ? false : true" v-loading="listLoading" :data="listClick" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -47,7 +47,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#006699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -103,12 +103,15 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
+    queryDouble() {
       this.listQuery.year = this.testQuery.dateGet.split('-')[0]
       this.listQuery.month = this.testQuery.dateGet.split('-')[1]
       var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
       this.listQuery.startDate = this.testQuery.dateGet
       this.listQuery.endDate = this.testQuery.dateGet.slice(0, 7) + lastDay.toString()
+    },
+    getList() {
+      this.queryDouble()
       getTwo(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.data.total
@@ -122,11 +125,7 @@ export default {
       this.getList()
     },
     handleClick() {
-      this.listQuery.year = this.testQuery.dateGet.split('-')[0]
-      this.listQuery.month = this.testQuery.dateGet.split('-')[1]
-      var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
-      this.listQuery.startDate = this.testQuery.dateGet
-      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 7) + lastDay.toString()
+      this.queryDouble()
       getOne(this.listQuery).then(response => {
         this.listClick = response.data
         this.total = response.data.total
@@ -137,11 +136,7 @@ export default {
       })
     },
     handleClickNext() {
-      this.listQuery.year = this.testQuery.dateGet.split('-')[0]
-      this.listQuery.month = this.testQuery.dateGet.split('-')[1]
-      var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
-      this.listQuery.startDate = this.testQuery.dateGet
-      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 7) + lastDay.toString()
+      this.queryDouble()
       getZero(this.listQuery).then(response => {
         this.listClickNext = response.data
         this.total = response.data.total
