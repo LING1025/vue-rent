@@ -10,8 +10,14 @@
     <el-container>
       <el-header>
         <el-row>
+          <!--<el-col :span="4">
+            <el-date-picker v-model="testQuery.dateGet" type="month" value-format="yyyy-MM-dd" placeholder="请选择月份" style="width: 100%" @keyup.enter.native="handleFilter" />&lt;!&ndash;使用format指定输入框的格式；使用value-format指定绑定值的格式。&ndash;&gt;
+          </el-col>-->
           <el-col :span="4">
-            <el-date-picker v-model="testQuery.dateGet" type="month" value-format="yyyy-MM-dd" placeholder="请选择月份" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="modeQuery.startDate" type="date" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+          </el-col>
+          <el-col :span="4">
+            <el-date-picker v-model="modeQuery.endDate" type="date" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -19,7 +25,7 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="250" show-summary stripe border fit min style="width: 100%">
+        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="350" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -27,9 +33,12 @@
           <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="营业额" prop="realVolume" />
+          <el-table-column align="center" label="报件达成率" prop="paperLv" />
+          <el-table-column align="center" label="台数达成率" prop="countLv" />
+          <el-table-column align="center" label="营业额达成率" prop="volumeLv" />
           <el-table-column align="center" label="操作" fixed="right">
-            <template slot-scope="row">
-              <el-button type="text" size="small" @click="handleClick(row)">查看</el-button>
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -38,8 +47,7 @@
           v-loading="listLoading"
           :data="listClick"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
-          height="250"
-          show-summary
+          height="350"
           stripe
           border
           fit
@@ -53,13 +61,16 @@
           <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="营业额" prop="realVolume" />
+          <el-table-column align="center" label="报件达成率" prop="paperLv" />
+          <el-table-column align="center" label="台数达成率" prop="countLv" />
+          <el-table-column align="center" label="营业额达成率" prop="volumeLv" />
           <el-table-column align="center" label="操作" fixed="right">
-            <template slot-scope>
-              <el-button type="text" size="small" @click="handleClickNext">查看</el-button>
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="handleClickNext(scope.row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="250" stripe border fit min style="width: 100%">
+        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" height="350" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="台数" prop="realNum" />
@@ -67,32 +78,32 @@
           <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="营业额" prop="realVolume" />
-          <el-table-column align="center" label="操作" fixed="right">
-            <template slot-scope>
-              <el-button type="text" size="small">查看</el-button>
-            </template>
-          </el-table-column>
+          <el-table-column align="center" label="报件达成率" prop="paperLv" />
+          <el-table-column align="center" label="台数达成率" prop="countLv" />
+          <el-table-column align="center" label="营业额达成率" prop="volumeLv" />
         </el-table>
       </el-main>
     </el-container>
-    <div id="containerTwo" style="width: 100%; height: 500px" />
+    <div id="containerMode" style="width: 100%; height: 500px" />
     <div id="containerOne" style="width: 100%; height: 500px" />
     <div id="containerZero" style="width: 100%; height: 500px" />
   </div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-import { getOne, getTwo, getZero } from '../../api/reportTable/formOne'
+import { mapGetters } from 'vuex'
+import { getUserAuto } from '../../utils/auth'
+import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
+import { getMode } from '../../api/reportTable/formOne'
 // import typeOption from '../../variable/types'
 
 export default {
   name: 'Dashboard',
-  /* computed: {
-      ...mapGetters([
-        'name'
-      ])
-    }*/
+  computed: {
+    ...mapGetters([
+      'userAuto'
+    ])
+  },
   data() {
     return {
       total: 0,
@@ -108,6 +119,13 @@ export default {
       },
       testQuery: {
         dateGet: new Date()
+      },
+      modeQuery: {
+        userAuto: getUserAuto(),
+        startDate: '',
+        endDate: '',
+        orgAuto: 0,
+        orgUpAuto: 0
       }
     }
   },
@@ -116,19 +134,16 @@ export default {
   },
   methods: {
     queryDouble() {
-      this.listQuery.year = this.testQuery.dateGet.split('-')[0]
-      this.listQuery.month = this.testQuery.dateGet.split('-')[1]
-      var lastDay = new Date(this.listQuery.year, this.listQuery.month, 0).getDate()
-      this.listQuery.startDate = this.testQuery.dateGet
-      this.listQuery.endDate = this.testQuery.dateGet.slice(0, 8) + lastDay.toString()
+      this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
+      this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
     },
     getList() {
       this.queryDouble()
-      getTwo(this.listQuery).then(response => {
+      getMode(this.modeQuery).then(response => {
         this.list = response.data
         this.total = response.data.total
         this.listLoading = false
-        this.drawTwo()
+        this.drawMode()
       }).catch(() => {
         this.listLoading = false
       })
@@ -136,10 +151,13 @@ export default {
     handleFilter() {
       this.getList()
     },
-    handleClick() {
+    handleClick(row) {
       this.queryDouble()
-      getOne(this.listQuery).then(response => {
+      this.modeQuery.orgUpAuto = row.orgAuto
+      console.log(this.modeQuery.orgUpAuto)
+      getMode(this.modeQuery).then(response => {
         this.listClick = response.data
+        console.log(this.listClick)
         this.total = response.data.total
         this.listLoading = false
         this.drawOne()
@@ -147,9 +165,12 @@ export default {
         this.listLoading = false
       })
     },
-    handleClickNext() {
+    handleClickNext(row) {
       this.queryDouble()
-      getZero(this.listQuery).then(response => {
+      this.modeQuery.orgUpAuto = 0
+      this.modeQuery.orgAuto = row.orgAuto
+      console.log(this.modeQuery.orgAuto)
+      getMode(this.modeQuery).then(response => {
         this.listClickNext = response.data
         this.total = response.data.total
         this.listLoading = false
@@ -158,7 +179,7 @@ export default {
         this.listLoading = false
       })
     },
-    drawTwo() {
+    drawMode() {
       var a = []
       var b = []
       var c = []
@@ -177,7 +198,7 @@ export default {
         }
       }
       // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
-      const charts = this.$echarts.init(document.getElementById('containerTwo'))
+      const charts = this.$echarts.init(document.getElementById('containerMode'))
       const option = {
         title: {
           text: '租车台数/试算报件图表',

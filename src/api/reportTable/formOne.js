@@ -1,5 +1,19 @@
 import request from '@/utils/request'
 
+export function getMode(query) {
+  return request({
+    url: '/table/queryMode',
+    method: 'get',
+    params: {
+      userAuto: query.userAuto,
+      startDate: query.startDate,
+      endDate: query.endDate,
+      orgAuto: query.orgAuto,
+      orgUpAuto: query.orgUpAuto
+    }
+  })
+}
+
 /**
  * 获取部门营业报表信息
  * @param query
