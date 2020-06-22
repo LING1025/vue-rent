@@ -203,8 +203,9 @@ export default {
         },
         xAxis: {
           data: c,
+          // x轴标签旋转度数
           axisLabel: {
-            rotate: 30
+            rotate: 0
           }
         },
         yAxis: {
@@ -214,12 +215,12 @@ export default {
         series: [
           {
             name: '报件数',
-            type: 'line',
+            type: 'bar',
             data: a
           },
           {
             name: '台数',
-            type: 'line',
+            type: 'bar',
             data: b
           }
         ]
@@ -273,7 +274,7 @@ export default {
         xAxis: {
           data: c,
           axisLabel: {
-            rotate: 30
+            rotate: 0
           }
         },
         yAxis: {
@@ -283,12 +284,12 @@ export default {
         series: [
           {
             name: '报件数',
-            type: 'line',
+            type: 'bar',
             data: a
           },
           {
             name: '台数',
-            type: 'line',
+            type: 'bar',
             data: b
           }
         ]
@@ -342,7 +343,7 @@ export default {
         xAxis: {
           data: c,
           axisLabel: {
-            rotate: 30
+            rotate: 0
           }
         },
         yAxis: {
@@ -352,12 +353,12 @@ export default {
         series: [
           {
             name: '报件数',
-            type: 'line',
+            type: 'bar',
             data: a
           },
           {
             name: '台数',
-            type: 'line',
+            type: 'bar',
             data: b
           }
         ]
