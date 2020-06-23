@@ -25,12 +25,12 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}"  stripe border fit min style="width: 100%">
+        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
-          <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
+          <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
+          <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
           <el-table-column align="center" label="报件达成率" prop="paperLv" />
@@ -56,8 +56,8 @@
           <el-table-column align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
-          <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
+          <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
+          <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
           <el-table-column align="center" label="报件达成率" prop="paperLv" />
@@ -73,8 +73,8 @@
           <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="目标报件户数" prop="targetPaperNum" />
-          <el-table-column align="center" label="试算报件户数" prop="proPaperNum" />
+          <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
+          <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
           <el-table-column align="center" label="报件达成率" prop="paperLv" />
@@ -93,6 +93,7 @@
 import { mapGetters } from 'vuex'
 import { getUserAuto } from '../../utils/auth'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
+import { currentDate, getCurrentMonthFirst } from '../../utils/dateSplice' // 获取当天日期,获取当前月的第一天
 import { getMode } from '../../api/reportTable/formOne'
 // import typeOption from '../../variable/types'
 
@@ -110,19 +111,10 @@ export default {
       listClick: null,
       listClickNext: null,
       listLoading: true,
-      listQuery: {
-        year: '',
-        month: '',
-        startDate: '',
-        endDate: ''
-      },
-      testQuery: {
-        dateGet: new Date()
-      },
       modeQuery: {
         userAuto: getUserAuto(),
-        startDate: '',
-        endDate: '',
+        startDate: getCurrentMonthFirst(),
+        endDate: currentDate(),
         orgAuto: 0,
         orgUpAuto: 0
       }
@@ -135,6 +127,8 @@ export default {
     queryDouble() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
+      console.log(this.modeQuery.startDate)
+      console.log(this.modeQuery.endDate)
     },
     getList() {
       this.queryDouble()

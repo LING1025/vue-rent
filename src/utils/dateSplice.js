@@ -26,6 +26,29 @@ export function format(string) {
   }
 }
 
+/** 获取当前月的第一天 **/
+export function getCurrentMonthFirst(currentMonthFirst) {
+  const date = new Date()
+  date.setDate(1)
+  let month = parseInt(date.getMonth() + 1)
+  let day = date.getDate()
+  if (month < 10) month = '0' + month
+  if (day < 10) day = '0' + day
+  // eslint-disable-next-line no-return-assign
+  return currentMonthFirst = date.getFullYear() + '-' + month + '-' + day
+}
+
+/** 获取当前月的最后一天 **/
+export function getCurrentMonthLast(currentMonthLast) {
+  const date = new Date()
+  const year = date.getFullYear()
+  let month = date.getMonth() + 1
+  month = month < 10 ? '0' + month : month
+  const day = new Date(year, month, 0)
+  // eslint-disable-next-line no-return-assign
+  return currentMonthLast = year + '-' + month + '-' + day.getDate()
+}
+
 /** 获取当前的年月日 **/
 export function currentDate(nowDate) {
   const date = new Date()
