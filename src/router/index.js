@@ -203,10 +203,23 @@ export const constantRoutes = [
   {
     path: '/trial',
     component: Layout,
-    redirect: '/trial/index',
+    redirect: '/trial/opTable',
     name: 'Trial',
     meta: { title: '试算' },
-    children: []
+    children: [
+      {
+        path: 'opTable',
+        name: 'TrialOpTable',
+        component: () => import('@/views/trial/opTable'),
+        meta: { title: '营业报表' }
+      },
+      {
+        path: 'opTable',
+        name: 'TrialOpTable',
+        component: () => import('@/views/trial/opTable'),
+        meta: { title: '营业报表' }
+      }
+    ]
   },
   {
     path: '/contract',

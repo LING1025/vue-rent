@@ -1,18 +1,8 @@
 <template>
-  <!--<div class="dashboard-container">
-&lt;!&ndash;    <div class="dashboard-text">登录用户名: {{ name }}</div>&ndash;&gt;
-    <div class="dashboard-logo">
-      <img width="1000" height="500" alt="logo" src="../../icons/tu1.png">
-      <p>长租系统 V2.0&nbsp;&nbsp;&nbsp;数据管理中心</p>
-    </div>
-  </div>-->
   <div>
     <el-container>
       <el-header>
         <el-row>
-          <!--<el-col :span="4">
-            <el-date-picker v-model="testQuery.dateGet" type="month" value-format="yyyy-MM-dd" placeholder="请选择月份" style="width: 100%" @keyup.enter.native="handleFilter" />&lt;!&ndash;使用format指定输入框的格式；使用value-format指定绑定值的格式。&ndash;&gt;
-          </el-col>-->
           <el-col :span="4">
             <el-date-picker v-model="modeQuery.startDate" type="date" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
@@ -104,11 +94,13 @@
       </el-main>
     </el-container>
     <div id="containerMode" style="width: 100%; height: 500px" />
+    <div id="containerModes" style="width: 100%; height: 500px" />
     <div id="containerOne" style="width: 100%; height: 500px" />
+    <div id="containerOnes" style="width: 100%; height: 500px" />
     <div id="containerZero" style="width: 100%; height: 500px" />
+    <div id="containerZeros" style="width: 100%; height: 500px" />
   </div>
 </template>
-
 <script>
 import { mapGetters } from 'vuex'
 import { getUserAuto } from '../../utils/auth'
@@ -118,7 +110,7 @@ import { getMode } from '../../api/reportTable/formOne'
 // import typeOption from '../../variable/types'
 
 export default {
-  name: 'Dashboard',
+  name: 'TrialOpTable',
   computed: {
     ...mapGetters([
       'userAuto'
@@ -184,7 +176,6 @@ export default {
       this.queryDouble()
       this.modeQuery.orgUpAuto = 0
       this.modeQuery.orgAuto = row.orgAuto
-      console.log(this.modeQuery.orgAuto)
       getMode(this.modeQuery).then(response => {
         this.listClickNext = response.data
         this.total = response.data.total
@@ -197,26 +188,22 @@ export default {
     drawMode() {
       var a = []
       var b = []
-      var c = []
       for (var i = 0; i < this.list.length; i++) {
         // eslint-disable-next-line eqeqeq
         if (a.indexOf(this.list[i]) == -1) {
-          a.push(this.list[i].proPaperNum)
+          a.push(this.list[i].pCount)
         }
         // eslint-disable-next-line eqeqeq
         if (b.indexOf(this.list[i]) == -1) {
-          b.push(this.list[i].realNum)
+          b.push(this.list[i].pMoney)
         }
-        // eslint-disable-next-line eqeqeq
-        if (c.indexOf(this.list[i]) == -1) {
-          c.push(this.list[i].orgName)
-        }
+        console.log(a)
+        console.log(b)
       }
-      // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
       const charts = this.$echarts.init(document.getElementById('containerMode'))
       const option = {
         title: {
-          text: '租车台数/试算报件图表',
+          text: '业绩台数图表',
           left: 'center'
         },
         tooltip: {
@@ -224,7 +211,7 @@ export default {
         },
         legend: {
           top: 20,
-          data: ['报件数', '台数']
+          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.split('-')[1] + '月']
         },
         grid: {
           left: '3%',
@@ -238,35 +225,94 @@ export default {
           }
         },
         xAxis: {
-          data: c,
-          // x轴标签旋转度数
-          axisLabel: {
-            rotate: 30
-          },
+          data: (function() {
+            var list = []
+            for (var i = 1; i <= 31; i++) {
+              list.push(i + '日')
+            }
+            return list
+          }()),
           // x轴柱状图阴影
           axisPointer: {
-            type: 'shadow'
+            type: 'line'
           }
         },
         yAxis: {
           type: 'value',
-          name: '报件数/台数'
+          name: '台数'
         },
         series: [
           {
-            name: '报件数',
-            type: 'bar',
+            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
+            type: 'line',
             data: a
           },
           {
-            name: '台数',
-            type: 'bar',
-            data: b
+            name: this.modeQuery.startDate.split('-')[1] + '月',
+            type: 'line',
+            data: a
           }
         ]
       }
       // 绘制图表
       charts.setOption(option)
+
+      const charts2 = this.$echarts.init(document.getElementById('containerModes'))
+      const option2 = {
+        title: {
+          text: '业绩金额图表',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: 20,
+          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.split('-')[1] + '月']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          data: (function() {
+            var list = []
+            for (var i = 1; i <= 31; i++) {
+              list.push(i + '日')
+            }
+            return list
+          }()),
+          // x轴柱状图阴影
+          axisPointer: {
+            type: 'line'
+          }
+        },
+        yAxis: {
+          type: 'value',
+          name: '台数'
+        },
+        series: [
+          {
+            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
+            type: 'line',
+            data: b
+          },
+          {
+            name: this.modeQuery.startDate.split('-')[1] + '月',
+            type: 'line',
+            data: b
+          }
+        ]
+      }
+      // 绘制图表
+      charts2.setOption(option2)
     },
     drawOne() {
       var a = []
@@ -421,20 +467,5 @@ export default {
 </script>
 
 <style scoped>
-  /*.dashboard {
-    position: relative;
-    &-container {
-      margin: 30px;
-    }
-    &-text {
-      font-size: 30px;
-      line-height: 46px;
-    }
-    &-logo {
-      position: absolute;
-      top: 80px;
-      left: 160px;
-      text-align: center;
-    }
-  }*/
+
 </style>
