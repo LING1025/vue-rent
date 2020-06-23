@@ -25,7 +25,16 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table v-loading="listLoading" :data="list" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
@@ -69,7 +78,17 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-show="this.listClickNext == null ? false : true" v-loading="listLoading" :data="listClickNext" :header-cell-style="{background:'#336699',color:'#FFFFFF'}" stripe border fit min style="width: 100%">
+        <el-table
+          v-show="this.listClickNext == null ? false : true"
+          v-loading="listLoading"
+          :data="listClickNext"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
           <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
@@ -111,6 +130,7 @@ export default {
       listClick: null,
       listClickNext: null,
       listLoading: true,
+      getIndex: '',
       modeQuery: {
         userAuto: getUserAuto(),
         startDate: getCurrentMonthFirst(),
@@ -132,6 +152,8 @@ export default {
     },
     getList() {
       this.queryDouble()
+      this.modeQuery.orgUpAuto = 0
+      this.modeQuery.orgAuto = 0
       getMode(this.modeQuery).then(response => {
         this.list = response.data
         this.total = response.data.total
@@ -146,6 +168,7 @@ export default {
     },
     handleClick(row) {
       this.queryDouble()
+      this.modeQuery.orgAuto = 0
       this.modeQuery.orgUpAuto = row.orgAuto
       console.log(this.modeQuery.orgUpAuto)
       getMode(this.modeQuery).then(response => {
