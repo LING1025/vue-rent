@@ -148,8 +148,6 @@ export default {
     queryDouble() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
-      console.log(this.modeQuery.startDate)
-      console.log(this.modeQuery.endDate)
     },
     getList() {
       this.queryDouble()

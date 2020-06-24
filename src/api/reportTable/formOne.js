@@ -1,5 +1,10 @@
 import request from '@/utils/request'
 
+/**
+ * 获取营业报表信息
+ * @param query
+ * @returns {AxiosPromise}
+ */
 export function getMode(query) {
   return request({
     url: '/table/queryMode',
@@ -15,55 +20,20 @@ export function getMode(query) {
 }
 
 /**
- * 获取部门营业报表信息
+ * 获取试算营业报表信息
  * @param query
  * @returns {AxiosPromise}
  */
-export function getTwo(query) {
+export function getTrail(query) {
   return request({
-    url: '/table/queryTwo',
+    url: '/table/queryTrail',
     method: 'get',
     params: {
-      year: query.year,
-      month: query.month,
+      userAuto: query.userAuto,
       startDate: query.startDate,
-      endDate: query.endDate
-    }
-  })
-}
-
-/**
- * 获取课营业报表信息
- * @param query
- * @returns {AxiosPromise}
- */
-export function getOne(query) {
-  return request({
-    url: '/table/queryOne',
-    method: 'get',
-    params: {
-      year: query.year,
-      month: query.month,
-      startDate: query.startDate,
-      endDate: query.endDate
-    }
-  })
-}
-
-/**
- * 获取业代营业报表信息
- * @param query
- * @returns {AxiosPromise}
- */
-export function getZero(query) {
-  return request({
-    url: '/table/queryZero',
-    method: 'get',
-    params: {
-      year: query.year,
-      month: query.month,
-      startDate: query.startDate,
-      endDate: query.endDate
+      endDate: query.endDate,
+      orgAuto: query.orgAuto,
+      orgUpAuto: query.orgUpAuto
     }
   })
 }

@@ -95,10 +95,6 @@
     </el-container>
     <div id="containerMode" style="width: 100%; height: 500px" />
     <div id="containerModes" style="width: 100%; height: 500px" />
-    <div id="containerOne" style="width: 100%; height: 500px" />
-    <div id="containerOnes" style="width: 100%; height: 500px" />
-    <div id="containerZero" style="width: 100%; height: 500px" />
-    <div id="containerZeros" style="width: 100%; height: 500px" />
   </div>
 </template>
 <script>
@@ -106,7 +102,7 @@ import { mapGetters } from 'vuex'
 import { getUserAuto } from '../../utils/auth'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { currentDate, getCurrentMonthFirst } from '../../utils/dateSplice' // 获取当天日期,获取当前月的第一天
-import { getMode } from '../../api/reportTable/formOne'
+import { getMode, getTrail } from '../../api/reportTable/formOne'
 // import typeOption from '../../variable/types'
 
 export default {
@@ -122,6 +118,7 @@ export default {
       list: null,
       listClick: null,
       listClickNext: null,
+      listTrial: null,
       listLoading: true,
       getIndex: '',
       modeQuery: {
@@ -140,8 +137,6 @@ export default {
     queryDouble() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
-      console.log(this.modeQuery.startDate)
-      console.log(this.modeQuery.endDate)
     },
     getList() {
       this.queryDouble()
@@ -149,6 +144,13 @@ export default {
       this.modeQuery.orgAuto = 0
       getMode(this.modeQuery).then(response => {
         this.list = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+      getTrail(this.modeQuery).then(response => {
+        this.listTrial = response.data
         this.total = response.data.total
         this.listLoading = false
         this.drawMode()
@@ -167,6 +169,13 @@ export default {
         this.listClick = response.data
         this.total = response.data.total
         this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+      getTrail(this.modeQuery).then(response => {
+        this.listTrial = response.data
+        this.total = response.data.total
+        this.listLoading = false
         this.drawOne()
       }).catch(() => {
         this.listLoading = false
@@ -180,26 +189,60 @@ export default {
         this.listClickNext = response.data
         this.total = response.data.total
         this.listLoading = false
-        this.drawZero()
       }).catch(() => {
         this.listLoading = false
       })
     },
-    drawMode() {
-      var a = []
-      var b = []
-      for (var i = 0; i < this.list.length; i++) {
-        // eslint-disable-next-line eqeqeq
-        if (a.indexOf(this.list[i]) == -1) {
-          a.push(this.list[i].pCount)
+    draws() {
+      var taiNums = []
+      var money = []
+      var taiNumsLastMon = []
+      var moneyLastMon = []
+      for (var i = 0; i < this.listTrial.length; i++) {
+        for (var j = 1; j <= 31; j++) { // 1-31号
+          // 本月
+          // eslint-disable-next-line eqeqeq
+          if (this.listTrial[i].yearMon === this.modeQuery.startDate.slice(0, 7)) {
+            if (this.listTrial[i].days !== j) {
+              if (this.listTrial[i].days > j) {
+                taiNums.push(0)
+                money.push(0)
+              }
+              if (this.listTrial[i].days < j) {
+                taiNums.push(this.listTrial[i].pcount)
+                money.push(this.listTrial[i].pmoney)
+              }
+            }
+            // eslint-disable-next-line eqeqeq
+            if (this.listTrial[i].days == j) {
+              taiNums.push(this.listTrial[i].pcount)
+              money.push(this.listTrial[i].pmoney)
+            }
+          }
+          // 上个月
+          if (this.listTrial[i].yearMon !== this.modeQuery.startDate.slice(0, 7)) {
+            if (this.listTrial[i].days !== j) {
+              if (this.listTrial[i].days > j) {
+                taiNumsLastMon.push(0)
+                moneyLastMon.push(0)
+              }
+              if (this.listTrial[i].days < j) {
+                taiNumsLastMon.push(this.listTrial[i].pcount)
+                moneyLastMon.push(this.listTrial[i].pmoney)
+              }
+            }
+            // eslint-disable-next-line eqeqeq
+            if (this.listTrial[i].days == j) {
+              taiNumsLastMon.push(this.listTrial[i].pcount)
+              moneyLastMon.push(this.listTrial[i].pmoney)
+            }
+          }
         }
-        // eslint-disable-next-line eqeqeq
-        if (b.indexOf(this.list[i]) == -1) {
-          b.push(this.list[i].pMoney)
-        }
-        console.log(a)
-        console.log(b)
       }
+      console.log(taiNums)
+      console.log(taiNumsLastMon)
+      console.log(money)
+      console.log(moneyLastMon)
       const charts = this.$echarts.init(document.getElementById('containerMode'))
       const option = {
         title: {
@@ -245,12 +288,12 @@ export default {
           {
             name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
             type: 'line',
-            data: a
+            data: taiNumsLastMon
           },
           {
             name: this.modeQuery.startDate.split('-')[1] + '月',
             type: 'line',
-            data: a
+            data: taiNums
           }
         ]
       }
@@ -296,171 +339,32 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: '台数'
+          name: '金额'
         },
         series: [
           {
             name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
             type: 'line',
-            data: b
+            data: moneyLastMon
           },
           {
             name: this.modeQuery.startDate.split('-')[1] + '月',
             type: 'line',
-            data: b
+            data: money
           }
         ]
       }
       // 绘制图表
       charts2.setOption(option2)
     },
+    drawMode() {
+      this.draws()
+    },
     drawOne() {
-      var a = []
-      var b = []
-      var c = []
-      for (var i = 0; i < this.listClick.length; i++) {
-        // eslint-disable-next-line eqeqeq
-        if (a.indexOf(this.listClick[i]) == -1) {
-          a.push(this.listClick[i].proPaperNum)
-        }
-        // eslint-disable-next-line eqeqeq
-        if (b.indexOf(this.listClick[i]) == -1) {
-          b.push(this.listClick[i].realNum)
-        }
-        // eslint-disable-next-line eqeqeq
-        if (c.indexOf(this.listClick[i]) == -1) {
-          c.push(this.listClick[i].orgName)
-        }
-      }
-      // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
-      const charts = this.$echarts.init(document.getElementById('containerOne'))
-      const option = {
-        title: {
-          text: '租车台数/试算报件图表',
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          top: 20,
-          data: ['报件数', '台数']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          data: c,
-          // x轴标签旋转度数
-          axisLabel: {
-            rotate: 0
-          },
-          // x轴柱状图阴影
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        yAxis: {
-          type: 'value',
-          name: '报件数/台数'
-        },
-        series: [
-          {
-            name: '报件数',
-            type: 'bar',
-            data: a
-          },
-          {
-            name: '台数',
-            type: 'bar',
-            data: b
-          }
-        ]
-      }
-      // 绘制图表
-      charts.setOption(option)
+      this.draws()
     },
     drawZero() {
-      var a = []
-      var b = []
-      var c = []
-      for (var i = 0; i < this.listClickNext.length; i++) {
-        // eslint-disable-next-line eqeqeq
-        if (a.indexOf(this.listClickNext[i]) == -1) {
-          a.push(this.listClickNext[i].proPaperNum)
-        }
-        // eslint-disable-next-line eqeqeq
-        if (b.indexOf(this.listClickNext[i]) == -1) {
-          b.push(this.listClickNext[i].realNum)
-        }
-        // eslint-disable-next-line eqeqeq
-        if (c.indexOf(this.listClickNext[i]) == -1) {
-          c.push(this.listClickNext[i].fname)
-        }
-      }
-      // 基于准备好的dom，初始化echarts实例 先npm安装，然后在main里
-      const charts = this.$echarts.init(document.getElementById('containerZero'))
-      const option = {
-        title: {
-          text: '租车台数/试算报件图表',
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          top: 20,
-          data: ['报件数', '台数']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          data: c,
-          // x轴标签旋转度数
-          axisLabel: {
-            rotate: 0
-          },
-          // x轴柱状图阴影
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        yAxis: {
-          type: 'value',
-          name: '报件数/台数'
-        },
-        series: [
-          {
-            name: '报件数',
-            type: 'bar',
-            data: a
-          },
-          {
-            name: '台数',
-            type: 'bar',
-            data: b
-          }
-        ]
-      }
-      // 绘制图表
-      charts.setOption(option)
+      this.draws()
     }
   }
 }
