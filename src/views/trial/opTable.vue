@@ -119,6 +119,7 @@ export default {
       listClick: null,
       listClickNext: null,
       listTrial: null,
+      listLastMonth: null,
       listLoading: true,
       getIndex: '',
       modeQuery: {
@@ -192,6 +193,14 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
+      getTrail(this.modeQuery).then(response => {
+        this.listTrial = response.data
+        this.total = response.data.total
+        this.listLoading = false
+        this.drawZero()
+      }).catch(() => {
+        this.listLoading = false
+      })
     },
     draws() {
       var taiNums = []
@@ -254,7 +263,7 @@ export default {
         },
         legend: {
           top: 20,
-          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.split('-')[1] + '月']
+          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.slice(6, 7) + '月']
         },
         grid: {
           left: '3%',
@@ -291,7 +300,7 @@ export default {
             data: taiNumsLastMon
           },
           {
-            name: this.modeQuery.startDate.split('-')[1] + '月',
+            name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
             data: taiNums
           }
@@ -311,7 +320,7 @@ export default {
         },
         legend: {
           top: 20,
-          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.split('-')[1] + '月']
+          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.slice(6, 7) + '月']
         },
         grid: {
           left: '3%',
@@ -348,7 +357,7 @@ export default {
             data: moneyLastMon
           },
           {
-            name: this.modeQuery.startDate.split('-')[1] + '月',
+            name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
             data: money
           }

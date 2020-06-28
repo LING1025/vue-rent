@@ -37,3 +37,22 @@ export function getTrail(query) {
     }
   })
 }
+
+/**
+ * 获取上个月营业报表
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function getLastMonth(query) {
+  return request({
+    url: '/table/queryLastMonth',
+    method: 'get',
+    params: {
+      userAuto: query.userAuto,
+      startDate: query.startDate,
+      endDate: query.endDate,
+      orgAuto: query.orgAuto,
+      orgUpAuto: query.orgUpAuto
+    }
+  })
+}
