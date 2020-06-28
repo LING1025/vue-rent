@@ -102,7 +102,7 @@ import { mapGetters } from 'vuex'
 import { getUserAuto } from '../../utils/auth'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { currentDate, getCurrentMonthFirst } from '../../utils/dateSplice' // 获取当天日期,获取当前月的第一天
-import { getMode, getTrail } from '../../api/reportTable/formOne'
+import { getMode, getTrail, getMonth } from '../../api/reportTable/formOne'
 // import typeOption from '../../variable/types'
 
 export default {
@@ -150,7 +150,15 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
-      getTrail(this.modeQuery).then(response => {
+      /* getTrail(this.modeQuery).then(response => {
+        this.listTrial = response.data
+        this.total = response.data.total
+        this.listLoading = false
+        this.drawMode()
+      }).catch(() => {
+        this.listLoading = false
+      })*/
+      getMonth(this.modeQuery).then(response => {
         this.listTrial = response.data
         this.total = response.data.total
         this.listLoading = false
@@ -207,7 +215,8 @@ export default {
       var money = []
       var taiNumsLastMon = []
       var moneyLastMon = []
-      for (var i = 0; i < this.listTrial.length; i++) {
+      var riqi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+      /* for (var i = 0; i < this.listTrial.length; i++) {
         for (var j = 1; j <= 31; j++) { // 1-31号
           // 本月
           // eslint-disable-next-line eqeqeq
@@ -247,7 +256,7 @@ export default {
             }
           }
         }
-      }
+      }*/
       console.log(taiNums)
       console.log(taiNumsLastMon)
       console.log(money)
@@ -277,13 +286,12 @@ export default {
           }
         },
         xAxis: {
-          data: (function() {
-            var list = []
+          data: riqi, /* (function() {            var list = []
             for (var i = 1; i <= 31; i++) {
               list.push(i + '日')
             }
             return list
-          }()),
+          }())*/
           // x轴柱状图阴影
           axisPointer: {
             type: 'line'
@@ -334,13 +342,7 @@ export default {
           }
         },
         xAxis: {
-          data: (function() {
-            var list = []
-            for (var i = 1; i <= 31; i++) {
-              list.push(i + '日')
-            }
-            return list
-          }()),
+          data: riqi,
           // x轴柱状图阴影
           axisPointer: {
             type: 'line'

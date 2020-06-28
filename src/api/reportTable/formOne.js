@@ -56,3 +56,17 @@ export function getLastMonth(query) {
     }
   })
 }
+
+export function getMonth(query) {
+  return request({
+    url: '/table/query',
+    method: 'get',
+    params: {
+      userAuto: query.userAuto,
+      startDate: query.startDate,
+      endDate: query.endDate,
+      orgAuto: query.orgAuto,
+      orgUpAuto: query.orgUpAuto
+    }
+  })
+}
