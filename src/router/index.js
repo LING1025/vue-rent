@@ -214,9 +214,9 @@ export const constantRoutes = [
         meta: { title: '营业报表' }
       },
       {
-        path: 'opTable',
-        name: 'TrialOpTable',
-        component: () => import('@/views/trial/opTable'),
+        path: 'index',
+        name: 'TrialIndex',
+        component: () => import('@/views/trial/index'),
         meta: { title: '回租报价' }
       }
     ]

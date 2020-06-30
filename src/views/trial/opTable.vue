@@ -123,7 +123,6 @@ export default {
       listLoading: true,
       flag: false,
       flag2: false,
-      flag3: false,
       getIndex: '',
       modeQuery: {
         userAuto: getUserAuto(),
@@ -225,6 +224,8 @@ export default {
         this.flag2 = false
         var pcount
         var pmoney
+        var pcount2
+        var pmoney2
         // 当月
         for (var j = 0; j < this.listTrial.thisMonth.length; j++) {
           // eslint-disable-next-line eqeqeq
@@ -250,8 +251,8 @@ export default {
         for (var k = 0; k < this.listTrial.lastMonth.length; k++) {
           // eslint-disable-next-line eqeqeq
           if (riqi[i] == this.listTrial.lastMonth[k].daysLast) {
-            pcount = this.listTrial.lastMonth[k].pcountLast
-            pmoney = this.listTrial.lastMonth[k].pmoneyLast
+            pcount2 = this.listTrial.lastMonth[k].pcountLast
+            pmoney2 = this.listTrial.lastMonth[k].pmoneyLast
             taiNumsLastMon.push(this.listTrial.lastMonth[k].pcountLast)
             moneyLastMon.push(this.listTrial.lastMonth[k].pmoneyLast)
             this.flag2 = true
@@ -259,12 +260,12 @@ export default {
         }
         if (!this.flag2) {
           // eslint-disable-next-line eqeqeq
-          if (pcount == null || pmoney == null) {
+          if (pcount2 == null || pmoney2 == null) {
             taiNumsLastMon.push(0)
             moneyLastMon.push(0)
           } else {
-            taiNumsLastMon.push(pcount)
-            moneyLastMon.push(pmoney)
+            taiNumsLastMon.push(pcount2)
+            moneyLastMon.push(pmoney2)
           }
         }
       }
