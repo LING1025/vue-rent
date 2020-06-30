@@ -152,14 +152,6 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
-      /* getTrail(this.modeQuery).then(response => {
-        this.listTrial = response.data
-        this.total = response.data.total
-        this.listLoading = false
-        this.drawMode()
-      }).catch(() => {
-        this.listLoading = false
-      })*/
       getMonth(this.modeQuery).then(response => {
         this.listTrial = response.data
         this.total = response.data.total
