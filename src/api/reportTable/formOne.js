@@ -22,7 +22,7 @@ export function getMode(query) {
 /**
  * 获取试算营业报表信息
  * @param query
- * @returns {AxiosPromise}
+ * @returns {*}
  */
 export function getMonth(query) {
   return request({
