@@ -217,7 +217,7 @@ export const constantRoutes = [
         path: 'opTable',
         name: 'TrialOpTable',
         component: () => import('@/views/trial/opTable'),
-        meta: { title: '营业报表' }
+        meta: { title: '回租报价' }
       }
     ]
   },
