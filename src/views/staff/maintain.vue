@@ -12,7 +12,6 @@
           <el-col :span="4">
             <el-select v-model="listQuery.orgName" clearable filterable placeholder="部门" class="filter-item" style="width: 100%" >
               <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.depName" />
-              <!--              <el-option v-for="item in orgOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />-->
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -34,8 +33,6 @@
           </el-table-column>
           <el-table-column align="center" label="创建日期" prop="cDT" />
           <el-table-column align="center" label="最后修改日期" prop="mDT" />
-          <!--<el-table-column align="center" label="创建时间" prop="createTime" />
-          <el-table-column align="center" label="最后修改时间" prop="updateTime" />-->
           <el-table-column align="center" label="操作" fixed="right" width="360">
             <template slot-scope="{row}">
               <el-button type="info" plain size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
@@ -59,9 +56,6 @@
             <el-form-item label="姓名" prop="fname">
               <el-input v-model="temp.fname" placeholder="请输入姓名" maxlength="30" clearable oninput="value" />
             </el-form-item>
-            <!--<el-form-item label="身份证" prop="identityCard">
-              <el-input v-model="temp.identityCard" placeholder="请输入身份证" maxlength="18" clearable @change="hint()"/>
-            </el-form-item>-->
             <el-form-item label="部门" prop="orgAuto">
               <el-select v-model="temp.orgAuto" clearable filterable placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
                 <el-option v-for="dep in depNameListResponse" :key="dep.orgAuto" :label="dep.depName" :value="dep.orgAuto" />
@@ -92,9 +86,6 @@
               <el-select v-model="temp.roles" clearable filterable placeholder="请选择角色" multiple style="width: 100%;"><!--@change="chooseRoles"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
-              <!--<el-checkbox-group v-model="temp.roleNames" placeholder="请选择角色" multiple="false">
-                <el-checkbox v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName"/>
-              </el-checkbox-group>-->
             </el-form-item>
             <el-form-item label="账号" prop="username">
               <el-input v-model="temp.username" placeholder="请输入账号" maxlength="30" clearable oninput="value" />
@@ -157,10 +148,7 @@ export default {
         update: '编辑',
         create: '新增'
       },
-      // orgOptions: typeOption.orgOption,
       titleOptions: typeOption.titleOption,
-      // groupOptions: typeOption.groupOption,
-      // roleOptions: typeOption.roleOption,
       bossOptions,
       statusOptions,
       normal,
@@ -168,19 +156,15 @@ export default {
       del,
       orgAuto: this.$route.params.orgAuto, // 部门id
       incTitleAuto: this.$route.params.incTitleAuto, // 职位表id
-      // rolesAuto: this.$route.params.rolesAuto, // 角色id
       orgGroupAuto: this.$route.params.orgGroupAuto, // 所属组id
       temp: {
         empBaseAuto: undefined,
         fname: '',
-        // identityCard: '',
         orgName: '',
         title: '',
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        /* rolesAuto: '',
-        roleName: '',*/
         roles: [],
         username: '',
         orgAuto: '',
@@ -213,7 +197,6 @@ export default {
       rules: {
         fname: [{ required: true, message: '姓名必填', trigger: 'change' }],
         username: [{ required: true, message: '账号必填', trigger: 'change' }],
-        // identityCard: [{ required: true, message: '身份证号必填', trigger: 'change' }],
         orgAuto: [{ required: true, message: '部门必选', trigger: 'change' }],
         incTitleAuto: [{ required: true, message: '职级必选', trigger: 'change' }],
         orgGroupAuto: [{ required: true, message: '所属组必选', trigger: 'change' }],
@@ -296,14 +279,11 @@ export default {
       this.temp = {
         empBaseAuto: undefined,
         fname: '',
-        // identityCard: '',
         orgName: '',
         title: '',
         isOn: '',
         isBoss: '',
         orgGroupName: '',
-        /* rolesAuto: '',
-        roleName: '',*/
         roles: [], // 角色名称
         username: '',
         orgAuto: '',
@@ -336,9 +316,7 @@ export default {
       car = row.roles
       for (i in car) {
         x = row.roles[i].roleName
-        // console.log(x)
         ro.push(x)
-        // console.log(ro)
         this.temp.roles = ro
       }
       this.dialogStatus = 'update'
