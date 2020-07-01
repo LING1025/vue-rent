@@ -155,7 +155,7 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">
+            <el-button @click="dialogFormVisible2 = false">
               取消
             </el-button>
             <el-button type="primary" @click="updateData()">

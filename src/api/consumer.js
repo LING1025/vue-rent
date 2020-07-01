@@ -17,13 +17,13 @@ export function info(username) {
  * @param data
  * @returns {AxiosPromise}
  */
-export function update(data) {
+/* export function update(data) {
   return request({
     url: '/consumer/update',
     method: 'post',
     data
   })
-}
+}*/
 
 /**
  * 修改密码
