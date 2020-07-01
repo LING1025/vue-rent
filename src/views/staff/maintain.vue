@@ -10,7 +10,7 @@
             <el-input v-model="listQuery.fName" placeholder="姓名" clearable maxlength="30" @keyup.enter.native="handleFilter" />
           </el-col>
           <el-col :span="4">
-            <el-select v-model="listQuery.orgName" clearable filterable placeholder="部门" class="filter-item" style="width: 100%" >
+            <el-select v-model="listQuery.orgName" clearable filterable placeholder="部门" class="filter-item" style="width: 100%">
               <el-option v-for="dep in depNameListResponse" :key="dep.id" :label="dep.depName" :value="dep.depName" />
             </el-select>
           </el-col>
@@ -31,6 +31,8 @@
               <span>{{ scope.row.isOn | isOnFilter }}</span>
             </template>
           </el-table-column>
+          <el-table-column align="center" label="分机" prop="mobilePIN" />
+          <el-table-column align="center" label="邮箱" prop="email" />
           <el-table-column align="center" label="创建日期" prop="cDT" />
           <el-table-column align="center" label="最后修改日期" prop="mDT" />
           <el-table-column align="center" label="操作" fixed="right" width="360">
@@ -54,7 +56,7 @@
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
             <el-form-item label="姓名" prop="fname">
-              <el-input v-model="temp.fname" placeholder="请输入姓名" maxlength="30" clearable oninput="value" />
+              <el-input v-model="temp.fname" placeholder="只能输入中文" maxlength="30" clearable oninput="value=value.replace(/[^\u4e00-\u9fa5]/g,'')" />
             </el-form-item>
             <el-form-item label="部门" prop="orgAuto">
               <el-select v-model="temp.orgAuto" clearable filterable placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
@@ -88,13 +90,13 @@
               </el-select>
             </el-form-item>
             <el-form-item label="账号" prop="username">
-              <el-input v-model="temp.username" placeholder="请输入账号" maxlength="30" clearable oninput="value" />
+              <el-input v-model="temp.username" placeholder="限制只能输入英文字母和数字" maxlength="30" clearable oninput="value=value.replace(/[^a-zA-Z0-9]+$/,'')" />
             </el-form-item>
             <el-form-item label="分机" prop="mobilePIN">
-              <el-input v-model="temp.mobilePIN" placeholder="请输入分机" maxlength="30" clearable oninput="value" />
+              <el-input v-model="temp.mobilePIN" placeholder="只能输入数字和指定的'-'字符" maxlength="30" clearable oninput="value=value.replace(/[^0-9&=-]/g,'')" />
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
-              <el-input v-model="temp.email" placeholder="请输入邮箱" maxlength="30" clearable oninput="value" />
+              <el-input v-model="temp.email" placeholder="只能输入英文字母、数字和指定的'.'和'@'字符" maxlength="30" clearable oninput="value=value.replace(/[^a-zA-Z0-9&=.@]+$/,'')" />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -200,8 +202,7 @@ export default {
         orgAuto: [{ required: true, message: '部门必选', trigger: 'change' }],
         incTitleAuto: [{ required: true, message: '职级必选', trigger: 'change' }],
         orgGroupAuto: [{ required: true, message: '所属组必选', trigger: 'change' }],
-        roles: [{ required: true, message: '角色必选', trigger: 'change' }],
-        email: [{ required: true, message: '邮箱必填', trigger: 'change' }]
+        roles: [{ required: true, message: '角色必选', trigger: 'change' }]
       }
     }
   },
@@ -259,13 +260,13 @@ export default {
     },
     /** 监听角色下拉选，根据下标获取职位rolesAuto、roleName*/
     /* chooseRoles(position) {
-      this.temp.rolesAuto = position
-      for (let i = 0; i < this.roleNameListResponse.length; i++) {
-        if (this.roleNameListResponse[i].rolesAuto === position) {
-          this.temp.roleName = this.roleNameListResponse[i].roleName
+        this.temp.rolesAuto = position
+        for (let i = 0; i < this.roleNameListResponse.length; i++) {
+          if (this.roleNameListResponse[i].rolesAuto === position) {
+            this.temp.roleName = this.roleNameListResponse[i].roleName
+          }
         }
-      }
-    },*/
+      },*/
     /** 监听所属组下拉选，根据下标获取部门orgGroupAuto、orgGroupName*/
     chooseGroupName(position) {
       this.temp.orgGroupAuto = position
@@ -436,12 +437,12 @@ export default {
     }
     /** 身份证输入的验证 */
     /* hint() {
-      const phoneTest = /^(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)$/
-      if (!phoneTest.test(this.temp.identityCard)) {
-        this.$message.error('请输入正确的身份证号')
-        return false
-      }
-    }*/
+        const phoneTest = /^(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)$/
+        if (!phoneTest.test(this.temp.identityCard)) {
+          this.$message.error('请输入正确的身份证号')
+          return false
+        }
+      }*/
   }
 
 }

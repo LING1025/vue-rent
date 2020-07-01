@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item label="是否启用">
         <el-select v-model="form.isOn" placeholder="请选择是否启用" style="width: 100%;">
-          <el-option v-for="item in statusOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+          <el-option v-for="item in statusOptions" :key="item.display_name" :label="item.display_name" :value="item.key" />
         </el-select>
       </el-form-item>
       <el-form-item>
