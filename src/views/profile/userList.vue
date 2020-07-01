@@ -61,10 +61,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="分机" prop="mobilePIN">
-              <el-input v-model="temp.mobilePIN" placeholder="请输入分机" maxlength="30" clearable oninput="value" />
+              <el-input v-model="temp.mobilePIN" placeholder="只能输入数字和指定的'-'字符" maxlength="30" clearable oninput="value=value.replace(/[^0-9&=-]/g,'')" />
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
-              <el-input v-model="temp.email" placeholder="请输入邮箱" maxlength="30" clearable oninput="value" />
+              <el-input v-model="temp.email" placeholder="只能输入英文字母、数字和指定的'.'和'@'字符" maxlength="30" clearable oninput="value=value.replace(/[^a-zA-Z0-9&=.@]+$/,'')" />
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
