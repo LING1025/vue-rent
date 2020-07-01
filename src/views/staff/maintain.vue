@@ -56,7 +56,7 @@
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
             <el-form-item label="姓名" prop="fname">
-              <el-input v-model="temp.fname" placeholder="只能输入中文" maxlength="30" clearable oninput="value=value.replace(/[^\u4e00-\u9fa5]/g,'')" />
+              <el-input v-model="temp.fname" placeholder="请输入姓名" maxlength="30" clearable />
             </el-form-item>
             <el-form-item label="部门" prop="orgAuto">
               <el-select v-model="temp.orgAuto" clearable filterable placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
@@ -84,7 +84,7 @@
                 <el-option v-for="group in orgGroupListResponse" :key="group.orgGroupAuto" :label="group.orgGroupName" :value="group.orgGroupAuto" />
               </el-select>
             </el-form-item>
-            <el-form-item id="demo" label="角色" prop="roles">
+            <el-form-item label="角色" prop="roles">
               <el-select v-model="temp.roles" clearable filterable placeholder="请选择角色" multiple style="width: 100%;"><!--@change="chooseRoles"-->
                 <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
               </el-select>
@@ -103,7 +103,62 @@
             <el-button @click="dialogFormVisible = false">
               取消
             </el-button>
-            <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+            <el-button type="primary" @click="createData()">
+              保存
+            </el-button>
+          </div>
+        </el-dialog>
+        <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible2" :close-on-click-modal="false" :close-on-press-escape="false">
+          <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="姓名" prop="fname">
+              <el-input v-model="temp.fname" disabled="true" placeholder="请输入姓名" maxlength="30" clearable />
+            </el-form-item>
+            <el-form-item label="部门" prop="orgAuto">
+              <el-select v-model="temp.orgAuto" clearable filterable placeholder="请选择部门" style="width: 100%;" @change="chooseDep">
+                <el-option v-for="dep in depNameListResponse" :key="dep.orgAuto" :label="dep.depName" :value="dep.orgAuto" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="级别" prop="incTitleAuto">
+              <el-select v-model="temp.incTitleAuto" placeholder="请选择级别" style="width: 100%;" @change="chooseTitle">
+                <el-option v-for="item in titleOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="是否启用" prop="isOn">
+              <el-select v-model="temp.isOn" placeholder="请选择是否启用" style="width: 100%;">
+                <el-option v-for="item in statusOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="是否为主管" prop="isBoss">
+              <el-select v-model="temp.isBoss" placeholder="请选择是否为主管" style="width: 100%;">
+                <el-option v-for="item in bossOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="所属组" prop="orgGroupAuto">
+              <el-select v-model="temp.orgGroupAuto" clearable filterable placeholder="请选择所属组" style="width: 100%;" @change="chooseGroupName">
+                <el-option v-for="group in orgGroupListResponse" :key="group.orgGroupAuto" :label="group.orgGroupName" :value="group.orgGroupAuto" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="角色" prop="roles">
+              <el-select v-model="temp.roles" clearable filterable placeholder="请选择角色" multiple style="width: 100%;"><!--@change="chooseRoles"-->
+                <el-option v-for="role in roleNameListResponse" :key="role.id" :label="role.roleName" :value="role.roleName" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="账号" prop="username">
+              <el-input v-model="temp.username" disabled="true" placeholder="限制只能输入英文字母和数字" maxlength="30" clearable oninput="value=value.replace(/[^a-zA-Z0-9]+$/,'')" />
+            </el-form-item>
+            <el-form-item label="分机" prop="mobilePIN">
+              <el-input v-model="temp.mobilePIN" disabled="true" placeholder="只能输入数字和指定的'-'字符" maxlength="30" clearable oninput="value=value.replace(/[^0-9&=-]/g,'')" />
+            </el-form-item>
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="temp.email" disabled="true" placeholder="只能输入英文字母、数字和指定的'.'和'@'字符" maxlength="30" clearable oninput="value=value.replace(/[^a-zA-Z0-9&=.@]+$/,'')" />
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="updateData()">
               保存
             </el-button>
           </div>
@@ -145,6 +200,7 @@ export default {
       list: null,
       listLoading: true,
       dialogFormVisible: false,
+      dialogFormVisible2: false,
       dialogStatus: '',
       textMap: {
         update: '编辑',
@@ -321,7 +377,7 @@ export default {
         this.temp.roles = ro
       }
       this.dialogStatus = 'update'
-      this.dialogFormVisible = true
+      this.dialogFormVisible2 = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -422,7 +478,7 @@ export default {
               }
             }
             this.listLoading = false
-            this.dialogFormVisible = false
+            this.dialogFormVisible2 = false
             this.$message({
               type: 'success',
               message: response.message
@@ -430,7 +486,7 @@ export default {
             this.getList()
           }).catch(() => {
             this.listLoading = false
-            this.dialogFormVisible = true
+            this.dialogFormVisible2 = true
           })
         }
       })
