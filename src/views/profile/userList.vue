@@ -34,7 +34,7 @@
           <el-table-column align="center" label="操作" fixed="right" width="360">
             <template slot-scope="{row}">
               <el-button type="info" plain size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
-              <el-button v-if="row.isOn===normal" plain size="small" type="warning" @click="handleModifyStatus(row,stop)">
+              <!--<el-button v-if="row.isOn===normal" plain size="small" type="warning" @click="handleModifyStatus(row,stop)">
                 停用
               </el-button>
               <el-button v-if="row.isOn===stop" plain size="small" type="success" @click="handleModifyStatus(row,normal)">
@@ -42,7 +42,7 @@
               </el-button>
               <el-button v-if="row.isOn!==del" plain size="small" type="danger" @click="handleModifyStatus(row,del)">
                 删除
-              </el-button>
+              </el-button>-->
               <el-button plain size="small" type="success" @click="change(row)">重置密码</el-button>
             </template>
           </el-table-column>
@@ -83,7 +83,7 @@
 
 <script>
 
-import { getUserList, updateUser, reset, patchDel, patchStart, patchStop } from '../../api/consumer'
+import { getUserList, updateUser, reset } from '../../api/consumer'
 import Pagination from '../../components/Pagination'
 
 const statusOptions = [
@@ -166,7 +166,7 @@ export default {
       })
     },
     /** 修改状态 */
-    handleModifyStatus(row, isOn) {
+    /* handleModifyStatus(row, isOn) {
       this.temp = Object.assign({}, row) // copy obj
       this.listLoading = true
       if (isOn === this.normal) {
@@ -221,7 +221,7 @@ export default {
           this.listLoading = false
         })
       }
-    },
+    },*/
     /** 重置密码 */
     change(row) {
       this.$confirm('是否重置该账户的密码?', '提示', {
