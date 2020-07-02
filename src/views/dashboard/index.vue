@@ -1,11 +1,13 @@
-<template>
-  <!--<div class="dashboard-container">
-&lt;!&ndash;    <div class="dashboard-text">登录用户名: {{ name }}</div>&ndash;&gt;
+<!--<template>
+  <div class="dashboard-container">
+    &lt;!&ndash;    <div class="dashboard-text">登录用户名: {{ name }}</div>&ndash;&gt;
     <div class="dashboard-logo">
       <img width="1000" height="500" alt="logo" src="../../icons/tu1.png">
       <p>长租系统 V2.0&nbsp;&nbsp;&nbsp;数据管理中心</p>
     </div>
-  </div>-->
+  </div>
+</template>-->
+<template>
   <div>
     <el-container>
       <el-header>
@@ -109,13 +111,11 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script>import { mapGetters } from 'vuex'
 import { getUserAuto } from '../../utils/auth'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { currentDate, getCurrentMonthFirst } from '../../utils/dateSplice' // 获取当天日期,获取当前月的第一天
 import { getMode } from '../../api/reportTable/formOne'
-// import typeOption from '../../variable/types'
 
 export default {
   name: 'Dashboard',
@@ -418,7 +418,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   /*.dashboard {
     position: relative;
     &-container {
