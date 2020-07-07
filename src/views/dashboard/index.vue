@@ -1,25 +1,25 @@
-<!--<template>
+<template>
   <div class="dashboard-container">
-    &lt;!&ndash;    <div class="dashboard-text">登录用户名: {{ name }}</div>&ndash;&gt;
+    <!--    <div class="dashboard-text">登录用户名: {{ name }}</div>-->
     <div class="dashboard-logo">
       <img width="1000" height="500" alt="logo" src="../../icons/tu1.png">
       <p>长租系统 V2.0&nbsp;&nbsp;&nbsp;数据管理中心</p>
     </div>
   </div>
-</template>-->
-<template>
+</template>
+<!--<template>
   <div>
     <el-container>
       <el-header>
         <el-row>
-          <!--<el-col :span="4">
+          &lt;!&ndash;<el-col :span="4">
             <el-date-picker v-model="testQuery.dateGet" type="month" value-format="yyyy-MM-dd" placeholder="请选择月份" style="width: 100%" @keyup.enter.native="handleFilter" />&lt;!&ndash;使用format指定输入框的格式；使用value-format指定绑定值的格式。&ndash;&gt;
-          </el-col>-->
+          </el-col>&ndash;&gt;
           <el-col :span="4">
-            <el-date-picker v-model="modeQuery.startDate" type="date" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="modeQuery.startDate" type="date" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" />&lt;!&ndash;使用format指定输入框的格式；使用value-format指定绑定值的格式。&ndash;&gt;
           </el-col>
           <el-col :span="4">
-            <el-date-picker v-model="modeQuery.endDate" type="date" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="modeQuery.endDate" type="date" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" />&lt;!&ndash;使用format指定输入框的格式；使用value-format指定绑定值的格式。&ndash;&gt;
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -109,9 +109,10 @@
     <div id="containerOne" style="width: 100%; height: 500px" />
     <div id="containerZero" style="width: 100%; height: 500px" />
   </div>
-</template>
+</template>-->
 
-<script>import { mapGetters } from 'vuex'
+<!--<script>
+import { mapGetters } from 'vuex'
 import { getUserAuto } from '../../utils/auth'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
 import { currentDate, getCurrentMonthFirst } from '../../utils/dateSplice' // 获取当天日期,获取当前月的第一天
@@ -416,10 +417,10 @@ export default {
     }
   }
 }
-</script>
+</script>-->
 
 <style lang="scss" scoped>
-  /*.dashboard {
+  .dashboard {
     position: relative;
     &-container {
       margin: 30px;
@@ -434,5 +435,5 @@ export default {
       left: 160px;
       text-align: center;
     }
-  }*/
+  }
 </style>
