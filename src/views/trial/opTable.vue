@@ -235,12 +235,18 @@ export default {
           }
         }
       } else {
-        for (var i = 0; i < riqi.length; i++) {
+        // 获取月份天数
+        var d = new Date(this.modeQuery.startDate.split('-')[0], this.modeQuery.startDate.slice(6, 7), 0)
+        var mDays = []
+        for (var md = 1; md <= d.getDate(); md++) {
+          mDays.push(md)
+        }
+        for (var i = 0; i < mDays.length; i++) {
           this.flag = false
           // 当月
           for (var j = 0; j < this.listTrial.thisMonth.length; j++) {
             // eslint-disable-next-line eqeqeq
-            if (riqi[i] == this.listTrial.thisMonth[j].days) {
+            if (mDays[i] == this.listTrial.thisMonth[j].days) {
               taiNums.push(this.listTrial.thisMonth[j].pcount)
               money.push(this.listTrial.thisMonth[j].pmoney)
               this.flag = true
@@ -252,12 +258,18 @@ export default {
           }
         }
       }
-      for (var e = 0; e < riqi.length; e++) {
+      // 获取上个月天数
+      var dl = new Date(this.modeQuery.startDate.split('-')[0], this.modeQuery.startDate.slice(6, 7) - 1, 0)
+      var mlDays = []
+      for (var mdl = 1; mdl <= dl.getDate(); mdl++) {
+        mlDays.push(mdl)
+      }
+      for (var e = 0; e < mlDays.length; e++) {
         this.flag2 = false
         // 上个月
         for (var k = 0; k < this.listTrial.lastMonth.length; k++) {
           // eslint-disable-next-line eqeqeq
-          if (riqi[e] == this.listTrial.lastMonth[k].daysLast) {
+          if (mlDays[e] == this.listTrial.lastMonth[k].daysLast) {
             taiNumsLastMon.push(this.listTrial.lastMonth[k].pcountLast)
             moneyLastMon.push(this.listTrial.lastMonth[k].pmoneyLast)
             this.flag2 = true
