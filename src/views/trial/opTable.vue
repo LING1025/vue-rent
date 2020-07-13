@@ -328,12 +328,7 @@ export default {
           }
         },
         xAxis: {
-          data: riqi, /* (function() {            var list = []
-            for (var i = 1; i <= 31; i++) {
-              list.push(i + '日')
-            }
-            return list
-          }())*/
+          data: riqi,
           // x轴柱状图阴影
           axisPointer: {
             type: 'line'
@@ -347,11 +342,27 @@ export default {
           {
             name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#a80000',
+                lineStyle: {
+                  color: '#a80000'
+                }
+              }
+            },
             data: cs
           },
           {
             name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
             type: 'line',
+            itemStyle: {
+              normal: {
+                color: 'rgba(23,95,168,0.82)',
+                lineStyle: {
+                  color: 'rgba(23,95,168,0.82)'
+                }
+              }
+            },
             data: cls
           }
         ]
@@ -398,11 +409,27 @@ export default {
           {
             name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#a80000',
+                lineStyle: {
+                  color: '#a80000'
+                }
+              }
+            },
             data: ms
           },
           {
             name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
             type: 'line',
+            itemStyle: {
+              normal: {
+                color: 'rgba(23,95,168,0.82)',
+                lineStyle: {
+                  color: 'rgba(23,95,168,0.82)'
+                }
+              }
+            },
             data: mls
           }
         ]
