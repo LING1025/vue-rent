@@ -220,92 +220,89 @@ export default {
         }
         for (var g = 0; g < newRiqi.length; g++) {
           this.flag3 = false
-          var pcount3
-          var pmoney3
           // 当月
           for (var f = 0; f < this.listTrial.thisMonth.length; f++) {
             // eslint-disable-next-line eqeqeq
             if (newRiqi[g] == this.listTrial.thisMonth[f].days) {
-              pcount3 = this.listTrial.thisMonth[f].pcount
-              pmoney3 = this.listTrial.thisMonth[f].pmoney
               taiNums.push(this.listTrial.thisMonth[f].pcount)
               money.push(this.listTrial.thisMonth[f].pmoney)
               this.flag3 = true
             }
           }
           if (!this.flag3) {
-            // eslint-disable-next-line eqeqeq
-            if (pcount3 == null || pmoney3 == null) {
-              taiNums.push(0)
-              money.push(0)
-            } else {
-              taiNums.push(pcount3)
-              money.push(pmoney3)
-            }
+            taiNums.push(0)
+            money.push(0)
           }
         }
       } else {
         for (var i = 0; i < riqi.length; i++) {
           this.flag = false
-          var pcount
-          var pmoney
           // 当月
           for (var j = 0; j < this.listTrial.thisMonth.length; j++) {
             // eslint-disable-next-line eqeqeq
             if (riqi[i] == this.listTrial.thisMonth[j].days) {
-              pcount = this.listTrial.thisMonth[j].pcount
-              pmoney = this.listTrial.thisMonth[j].pmoney
               taiNums.push(this.listTrial.thisMonth[j].pcount)
               money.push(this.listTrial.thisMonth[j].pmoney)
               this.flag = true
             }
           }
           if (!this.flag) {
-            // eslint-disable-next-line eqeqeq
-            if (pcount == null || pmoney == null) {
-              taiNums.push(0)
-              money.push(0)
-            } else {
-              taiNums.push(pcount)
-              money.push(pmoney)
-            }
+            taiNums.push(0)
+            money.push(0)
           }
         }
       }
       for (var e = 0; e < riqi.length; e++) {
         this.flag2 = false
-        var pcount2
-        var pmoney2
         // 上个月
         for (var k = 0; k < this.listTrial.lastMonth.length; k++) {
           // eslint-disable-next-line eqeqeq
           if (riqi[e] == this.listTrial.lastMonth[k].daysLast) {
-            pcount2 = this.listTrial.lastMonth[k].pcountLast
-            pmoney2 = this.listTrial.lastMonth[k].pmoneyLast
             taiNumsLastMon.push(this.listTrial.lastMonth[k].pcountLast)
             moneyLastMon.push(this.listTrial.lastMonth[k].pmoneyLast)
             this.flag2 = true
           }
         }
         if (!this.flag2) {
-          // eslint-disable-next-line eqeqeq
-          if (pcount2 == null || pmoney2 == null) {
-            taiNumsLastMon.push(0)
-            moneyLastMon.push(0)
-          } else {
-            taiNumsLastMon.push(pcount2)
-            moneyLastMon.push(pmoney2)
-          }
+          taiNumsLastMon.push(0)
+          moneyLastMon.push(0)
         }
       }
-      console.log('这是获取的pcount')
-      console.log(taiNums)
-      console.log('这是获取的pcountLast')
-      console.log(taiNumsLastMon)
-      console.log('这是获取的pmoney')
-      console.log(money)
-      console.log('这是获取的pmoneyLast')
-      console.log(moneyLastMon)
+      // eslint-disable-next-line no-unused-vars
+      var pcSum = 0
+      var cs = []
+      for (var pc = 0; pc < taiNums.length; pc++) {
+        pcSum += taiNums[pc]
+        cs.push(pcSum) // 本月台数
+      }
+      var pmSum = 0
+      var ms = []
+      for (var pm = 0; pm < money.length; pm++) {
+        pmSum += money[pm] // 本月金额
+        ms.push(pmSum)
+      }
+
+      // eslint-disable-next-line no-unused-vars
+      var pclSum = 0
+      var cls = []
+      for (var pcl = 0; pcl < taiNumsLastMon.length; pcl++) {
+        pclSum += taiNumsLastMon[pcl]
+        cls.push(pclSum) // 上个月台数
+      }
+      var pmlSum = 0
+      var mls = []
+      for (var pml = 0; pml < moneyLastMon.length; pml++) {
+        pmlSum += moneyLastMon[pml] // 上个月金额
+        mls.push(pmlSum)
+      }
+      console.log('本月台数')
+      console.log(cs)
+      console.log('本月金额')
+      console.log(ms)
+      console.log('上个月台数')
+      console.log(cls)
+      console.log('上个月金额')
+      console.log(mls)
       const charts = this.$echarts.init(document.getElementById('containerMode'))
       const option = {
         title: {
@@ -350,12 +347,12 @@ export default {
           {
             name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
-            data: taiNums
+            data: cs
           },
           {
             name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
             type: 'line',
-            data: taiNumsLastMon
+            data: cls
           }
         ]
       }
@@ -401,12 +398,12 @@ export default {
           {
             name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
-            data: money
+            data: ms
           },
           {
             name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
             type: 'line',
-            data: moneyLastMon
+            data: mls
           }
         ]
       }
