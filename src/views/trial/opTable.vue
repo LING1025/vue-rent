@@ -206,6 +206,17 @@ export default {
       })
     },
     draws() {
+      // 年份
+      // eslint-disable-next-line no-unused-vars
+      var bYear = this.modeQuery.endDate.split('-')[0]
+      // 本月
+      var bMonth = this.modeQuery.startDate.slice(6, 7)
+      // 上个月
+      var sMonth = bMonth - 1
+      // eslint-disable-next-line eqeqeq
+      if (sMonth == 0) {
+        sMonth = 12
+      }
       var taiNums = [] // 当月台数
       var money = [] // 当月金额
       var taiNumsLastMon = [] // 上个月台数
@@ -236,7 +247,7 @@ export default {
         }
       } else {
         // 获取月份天数
-        var d = new Date(this.modeQuery.startDate.split('-')[0], this.modeQuery.startDate.slice(6, 7), 0)
+        var d = new Date(bYear, bMonth, 0)
         var mDays = []
         for (var md = 1; md <= d.getDate(); md++) {
           mDays.push(md)
@@ -259,7 +270,7 @@ export default {
         }
       }
       // 获取上个月天数
-      var dl = new Date(this.modeQuery.startDate.split('-')[0], this.modeQuery.startDate.slice(6, 7) - 1, 0)
+      var dl = new Date(bYear, sMonth, 0)
       var mlDays = []
       for (var mdl = 1; mdl <= dl.getDate(); mdl++) {
         mlDays.push(mdl)
@@ -326,7 +337,7 @@ export default {
         },
         legend: {
           top: 20,
-          data: [this.modeQuery.startDate.slice(6, 7) + '月', this.modeQuery.startDate.split('-')[1] - 1 + '月']
+          data: [bMonth + '月', sMonth + '月']
         },
         grid: {
           left: '3%',
@@ -352,7 +363,7 @@ export default {
         },
         series: [
           {
-            name: this.modeQuery.startDate.slice(6, 7) + '月',
+            name: bMonth + '月',
             type: 'line',
             itemStyle: {
               normal: {
@@ -365,7 +376,7 @@ export default {
             data: cs
           },
           {
-            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
+            name: sMonth + '月',
             type: 'line',
             itemStyle: {
               normal: {
@@ -393,7 +404,7 @@ export default {
         },
         legend: {
           top: 20,
-          data: [this.modeQuery.startDate.slice(6, 7) + '月', this.modeQuery.startDate.split('-')[1] - 1 + '月']
+          data: [bMonth + '月', sMonth + '月']
         },
         grid: {
           left: '3%',
@@ -419,7 +430,7 @@ export default {
         },
         series: [
           {
-            name: this.modeQuery.startDate.slice(6, 7) + '月',
+            name: bMonth + '月',
             type: 'line',
             itemStyle: {
               normal: {
@@ -432,7 +443,7 @@ export default {
             data: ms
           },
           {
-            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
+            name: sMonth + '月',
             type: 'line',
             itemStyle: {
               normal: {
