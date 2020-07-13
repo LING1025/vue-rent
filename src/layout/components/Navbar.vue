@@ -15,11 +15,11 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
+          <!--<router-link to="/">
             <el-dropdown-item>
               初始页
             </el-dropdown-item>
-          </router-link>
+          </router-link>-->
           <!--<a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
             <el-dropdown-item>Github</el-dropdown-item>
           </a>
