@@ -123,6 +123,7 @@ export default {
       listLoading: true,
       flag: false,
       flag2: false,
+      flag3: false,
       getIndex: '',
       modeQuery: {
         userAuto: getUserAuto(),
@@ -210,39 +211,75 @@ export default {
       var taiNumsLastMon = [] // 上个月台数
       var moneyLastMon = [] // 上个月金额
       var riqi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-
-      for (var i = 0; i < riqi.length; i++) {
-        this.flag = false
+      // 结束日期等于当天日期时
+      // eslint-disable-next-line eqeqeq
+      if (this.modeQuery.endDate == currentDate()) {
+        var newRiqi = []
+        for (var h = 1; h <= this.modeQuery.endDate.split('-')[2]; h++) {
+          newRiqi.push(h)
+        }
+        for (var g = 0; g < newRiqi.length; g++) {
+          this.flag3 = false
+          var pcount3
+          var pmoney3
+          // 当月
+          for (var f = 0; f < this.listTrial.thisMonth.length; f++) {
+            // eslint-disable-next-line eqeqeq
+            if (newRiqi[g] == this.listTrial.thisMonth[f].days) {
+              pcount3 = this.listTrial.thisMonth[f].pcount
+              pmoney3 = this.listTrial.thisMonth[f].pmoney
+              taiNums.push(this.listTrial.thisMonth[f].pcount)
+              money.push(this.listTrial.thisMonth[f].pmoney)
+              this.flag3 = true
+            }
+          }
+          if (!this.flag3) {
+            // eslint-disable-next-line eqeqeq
+            if (pcount3 == null || pmoney3 == null) {
+              taiNums.push(0)
+              money.push(0)
+            } else {
+              taiNums.push(pcount3)
+              money.push(pmoney3)
+            }
+          }
+        }
+      } else {
+        for (var i = 0; i < riqi.length; i++) {
+          this.flag = false
+          var pcount
+          var pmoney
+          // 当月
+          for (var j = 0; j < this.listTrial.thisMonth.length; j++) {
+            // eslint-disable-next-line eqeqeq
+            if (riqi[i] == this.listTrial.thisMonth[j].days) {
+              pcount = this.listTrial.thisMonth[j].pcount
+              pmoney = this.listTrial.thisMonth[j].pmoney
+              taiNums.push(this.listTrial.thisMonth[j].pcount)
+              money.push(this.listTrial.thisMonth[j].pmoney)
+              this.flag = true
+            }
+          }
+          if (!this.flag) {
+            // eslint-disable-next-line eqeqeq
+            if (pcount == null || pmoney == null) {
+              taiNums.push(0)
+              money.push(0)
+            } else {
+              taiNums.push(pcount)
+              money.push(pmoney)
+            }
+          }
+        }
+      }
+      for (var e = 0; e < riqi.length; e++) {
         this.flag2 = false
-        var pcount
-        var pmoney
         var pcount2
         var pmoney2
-        // 当月
-        for (var j = 0; j < this.listTrial.thisMonth.length; j++) {
-          // eslint-disable-next-line eqeqeq
-          if (riqi[i] == this.listTrial.thisMonth[j].days) {
-            pcount = this.listTrial.thisMonth[j].pcount
-            pmoney = this.listTrial.thisMonth[j].pmoney
-            taiNums.push(this.listTrial.thisMonth[j].pcount)
-            money.push(this.listTrial.thisMonth[j].pmoney)
-            this.flag = true
-          }
-        }
-        if (!this.flag) {
-          // eslint-disable-next-line eqeqeq
-          if (pcount == null || pmoney == null) {
-            taiNums.push(0)
-            money.push(0)
-          } else {
-            taiNums.push(pcount)
-            money.push(pmoney)
-          }
-        }
         // 上个月
         for (var k = 0; k < this.listTrial.lastMonth.length; k++) {
           // eslint-disable-next-line eqeqeq
-          if (riqi[i] == this.listTrial.lastMonth[k].daysLast) {
+          if (riqi[e] == this.listTrial.lastMonth[k].daysLast) {
             pcount2 = this.listTrial.lastMonth[k].pcountLast
             pmoney2 = this.listTrial.lastMonth[k].pmoneyLast
             taiNumsLastMon.push(this.listTrial.lastMonth[k].pcountLast)
