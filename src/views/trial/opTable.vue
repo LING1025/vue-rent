@@ -280,7 +280,7 @@ export default {
         },
         legend: {
           top: 20,
-          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.slice(6, 7) + '月']
+          data: [this.modeQuery.startDate.slice(6, 7) + '月', this.modeQuery.startDate.split('-')[1] - 1 + '月']
         },
         grid: {
           left: '3%',
@@ -311,14 +311,14 @@ export default {
         },
         series: [
           {
-            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
-            type: 'line',
-            data: taiNumsLastMon
-          },
-          {
             name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
             data: taiNums
+          },
+          {
+            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
+            type: 'line',
+            data: taiNumsLastMon
           }
         ]
       }
@@ -336,7 +336,7 @@ export default {
         },
         legend: {
           top: 20,
-          data: [this.modeQuery.startDate.split('-')[1] - 1 + '月', this.modeQuery.startDate.slice(6, 7) + '月']
+          data: [this.modeQuery.startDate.slice(6, 7) + '月', this.modeQuery.startDate.split('-')[1] - 1 + '月']
         },
         grid: {
           left: '3%',
@@ -362,14 +362,14 @@ export default {
         },
         series: [
           {
-            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
-            type: 'line',
-            data: moneyLastMon
-          },
-          {
             name: this.modeQuery.startDate.slice(6, 7) + '月',
             type: 'line',
             data: money
+          },
+          {
+            name: this.modeQuery.startDate.split('-')[1] - 1 + '月',
+            type: 'line',
+            data: moneyLastMon
           }
         ]
       }
