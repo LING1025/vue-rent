@@ -29,13 +29,13 @@
           <el-table-column align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
-          <el-table-column align="center" label="报件达成率" prop="paperLv" />
+          <el-table-column align="center" label="报件达成率" prop="plv" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="台数达成率" prop="countLv" />
+          <el-table-column align="center" label="台数达成率" prop="clv" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
-          <el-table-column align="center" label="营业额达成率" prop="volumeLv" />
+          <el-table-column align="center" label="营业额达成率" prop="vlv" />
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
@@ -56,13 +56,13 @@
           <el-table-column align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
-          <el-table-column align="center" label="报件达成率" prop="paperLv" />
+          <el-table-column align="center" label="报件达成率" prop="plv" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="台数达成率" prop="countLv" />
+          <el-table-column align="center" label="台数达成率" prop="clv" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
-          <el-table-column align="center" label="营业额达成率" prop="volumeLv" />
+          <el-table-column align="center" label="营业额达成率" prop="vlv" />
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="handleClickNext(scope.row)">查看</el-button>
@@ -83,13 +83,13 @@
           <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
-          <el-table-column align="center" label="报件达成率" prop="paperLv" />
+          <el-table-column align="center" label="报件达成率" prop="plv" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="台数达成率" prop="countLv" />
+          <el-table-column align="center" label="台数达成率" prop="clv" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
-          <el-table-column align="center" label="营业额达成率" prop="volumeLv" />
+          <el-table-column align="center" label="营业额达成率" prop="vlv" />
         </el-table>
       </el-main>
     </el-container>
