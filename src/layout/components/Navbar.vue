@@ -4,7 +4,7 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="logo">
-      <img width="80" height="50" alt="logo" src="../../assets/images/logo.png">
+      <img width="50" height="50" alt="logo" src="../../assets/images/logo3.png">
     </div>
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
