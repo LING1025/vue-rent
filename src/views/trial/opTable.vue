@@ -20,6 +20,7 @@
           :data="list"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
           show-summary
+          :summary-method="getSummaries"
           stripe
           border
           fit
@@ -32,10 +33,10 @@
           <el-table-column align="center" label="报件达成率" prop="plv" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="台数达成率" prop="clv" />
+          <el-table-column align="center" label="台数达成率" prop="clv"/>
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
-          <el-table-column align="center" label="营业额达成率" prop="vlv" />
+          <el-table-column align="center" label="营业额达成率" prop="vlv"/>
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
@@ -138,6 +139,38 @@ export default {
     this.getList()
   },
   methods: {
+    getSummaries(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((columns, index) => {
+        if (index === 0) {
+          sums[index] = '合计' // 第一列显示 合计
+          return
+        }
+        const values = data.map(item => Number(item[columns.property]))
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!isNaN(value)) {
+              return prev + curr
+            } else {
+              return prev
+            }
+          }, 0)
+        } else {
+          if (index === 3) {
+            sums[index] = ((sums[2] / sums[1]) * 100).toFixed(0) + '%'
+          }
+          if (index === 6) {
+            sums[index] = ((sums[5] / sums[4]) * 100).toFixed(0) + '%'
+          }
+          if (index === 9) {
+            sums[index] = ((sums[8] / sums[7]) * 100).toFixed(0) + '%'
+          }
+        }
+      })
+      return sums // 最后返回合计行的数据
+    },
     queryDouble() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
