@@ -21,22 +21,23 @@
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
           show-summary
           :summary-method="getSummaries"
+          highlight-current-row
           stripe
           border
           fit
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="部门" prop="orgName" />
+          <el-table-column width="200px" align="center" label="部门" prop="orgName" />
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="报件达成率" prop="plv" />
           <el-table-column align="center" label="目标台数" prop="targetNum" />
           <el-table-column align="center" label="达成台数" prop="realNum" />
-          <el-table-column align="center" label="台数达成率" prop="clv"/>
+          <el-table-column align="center" label="台数达成率" prop="clv" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
-          <el-table-column align="center" label="营业额达成率" prop="vlv"/>
+          <el-table-column align="center" label="营业额达成率" prop="vlv" />
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
@@ -48,13 +49,14 @@
           v-loading="listLoading"
           :data="listClick"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          highlight-current-row
           stripe
           border
           fit
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="课" prop="orgName" />
+          <el-table-column width="200px" align="center" label="课" prop="orgName" />
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="报件达成率" prop="plv" />
@@ -81,7 +83,7 @@
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="业代" prop="fname" />
+          <el-table-column width="200px" align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="报件达成率" prop="plv" />
@@ -196,6 +198,9 @@ export default {
       })
     },
     handleFilter() {
+      // 点击查询按钮，课和业代的表就会消失
+      this.listClick = null
+      this.listClickNext = null
       this.getList()
     },
     handleClick(row) {
@@ -351,14 +356,14 @@ export default {
         pmlSum += moneyLastMon[pml] // 上个月金额
         mls.push(pmlSum)
       }
-      console.log('本月台数')
+      /* console.log('本月台数')
       console.log(cs)
       console.log('本月金额')
       console.log(ms)
       console.log('上个月台数')
       console.log(cls)
       console.log('上个月金额')
-      console.log(mls)
+      console.log(mls)*/
       const charts = this.$echarts.init(document.getElementById('containerMode'))
       const option = {
         title: {
@@ -506,6 +511,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  .el-table__body tr.current-row>td{
+    background-color: rgba(175, 177, 179, 0.66) !important;
+  }
 </style>
