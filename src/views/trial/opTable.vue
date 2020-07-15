@@ -121,6 +121,8 @@ export default {
     return {
       tabBg: '', // 选择的行数下标
       tabBg2: '',
+      orgNameTable: '', // 第一个表格的部门名称
+      orgNameTable2: '',
       total: 0,
       list: null,
       listClick: null,
@@ -233,8 +235,8 @@ export default {
     // 点击改变行背景色
     rowRed({ row, rowIndex }) {
       if (rowIndex === this.tabBg) {
+        this.orgNameTable = row.orgName
         this.tabBg2 = ''
-        console.log(rowIndex + '第1个表')
         // 这里定义要修改的颜色 暂时是红色背景
         return { backgroundColor: 'rgba(175,177,179,0.51)' }
       }
@@ -268,7 +270,7 @@ export default {
     // 点击改变行背景色
     rowRed2({ row, rowIndex }) {
       if (rowIndex === this.tabBg2) {
-        console.log(rowIndex + '第2个表')
+        this.orgNameTable2 = row.orgName
         // 这里定义要修改的颜色 暂时是红色背景
         return { backgroundColor: 'rgba(175,177,179,0.51)' }
       }
@@ -401,7 +403,70 @@ export default {
       const charts = this.$echarts.init(document.getElementById('containerMode'))
       const option = {
         title: {
-          text: '业绩台数图表',
+          text: this.orgNameTable + '业绩台数图表',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: 20,
+          data: [bMonth + '月', sMonth + '月']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          data: riqi,
+          // x轴柱状图阴影
+          axisPointer: {
+            type: 'line'
+          }
+        },
+        yAxis: {
+          type: 'value',
+          name: '台数'
+        },
+        series: [
+          {
+            name: bMonth + '月',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#a80000',
+                lineStyle: {
+                  color: '#a80000'
+                }
+              }
+            },
+            data: cs
+          },
+          {
+            name: sMonth + '月',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: 'rgba(23,95,168,0.82)',
+                lineStyle: {
+                  color: 'rgba(23,95,168,0.82)'
+                }
+              }
+            },
+            data: cls
+          }
+        ]
+      }
+      const option3 = {
+        title: {
+          text: this.orgNameTable2 + '业绩台数图表',
           left: 'center'
         },
         tooltip: {
@@ -463,7 +528,12 @@ export default {
         ]
       }
       // 绘制图表
-      charts.setOption(option)
+      if (this.orgNameTable2 === '') {
+        charts.setOption(option)
+      }
+      if (this.orgNameTable2 !== '') {
+        charts.setOption(option3)
+      }
 
       const charts2 = this.$echarts.init(document.getElementById('containerModes'))
       const option2 = {

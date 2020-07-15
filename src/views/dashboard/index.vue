@@ -38,7 +38,6 @@ export default {
     }
   },
   mounted() {
-    console.log('666666666666')
     this.imgLoad()
     window.addEventListener('resize', () => {
       this.banH = this.$refs.banH[0].height
