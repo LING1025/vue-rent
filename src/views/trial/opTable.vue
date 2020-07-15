@@ -21,7 +21,8 @@
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
           show-summary
           :summary-method="getSummaries"
-          highlight-current-row
+          :cell-style="rowRed"
+          :cell-class-name="tableRowClassName"
           stripe
           border
           fit
@@ -49,7 +50,8 @@
           v-loading="listLoading"
           :data="listClick"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
-          highlight-current-row
+          :cell-style="rowRed2"
+          :cell-class-name="tableRowClassName2"
           stripe
           border
           fit
@@ -117,6 +119,8 @@ export default {
   },
   data() {
     return {
+      tabBg: '', // 选择的行数下标
+      tabBg2: '',
       total: 0,
       list: null,
       listClick: null,
@@ -178,6 +182,7 @@ export default {
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
     },
     getList() {
+      this.tabBg = ''
       this.queryDouble()
       this.modeQuery.orgUpAuto = 0
       this.modeQuery.orgAuto = 0
@@ -204,6 +209,8 @@ export default {
       this.getList()
     },
     handleClick(row) {
+      this.listClickNext = null
+      this.tabBg = row.index // 选中的行
       this.queryDouble()
       this.modeQuery.orgAuto = 0
       this.modeQuery.orgUpAuto = row.orgAuto
@@ -223,7 +230,22 @@ export default {
         this.listLoading = false
       })
     },
+    // 点击改变行背景色
+    rowRed({ row, rowIndex }) {
+      if (rowIndex === this.tabBg) {
+        this.tabBg2 = ''
+        console.log(rowIndex + '第1个表')
+        // 这里定义要修改的颜色 暂时是红色背景
+        return { backgroundColor: 'rgba(175,177,179,0.51)' }
+      }
+    },
+    // 获取数据的下标
+    tableRowClassName({ row, rowIndex }) {
+      row.index = rowIndex
+      this.tabBg2 = ''
+    },
     handleClickNext(row) {
+      this.tabBg2 = row.index // 选中的行
       this.queryDouble()
       this.modeQuery.orgUpAuto = 0
       this.modeQuery.orgAuto = row.orgAuto
@@ -242,6 +264,18 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
+    },
+    // 点击改变行背景色
+    rowRed2({ row, rowIndex }) {
+      if (rowIndex === this.tabBg2) {
+        console.log(rowIndex + '第2个表')
+        // 这里定义要修改的颜色 暂时是红色背景
+        return { backgroundColor: 'rgba(175,177,179,0.51)' }
+      }
+    },
+    // 获取数据的下标
+    tableRowClassName2({ row, rowIndex }) {
+      row.index = rowIndex
     },
     draws() {
       // 年份
@@ -512,7 +546,7 @@ export default {
 </script>
 
 <style>
-  .el-table__body tr.current-row>td{
+  /*.el-table__body tr.current-row>td{
     background-color: rgba(175, 177, 179, 0.66) !important;
-  }
+  }*/
 </style>
