@@ -1,9 +1,9 @@
 <template>
   <!--    <p>长租系统 V2.0&nbsp;&nbsp;&nbsp;数据管理中心</p>-->
   <div class="block">
-    <el-carousel trigger="click" :interval="5000" height="imgHeight">
+    <el-carousel :height="banH +'px'" :interval="5000">
       <el-carousel-item v-for="item in imgList" :key="item.id">
-        <img ref="imgHeight" :src="item.idView" class="banner_img"/>
+        <img ref="banH" class="banner_img" :src="item.idView">
       </el-carousel-item>
     </el-carousel>
     <p>长租系统 V2.0&nbsp;&nbsp;&nbsp;数据管理中心</p>
@@ -15,6 +15,7 @@ export default {
   name: 'Index',
   data() {
     return {
+      banH: 508,
       // 图片需要引入, 否则无法显示
       imgList: [
         { id: 0, idView: require('../../assets/images/banner1.jpg') },
@@ -23,13 +24,33 @@ export default {
         { id: 3, idView: require('../../assets/images/banner4.jpg') }
       ]
     }
+  },
+  methods: {
+    imgLoad() {
+      this.$nextTick(() => {
+        // eslint-disable-next-line eqeqeq
+        if (this.$refs.banH[0].height == 0) {
+          this.banH = 508
+        } else {
+          this.banH = this.$refs.banH[0].height
+        }
+      })
+    }
+  },
+  mounted() {
+    console.log('666666666666')
+    this.imgLoad()
+    window.addEventListener('resize', () => {
+      this.banH = this.$refs.banH[0].height
+      this.imgLoad()
+    }, false)
   }
 }
+
 </script>
 
 <style lang="css" scoped>
   .block {
-    position: relative;
     margin: 30px;
     font-size: 20px;
     line-height: 46px;
@@ -39,8 +60,5 @@ export default {
     background-position: center center;
     background-repeat: no-repeat;
     width:100%;
-    height:100%;
-    background-size: cover;
-    right: 0;
   }
 </style>
