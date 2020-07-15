@@ -53,7 +53,7 @@ export default {
   .block {
     margin: 30px;
     font-size: 20px;
-    line-height: 46px;
+    line-height: 65px;
     text-align: center;
   }
   .banner_img {
