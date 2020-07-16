@@ -184,6 +184,13 @@ export default {
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
     },
     queryMonth1() {
+      // 点击查询按钮，课和业代的表就会消失
+      this.listClick = null
+      this.listClickNext = null
+      this.tabBg = ''
+      // 点击查询图标名称中 部门名、课不显示
+      this.orgNameTable = ''
+      this.orgNameTable2 = ''
       getMonth(this.modeQuery).then(response => {
         this.listTrial = response.data
         this.total = response.data.total
@@ -194,7 +201,6 @@ export default {
       })
     },
     getList() {
-      this.tabBg = ''
       this.queryDouble()
       this.modeQuery.orgUpAuto = 0
       this.modeQuery.orgAuto = 0
@@ -208,15 +214,11 @@ export default {
       })
     },
     handleFilter() {
-      // 点击查询图标名称中 部门名、课不显示
-      this.orgNameTable = ''
-      this.orgNameTable2 = ''
-      // 点击查询按钮，课和业代的表就会消失
-      this.listClick = null
-      this.listClickNext = null
       this.getList()
     },
     queryMonth2() {
+      this.listClickNext = null
+      this.orgNameTable2 = ''
       getMonth(this.modeQuery).then(response => {
         this.listTrial = response.data
         this.total = response.data.total
@@ -227,8 +229,6 @@ export default {
       })
     },
     handleClick(row) {
-      this.orgNameTable2 = ''
-      this.listClickNext = null
       this.tabBg = row.index // 选中的行
       this.queryDouble()
       this.modeQuery.orgAuto = 0
