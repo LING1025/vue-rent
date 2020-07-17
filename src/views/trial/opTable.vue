@@ -4,7 +4,7 @@
       <el-header>
         <el-row>
           <el-col :span="4">
-            <el-date-picker v-model="modeQuery.startDate" type="date" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="modeQuery.startDate" type="date" placeholder="请选择开始日期" @change="onChangeInput" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
             <el-date-picker v-model="modeQuery.endDate" type="date" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
@@ -106,7 +106,7 @@
 import { mapGetters } from 'vuex'
 import { getUserAuto } from '../../utils/auth'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
-import { currentDate, getCurrentMonthFirst } from '../../utils/dateSplice' // 获取当天日期,获取当前月的第一天
+import { currentDate, getCurrentMonthFirst, getMonthLastDays } from '../../utils/dateSplice' // 获取当天日期,获取当前月的第一天,获取指定月份的最后一天
 import { getMode, getMonth } from '../../api/reportTable/formOne'
 // import typeOption from '../../variable/types'
 
@@ -178,6 +178,12 @@ export default {
         }
       })
       return sums // 最后返回合计行的数据
+    },
+    // 监听日期输入框
+    onChangeInput() {
+      if (this.modeQuery.startDate !== getCurrentMonthFirst()) {
+        this.modeQuery.endDate = getMonthLastDays(this.modeQuery.startDate)
+      }
     },
     queryDouble() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
