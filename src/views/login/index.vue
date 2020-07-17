@@ -178,7 +178,7 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#283443;
-$light_gray:#fff;
+$light_gray: #fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -213,7 +213,7 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(191, 188, 217, 0.6);
     border-radius: 5px;
     color: #454545;
   }
@@ -222,13 +222,15 @@ $cursor: #fff;
 
 <style lang="scss" scoped>
 $bg:#2d3a4b;
-$dark_gray:#889aa4;
+$dark_gray: #409eff;
 $light_gray:#eee;
 
 .login-container {
   min-height: 100%;
   width: 100%;
   background-color: $bg;
+  background-image: url("../../assets/images/car.jpg");
+  background-size: cover;
   overflow: hidden;
  .login-form {
     position: relative;
@@ -275,7 +277,7 @@ $light_gray:#eee;
     position: absolute;
     right: 10px;
     top: 7px;
-    font-size: 16px;
+    font-size: 24px;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
