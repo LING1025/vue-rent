@@ -200,13 +200,12 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      color: $light_gray; // 系统名称颜色
       height: 47px;
-      caret-color: $cursor;
-
+      caret-color: $cursor; // 输入框内字体颜色与鼠标停留符号颜色
       &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
+        box-shadow: 0 0 0px 1000px $bg inset !important;
       }
     }
   }

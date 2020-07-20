@@ -236,10 +236,10 @@ export const constantRoutes = [
     children: []
   },
   {
-    path: '/insurance',
+    path: '/insurances',
     component: Layout,
-    redirect: '/insurance/index',
-    name: 'Insurance',
+    redirect: '/insurances/index',
+    name: 'Insurances',
     meta: { title: '保险管理' },
     children: []
   },

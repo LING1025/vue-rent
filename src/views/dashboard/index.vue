@@ -1,5 +1,4 @@
 <template>
-  <!--    <p>长租系统 V2.0&nbsp;&nbsp;&nbsp;数据管理中心</p>-->
   <div class="block">
     <el-carousel :height="banH +'px'" :interval="5000">
       <el-carousel-item v-for="item in imgList" :key="item.id">
