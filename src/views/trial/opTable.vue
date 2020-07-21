@@ -4,10 +4,10 @@
       <el-header>
         <el-row>
           <el-col :span="4">
-            <el-date-picker v-model="modeQuery.startDate" type="date" placeholder="请选择开始日期" @change="onChangeInput" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="modeQuery.startDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择开始日期" @change="onChangeInput" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
-            <el-date-picker v-model="modeQuery.endDate" type="date" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="modeQuery.endDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -128,8 +128,7 @@ export default {
       list: null,
       listClick: null,
       listClickNext: null,
-      listTrial: null,
-      listLastMonth: null,
+      listTrial: '',
       listLoading: true,
       flag: false,
       flag2: false,
@@ -148,14 +147,23 @@ export default {
     this.getList()
   },
   methods: {
+    // 监听日期输入框
     onChangeInput() {
+      this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
+      // console.log(format(dateTostring(this.modeQuery.startDate)))
+      // console.log(format(dateTostring(getCurrentMonthFirst())))
+      // console.log(getCurrentMonthFirst())
       if (this.modeQuery.startDate !== getCurrentMonthFirst()) {
         this.modeQuery.endDate = getMonthLastDays(this.modeQuery.startDate)
+        // console.log(this.modeQuery.startDate)
+        // console.log(this.modeQuery.endDate)
       }
     },
     queryDouble() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
+      // console.log(this.modeQuery.startDate)
+      // console.log(this.modeQuery.endDate)
     },
     queryMonth1() {
       // 点击查询按钮，课和业代的表就会消失
