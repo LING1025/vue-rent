@@ -26,6 +26,15 @@ export function format(string) {
   }
 }
 
+/** 获取当前月 **/
+export function getCurrentMonth(currentMonth) {
+  const date = new Date()
+  let month = parseInt(date.getMonth() + 1)
+  if (month < 10) month = '0' + month
+  // eslint-disable-next-line no-return-assign
+  return currentMonth = date.getFullYear() + '-' + month
+}
+
 /** 获取当前月的第一天 **/
 export function getCurrentMonthFirst(currentMonthFirst) {
   const date = new Date()
