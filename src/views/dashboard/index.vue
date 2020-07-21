@@ -24,6 +24,13 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.imgLoad()
+    window.addEventListener('resize', () => {
+      this.banH = this.$refs.banH[0].height
+      this.imgLoad()
+    }, false)
+  },
   methods: {
     imgLoad() {
       this.$nextTick(() => {
@@ -35,13 +42,6 @@ export default {
         }
       })
     }
-  },
-  mounted() {
-    this.imgLoad()
-    window.addEventListener('resize', () => {
-      this.banH = this.$refs.banH[0].height
-      this.imgLoad()
-    }, false)
   }
 }
 
