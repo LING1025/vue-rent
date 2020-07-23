@@ -160,7 +160,7 @@ export default {
         agentCDate: ''
       },
       listQuery: {
-        empBaseAuto: '',
+        userAuto: '',
         pageNum: 1,
         pageSize: 20
       },
