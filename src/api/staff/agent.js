@@ -10,7 +10,7 @@ export function getSelfList(query) {
     url: '/query/queryBySelf',
     method: 'get',
     params: {
-      empBaseAuto: query.empBaseAuto,
+      userAuto: query.userAuto,
       pageNum: query.pageNum,
       pageSize: query.pageSize
     }
@@ -27,7 +27,7 @@ export function getAgentList(query) {
     url: '/query/queryByAgent',
     method: 'get',
     params: {
-      empBaseAuto: query.empBaseAuto,
+      userAuto: query.userAuto,
       pageNum: query.pageNum,
       pageSize: query.pageSize
     }
