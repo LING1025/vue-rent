@@ -13,8 +13,8 @@
           </el-col>
           <!-- 下拉框输入模糊查询 filterable动态模糊搜索下拉框中的选项 -->
           <el-col :span="4">
-            <el-select v-model="listQuery.empBaseAuto" clearable filterable placeholder="请输入姓名" style="width: 100%;" @keyup.enter.native="handleFilter">
-              <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
+            <el-select v-model="listQuery.userAuto" clearable filterable placeholder="请输入姓名" style="width: 100%;" @keyup.enter.native="handleFilter">
+              <el-option v-for="item in selfUserListResponse" :key="item.userAuto" :label="item.fname" :value="item.userAuto" />
             </el-select>
           </el-col>
           <el-col :span="6">
@@ -57,22 +57,22 @@
           <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
             <el-form-item label="本人姓名" prop="selfUser">
               <el-select v-model="temp.selfUser" clearable filterable placeholder="请选择本人姓名" style="width: 100%;" @change="chooseSelf">
-                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
+                <el-option v-for="item in selfUserListResponse" :key="item.userAuto" :label="item.fname" :value="item.userAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="本人部门" prop="selfUSerDept">
               <el-select v-model="temp.selfUser" placeholder="请选择本人部门" disabled="true" style="width: 100%;">
-                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.orgName" :value="item.empBaseAuto" />
+                <el-option v-for="item in selfUserListResponse" :key="item.userAuto" :label="item.depName" :value="item.userAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="代理人姓名" prop="agentUser">
               <el-select v-model="temp.agentUser" clearable filterable placeholder="请选择代理人姓名" style="width: 100%;" @change="chooseAgent">
-                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.fname" :value="item.empBaseAuto" />
+                <el-option v-for="item in selfUserListResponse" :key="item.userAuto" :label="item.fname" :value="item.userAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="代理人部门" prop="agentUserDept">
               <el-select v-model="temp.agentUser" placeholder="请选择代理人部门" disabled="true" style="width: 100%;" >
-                <el-option v-for="item in selfUserListResponse" :key="item.empBaseAuto" :label="item.orgName" :value="item.empBaseAuto" />
+                <el-option v-for="item in selfUserListResponse" :key="item.userAuto" :label="item.depName" :value="item.userAuto" />
               </el-select>
             </el-form-item>
             <el-form-item label="是否有效" prop="isOn">
@@ -101,8 +101,8 @@
 <script>
 import Pagination from '../../components/Pagination'
 import { dateTostring, format } from '../../utils/dateSplice' // 日期的查询
-import { getSelfList, getAgentList, insertAgent, updateAgent, patchDel, patchStart, patchStop } from '../../api/staff/agent'
-import { getEmpAgent } from '../../api/staff/maintain'
+import { getSelfList, getAgentList, insertAgent, updateAgent, patchDel, patchStart, patchStop, getVep } from '../../api/staff/agent'
+// import { getEmpAgent } from '../../api/staff/maintain'
 
 const statusOptions = [
   { key: '0', display_name: '停用' },
@@ -167,10 +167,10 @@ export default {
       nameQuery: {
         names: ''
       },
-      /** 员工id查询（本人姓名/代理人姓名下拉选） */
+      /** 用户id查询（本人姓名/代理人姓名下拉选） */
       selfUserListResponse: null,
       selfUserListParam: {
-        empBaseAuto: ''
+        userAuto: ''
       },
       rules: {
         selfUser: [{ required: true, message: '本人姓名必填', trigger: 'change' }],
@@ -215,7 +215,7 @@ export default {
     },
     /** 本人姓名/代理人姓名下拉选 */
     getListSelfUser() {
-      getEmpAgent(this.selfUserListParam).then(response => {
+      getVep(this.selfUserListParam).then(response => {
         this.selfUserListResponse = response.data
       })
     },

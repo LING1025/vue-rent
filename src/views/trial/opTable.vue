@@ -209,6 +209,27 @@ export default {
           sums[index] = '合计' // 第一列显示 合计
           return
         }
+        if (index === 3) {
+          if (sums[1] === 0) {
+            sums[index] = 0 + '%'
+          } else {
+            sums[index] = ((sums[2] / sums[1]) * 100).toFixed(0) + '%'
+          }
+        }
+        if (index === 6) {
+          if (sums[4] === 0) {
+            sums[index] = 0 + '%'
+          } else {
+            sums[index] = ((sums[5] / sums[4]) * 100).toFixed(0) + '%'
+          }
+        }
+        if (index === 9) {
+          if (sums[7] === 0) {
+            sums[index] = 0 + '%'
+          } else {
+            sums[index] = ((sums[8] / sums[7]) * 100).toFixed(0) + '%'
+          }
+        }
         const values = (data || []).map(item => Number(item[columns.property]))
         if (!values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
@@ -219,16 +240,6 @@ export default {
               return prev
             }
           }, 0)
-        } else {
-          if (index === 3) {
-            sums[index] = ((sums[2] / sums[1]) * 100).toFixed(0) + '%'
-          }
-          if (index === 6) {
-            sums[index] = ((sums[5] / sums[4]) * 100).toFixed(0) + '%'
-          }
-          if (index === 9) {
-            sums[index] = ((sums[8] / sums[7]) * 100).toFixed(0) + '%'
-          }
         }
         // setTimeout(function() {
         //   console.log('定时器打印')

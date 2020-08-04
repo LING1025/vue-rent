@@ -34,6 +34,21 @@ export function getAgentList(query) {
   })
 }
 
+/**
+ * 根据userAuto获取用户信息
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function getVep(query) {
+  return request({
+    url: '/query/queryByUserAuto',
+    method: 'get',
+    params: {
+      userAuto: query.userAuto
+    }
+  })
+}
+
 export function insertAgent(data) {
   return request({
     url: '/agent/insert',
