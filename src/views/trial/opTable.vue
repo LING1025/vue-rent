@@ -215,8 +215,6 @@ export default {
           } else {
             sums[index] = ((sums[2] / sums[1]) * 100).toFixed(0) + '%'
           }
-          console.log('sums[3]')
-          console.log(sums[index])
         }
         if (index === 6) {
           if (sums[4] === 0) {
@@ -224,8 +222,6 @@ export default {
           } else {
             sums[index] = ((sums[5] / sums[4]) * 100).toFixed(0) + '%'
           }
-          console.log('sums[6]')
-          console.log(sums[index])
         }
         if (index === 9) {
           if (sums[7] === 0) {
@@ -233,8 +229,6 @@ export default {
           } else {
             sums[index] = ((sums[8] / sums[7]) * 100).toFixed(0) + '%'
           }
-          console.log('sums[9]')
-          console.log(sums[index])
         }
         const values = (data || []).map(item => Number(item[columns.property]))
         if (!values.every(value => isNaN(value))) {
@@ -251,8 +245,6 @@ export default {
         //   console.log('定时器打印')
         // }, 1000) // 定时器延迟1秒
       })
-      console.log('合计')
-      console.log(sums)
       return sums // 最后返回合计行的数据
       // clearTimeout(this.timer) // 监听日期输入框
     },
