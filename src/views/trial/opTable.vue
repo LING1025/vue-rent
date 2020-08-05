@@ -33,8 +33,8 @@
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="报件达成率" prop="plv" />
-          <el-table-column align="center" label="目标台数" prop="targetNum" />
-          <el-table-column align="center" label="达成台数" prop="realNum" />
+          <el-table-column align="center" label="目标交车数" prop="targetNum" />
+          <el-table-column align="center" label="交车数" prop="realNum" />
           <el-table-column align="center" label="台数达成率" prop="clv" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
@@ -62,8 +62,8 @@
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="报件达成率" prop="plv" />
-          <el-table-column align="center" label="目标台数" prop="targetNum" />
-          <el-table-column align="center" label="达成台数" prop="realNum" />
+          <el-table-column align="center" label="目标交车数" prop="targetNum" />
+          <el-table-column align="center" label="交车数" prop="realNum" />
           <el-table-column align="center" label="台数达成率" prop="clv" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
@@ -89,8 +89,8 @@
           <el-table-column align="center" label="目标报件数" prop="targetPaperNum" />
           <el-table-column align="center" label="报件数" prop="proPaperNum" />
           <el-table-column align="center" label="报件达成率" prop="plv" />
-          <el-table-column align="center" label="目标台数" prop="targetNum" />
-          <el-table-column align="center" label="达成台数" prop="realNum" />
+          <el-table-column align="center" label="目标交车数" prop="targetNum" />
+          <el-table-column align="center" label="交车数" prop="realNum" />
           <el-table-column align="center" label="台数达成率" prop="clv" />
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
