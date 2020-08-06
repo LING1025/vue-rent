@@ -6,11 +6,11 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether fix the header
    */
-  fixedHeader: false,
+  fixedHeader: true, // 为true则固定头部，为false则滚动，
 
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: false
+  sidebarLogo: true // 为true则显示侧边栏logo，为false则隐藏
 }
