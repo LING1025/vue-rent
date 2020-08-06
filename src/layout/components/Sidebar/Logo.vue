@@ -9,14 +9,6 @@
         <img v-if="logo" :src="logo" class="sidebar-logo">
         <h1 class="sidebar-title">{{ title }} </h1>
       </router-link>
-<!--      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img width="60" height="60" src="src/assets/images/logo2.png" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
-      </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img src="src/assets/images/logo2.png" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
-      </router-link>-->
     </transition>
   </div>
 </template>
@@ -35,9 +27,9 @@ export default {
     return {
       // title: '格上租赁管理系统',
       // logo: Logo
-      title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
-      // logo: require('src/assets/images/logo3.png')
+      title: '格上租赁管理系统',
+      // logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: require('../../../assets/images/logo3.png')
     }
   }
 }

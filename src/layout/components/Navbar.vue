@@ -3,9 +3,9 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb class="breadcrumb-container" />
 
-    <div class="logo">
+    <!--<div class="logo">
       <img width="30" height="30" alt="logo" src="../../assets/images/logo3.png">
-    </div>
+    </div>-->
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
@@ -89,11 +89,13 @@ export default {
     float: left;
   }
 
+/*
   .logo{
     position: absolute;
     right: 180px;
     top: 15px;
   }
+*/
 
   .right-menu {
     float: right;
