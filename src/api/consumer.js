@@ -7,7 +7,7 @@ import request from '@/utils/request'
  */
 export function info(username) {
   return request({
-    url: '/consumer/info/' + username,
+    url: '/consumer/infos/' + username,
     method: 'get'
   })
 }
