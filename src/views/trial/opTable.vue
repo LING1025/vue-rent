@@ -327,7 +327,13 @@ export default {
       // eslint-disable-next-line no-unused-vars
       var bYear = this.modeQuery.endDate.split('-')[0]
       // 本月
-      var bMonth = this.modeQuery.startDate.slice(6, 7)
+      var bMonth = this.modeQuery.startDate.slice(5, 6)
+      // eslint-disable-next-line eqeqeq
+      if (bMonth == 0) {
+        bMonth = this.modeQuery.startDate.slice(6, 7)
+      } else {
+        bMonth = this.modeQuery.startDate.slice(5, 7)
+      }
       // 上个月
       var sMonth = bMonth - 1
       // eslint-disable-next-line eqeqeq
