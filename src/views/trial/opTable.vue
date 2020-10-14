@@ -150,13 +150,8 @@ export default {
     // 监听日期输入框
     onChangeInput() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
-      // console.log(format(dateTostring(this.modeQuery.startDate)))
-      // console.log(format(dateTostring(getCurrentMonthFirst())))
-      // console.log(getCurrentMonthFirst())
       if (this.modeQuery.startDate.slice(0, 7) !== getCurrentMonth()) {
         this.modeQuery.endDate = getMonthLastDays(this.modeQuery.startDate)
-        // console.log(this.modeQuery.startDate)
-        // console.log(this.modeQuery.endDate)
       }
       if (this.modeQuery.startDate.slice(0, 7) === getCurrentMonth()) {
         this.modeQuery.endDate = currentDate()
@@ -165,8 +160,6 @@ export default {
     queryDouble() {
       this.modeQuery.startDate = format(dateTostring(this.modeQuery.startDate))
       this.modeQuery.endDate = format(dateTostring(this.modeQuery.endDate))
-      // console.log(this.modeQuery.startDate)
-      // console.log(this.modeQuery.endDate)
     },
     queryMonth1() {
       // 点击查询按钮，课和业代的表就会消失
@@ -235,7 +228,7 @@ export default {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr)
             if (!isNaN(value)) {
-              return prev + curr
+              return prev + curr // 每列合计的数
             } else {
               return prev
             }
