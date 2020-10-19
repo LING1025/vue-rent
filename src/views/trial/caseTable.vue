@@ -3,30 +3,24 @@
     <el-container>
       <el-header>
         <el-row>
-          <!--<el-col :span="4">
-              <el-date-picker v-model="orderQuery.startDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" />&lt;!&ndash;使用format指定输入框的格式；使用value-format指定绑定值的格式。&ndash;&gt;
-            </el-col>
-            <el-col :span="4">
-              <el-date-picker v-model="orderQuery.endDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" />&lt;!&ndash;使用format指定输入框的格式；使用value-format指定绑定值的格式。&ndash;&gt;
-            </el-col>-->
 
           <el-col :span="3">
-            <el-select v-model="execQuery.inc" clearable placeholder="请选择公司别" >
+            <el-select v-model="execQuery.inc" clearable placeholder="请选择公司别">
               <el-option v-for="item in incListResponse" :key="item.incAuto" :label="item.sname" :value="item.incAuto" />
             </el-select>
           </el-col>
           <el-col :span="3">
-            <el-select v-model="execQuery.type" clearable placeholder="请选择查询类别" >
+            <el-select v-model="execQuery.type" clearable placeholder="请选择查询类别">
               <el-option v-for="item in execTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
           </el-col>
           <el-col :span="3">
-            <el-select v-model="execQuery.year" clearable placeholder="请选择年份类别" >
+            <el-select v-model="execQuery.year" clearable placeholder="请选择年份类别">
               <el-option v-for="item in yearOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
           </el-col>
           <el-col :span="3">
-            <el-select v-model="execQuery.month" clearable placeholder="请选择月份" >
+            <el-select v-model="execQuery.month" clearable placeholder="请选择月份">
               <el-option v-for="item in monthOptions" :key="item.key" :label="item.display_name" :value="item.key" />
             </el-select>
           </el-col>
@@ -37,7 +31,7 @@
             </el-radio-group>
           </el-col>
           <el-col :span="3">
-            <el-input v-model="execQuery.customer" placeholder="请输入客户名称"/>
+            <el-input v-model="execQuery.customer" placeholder="请输入客户名称" />
           </el-col>
           <el-col :span="4">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -49,6 +43,7 @@
           v-loading="listLoading"
           :data="list"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          height="800"
           stripe
           border
           fit
@@ -116,27 +111,6 @@
           <el-table-column align="center" label="营业成本" prop="carCost" />
           <el-table-column align="center" label="营业费用" prop="budgetAmt" />
         </el-table>
-        <!--<el-table
-          v-loading="listLoading"
-          :data="list"
-          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
-          stripe
-          border
-          fit
-          min
-          style="width: 100%"
-        >
-          <el-table-column align="center" label="新增契约租金（交车）" prop="newOrderAmt" />
-          <el-table-column align="center" label="当月目标" prop="thisMonGoal" />
-          <el-table-column align="center" label="当月实绩" prop="thisMonReal" />
-          <el-table-column align="center" label="结构比" prop="textureRatio" />
-          <el-table-column align="center" label="达成率" prop="getRate" />
-          <el-table-column align="center" label="上月实绩" prop="LastMonGoal" />
-          <el-table-column align="center" label="环比" prop="linkRatio" />
-          <el-table-column align="center" label="去年实绩" prop="LastYearGoal" />
-          <el-table-column align="center" label="结构比" prop="textureRatioTwo" />
-          <el-table-column align="center" label="同期比较" prop="compare" />
-        </el-table>-->
       </el-main>
     </el-container>
   </div>
@@ -144,11 +118,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import { getUserAuto } from '../../utils/auth'
 import { getCaseExecList, getCompanyNameList } from '../../api/reportTable/formTwo'
 import option from '@/variable/types'
-// import { currentDate, dateTostring, format, getCurrentMonthFirst } from '../../utils/dateSplice'
-// import { getMode } from '../../api/reportTable/formOne'
+import { currentYear, currentMonth } from '../../utils/dateSplice'
 
 export default {
   name: 'TrialCaseTable',
@@ -166,10 +138,10 @@ export default {
       monthOptions: option.monthOption,
       yearOptions: option.yearOption,
       execQuery: {
-        inc: '',
-        type: '',
-        year: '',
-        month: '',
+        inc: 0,
+        type: 4,
+        year: currentYear(),
+        month: currentMonth(),
         flag: 1,
         customer: ''
       },
@@ -179,13 +151,54 @@ export default {
         mode: 0,
         searchWord: ''
       }
-      /* orderQuery: {
-        userAuto: getUserAuto(),
-        startDate: getCurrentMonthFirst(),
-        endDate: currentDate(),
-        orgAuto: 0,
-        orgUpAuto: 0
-      }*/
+      /* tableData: [{
+        newOrderAmt: '新增契约租金(①+②+③)',
+        thisMonGoal: '',
+        thisMonReal: '',
+        textureRatio: '',
+        getRate: '',
+        LastMonGoal: '',
+        linkRatio: '',
+        LastYearGoal: '',
+        textureRatioTwo: '',
+        compare: ''
+      },
+      {
+        newOrderAmt: '客户来源-新拓①',
+        thisMonGoal: '',
+        thisMonReal: '',
+        textureRatio: '',
+        getRate: '',
+        LastMonGoal: '',
+        linkRatio: '',
+        LastYearGoal: '',
+        textureRatioTwo: '',
+        compare: ''
+      },
+      {
+        newOrderAmt: '客户来源-保有②',
+        thisMonGoal: '',
+        thisMonReal: '',
+        textureRatio: '',
+        getRate: '',
+        LastMonGoal: '',
+        linkRatio: '',
+        LastYearGoal: '',
+        textureRatioTwo: '',
+        compare: ''
+      },
+      {
+        newOrderAmt: '客户来源-介绍③',
+        thisMonGoal: '',
+        thisMonReal: '',
+        textureRatio: '',
+        getRate: '',
+        LastMonGoal: '',
+        linkRatio: '',
+        LastYearGoal: '',
+        textureRatioTwo: '',
+        compare: ''
+      }],*/
     }
   },
   created() {
@@ -193,10 +206,6 @@ export default {
     this.getListSName()
   },
   methods: {
-    /* queryDouble() {
-      this.orderQuery.startDate = format(dateTostring(this.orderQuery.startDate))
-      this.orderQuery.endDate = format(dateTostring(this.orderQuery.endDate))
-    },*/
     getList() {
       getCaseExecList(this.execQuery).then(response => {
         this.list = response.data
@@ -205,16 +214,6 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
-      /* this.queryDouble()
-      this.orderQuery.orgUpAuto = 0
-      this.orderQuery.orgAuto = 0
-      getMode(this.orderQuery).then(response => {
-        this.list = response.data
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })*/
     },
     /** 公司别下拉选 */
     getListSName() {

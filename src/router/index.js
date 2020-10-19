@@ -200,6 +200,12 @@ export const constantRoutes = [
         name: 'TrialCaseTable',
         component: () => import('@/views/trial/caseTable'),
         meta: { title: '案件进度维护' }
+      },
+      {
+        path: 'weekTable',
+        name: 'TrialWeekTable',
+        component: () => import('@/views/trial/weekTable'),
+        meta: { title: '新增契约租金报表' }
       }
       /* {
         path: 'index',
