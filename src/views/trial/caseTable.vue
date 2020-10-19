@@ -12,7 +12,7 @@
 
           <el-col :span="3">
             <el-select v-model="execQuery.inc" clearable placeholder="请选择公司别" >
-              <el-option v-for="item in incListResponse" :key="item.incAuto" :label="item.sname" :value="item.sname" />
+              <el-option v-for="item in incListResponse" :key="item.incAuto" :label="item.sname" :value="item.incAuto" />
             </el-select>
           </el-col>
           <el-col :span="3">
@@ -56,25 +56,65 @@
           style="width: 100%"
         >
           <el-table-column align="center" label="业务单位" prop="depName" />
-          <el-table-column align="center" label="业代" prop="fName" />
+          <el-table-column align="center" label="业代" prop="fname" />
           <el-table-column align="center" label="契约编号" prop="orderNo" />
           <el-table-column align="center" label="承租人统编" prop="tradeItemAuto" />
           <el-table-column align="center" label="公司名称" prop="comFName" />
           <el-table-column align="center" label="是否是公司" prop="idenType" />
-          <el-table-column align="center" label="所属公司" prop="sName" />
+          <el-table-column align="center" label="所属公司" prop="sname" />
           <el-table-column align="center" label="状态" prop="statusName" />
           <el-table-column align="center" label="牌照号码" prop="makNo" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
-          <el-table-column align="center" label="新增契约租金" prop="newOrderAmt" />
+          <el-table-column align="center" label="车种" prop="category" />
+          <el-table-column align="center" label="客户来源" prop="custSource" />
+          <el-table-column align="center" label="租赁性质" prop="rentType" />
+          <el-table-column align="center" label="总厂牌" prop="factoryBrandName" />
+          <el-table-column align="center" label="厂牌" prop="brandName" />
+          <el-table-column align="center" label="车型" prop="clasenName" />
+          <el-table-column align="center" label="车色" prop="carColor" />
+          <el-table-column align="center" label="经销商" prop="sellerFName" />
+          <el-table-column align="center" label="每月租金" prop="mamt" />
+          <el-table-column align="center" label="总租金" prop="totalAmt" />
+          <el-table-column align="center" label="领照日" prop="makDT" />
+          <el-table-column align="center" label="牌价" prop="listPrice" />
+          <el-table-column align="center" label="进价" prop="getPrice" />
+          <el-table-column align="center" label="折价" prop="disPrice" />
+          <el-table-column align="center" label="折价率" prop="disPriceTax" />
+          <el-table-column align="center" label="配件" prop="accessary" />
+          <el-table-column align="center" label="佣金" prop="pushMoney" />
+          <el-table-column align="center" label="残值" prop="salvage" />
+          <el-table-column align="center" label="保证金" prop="dptAmt" />
+          <el-table-column align="center" label="月维修费" prop="carMtnAmt" />
+          <el-table-column align="center" label="贷款金额" prop="loanAmount" />
+          <el-table-column align="center" label="起租日" prop="startDT" />
+          <el-table-column align="center" label="到期日" prop="endDT" />
+          <el-table-column align="center" label="期数" prop="mm" />
+          <el-table-column align="center" label="客户评等" prop="creditLevel" />
+          <el-table-column align="center" label="申购单号" prop="orderAuto" />
+          <el-table-column align="center" label="授信单号" prop="creditMainAuto" />
+          <el-table-column align="center" label="合约编号" prop="contractNo" />
+          <el-table-column align="center" label="交车日期" prop="forDT" />
+          <el-table-column align="center" label="付款方式" prop="payType" />
+          <el-table-column align="center" label="车辆来源" prop="carSource" />
+          <el-table-column align="center" label="成交利率" prop="rentRate" />
+          <el-table-column align="center" label="承作利率" prop="finalRate" />
+          <el-table-column align="center" label="承作价格" prop="rentAmt" />
+          <el-table-column align="center" label="实际利率" prop="bonusRate" />
+          <el-table-column align="center" label="业务类别" prop="businessType" />
+          <el-table-column align="center" label="试算业务类别" prop="businessOrdersType" />
+          <el-table-column align="center" label="购置税实付金额" prop="realAmt" />
+          <el-table-column align="center" label="配件实付金额" prop="accRealAmt" />
+          <el-table-column align="center" label="业绩日" prop="yjCDT" />
+          <el-table-column align="center" label="使用性质" prop="useType" />
+          <el-table-column align="center" label="是否一次性租赁" prop="onetime" />
+          <el-table-column align="center" label="专案" prop="projectName" />
+          <el-table-column align="center" label="货车" prop="trucks" />
+          <el-table-column align="center" label="公司型态" prop="comType" />
+          <el-table-column align="center" label="保险期数" prop="insureMM" />
+          <el-table-column align="center" label="保险金额" prop="insureAmt" />
+          <el-table-column align="center" label="试算购置税金额" prop="carTax" />
+          <el-table-column align="center" label="营业额" prop="inCome" />
+          <el-table-column align="center" label="营业成本" prop="carCost" />
+          <el-table-column align="center" label="营业费用" prop="budgetAmt" />
         </el-table>
         <!--<el-table
           v-loading="listLoading"
