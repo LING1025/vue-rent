@@ -194,6 +194,12 @@ export const constantRoutes = [
         name: 'TrialOpTable',
         component: () => import('@/views/trial/opTable'),
         meta: { title: '营业报表' }
+      },
+      {
+        path: 'caseTable',
+        name: 'TrialCaseTable',
+        component: () => import('@/views/trial/caseTable'),
+        meta: { title: '案件进度维护' }
       }
       /* {
         path: 'index',

@@ -50,7 +50,7 @@ const degreeOption = [
   { key: '3', display_name: '3.普通' }
 ]
 
-// 年份月份下拉拆分
+// 月份下拉拆分
 const monthOption = [
   { key: 1, display_name: '1月' },
   { key: 2, display_name: '2月' },
@@ -67,6 +67,27 @@ const monthOption = [
 
 ]
 
+// 案件维护中查询类别
+const execTypeOption = [
+  { key: 1, display_name: '保证金日' },
+  { key: 2, display_name: '交车日' },
+  { key: 3, display_name: '奖金日' },
+  { key: 4, display_name: '业绩日' },
+  { key: 5, display_name: '进度管控表' }
+
+]
+
+// 年份
+const yearOption = [
+  { key: 2015, display_name: '2015年' },
+  { key: 2016, display_name: '2016年' },
+  { key: 2017, display_name: '2017年' },
+  { key: 2018, display_name: '2018年' },
+  { key: 2019, display_name: '2019年' },
+  { key: 2020, display_name: '2020年' }
+
+]
+
 export default {
   titleOption,
   typeOption,
@@ -74,5 +95,7 @@ export default {
   modeOption,
   reasonOption,
   degreeOption,
-  monthOption
+  monthOption,
+  execTypeOption,
+  yearOption
 }
