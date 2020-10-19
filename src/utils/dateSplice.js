@@ -85,6 +85,25 @@ export function currentDate(nowDate) {
   return nowDate = year + '-' + month + '-' + day
 }
 
+/** 获取当前的年份 **/
+export function currentYear(nowYear) {
+  const date = new Date()
+  const year = date.getFullYear()
+  // eslint-disable-next-line no-return-assign
+  return nowYear = year
+}
+
+/** 获取当前的月份 **/
+export function currentMonth(nowMonth) {
+  const date = new Date()
+  let month = date.getMonth() + 1
+  if (month < 10) {
+    month = '0' + month
+  }
+  // eslint-disable-next-line no-return-assign
+  return nowMonth = month
+}
+
 /** 获取当前的时间  带秒数**/
 export function currentTime(times) {
   const myDate = new Date()

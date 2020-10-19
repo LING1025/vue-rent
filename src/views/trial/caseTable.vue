@@ -49,6 +49,7 @@
           v-loading="listLoading"
           :data="list"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          height="545"
           stripe
           border
           fit
@@ -147,8 +148,7 @@ import { mapGetters } from 'vuex'
 // import { getUserAuto } from '../../utils/auth'
 import { getCaseExecList, getCompanyNameList } from '../../api/reportTable/formTwo'
 import option from '@/variable/types'
-// import { currentDate, dateTostring, format, getCurrentMonthFirst } from '../../utils/dateSplice'
-// import { getMode } from '../../api/reportTable/formOne'
+import { currentYear, currentMonth } from '../../utils/dateSplice'
 
 export default {
   name: 'TrialCaseTable',
@@ -166,10 +166,10 @@ export default {
       monthOptions: option.monthOption,
       yearOptions: option.yearOption,
       execQuery: {
-        inc: '',
-        type: '',
-        year: '',
-        month: '',
+        inc: 0,
+        type: 4,
+        year: currentYear(),
+        month: currentMonth(),
         flag: 1,
         customer: ''
       },
