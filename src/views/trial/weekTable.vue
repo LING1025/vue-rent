@@ -26,10 +26,10 @@
           style="width: 100%"
         >
           <el-table-column align="center" label="新增契约租金（交车）" prop="tableName" />
-          <el-table-column align="center" label="客户来源-新拓①" prop="newExs" />
-          <el-table-column align="center" label="客户来源-保有②" prop="retain" />
-          <el-table-column align="center" label="客户来源-介绍③" prop="introduce" />
-          <el-table-column align="center" label="新增契约租金(①+②+③)" prop="totalNumAmt" />
+          <el-table-column align="center" label="客户来源-新拓①" prop="newExsNew" />
+          <el-table-column align="center" label="客户来源-保有②" prop="retainNew" />
+          <el-table-column align="center" label="客户来源-介绍③" prop="introduceNew" />
+          <el-table-column align="center" label="新增契约租金(①+②+③)" prop="totalNew" />
           <!--<el-table-column align="center" label="新增契约租金（交车）" prop="newOrderAmt" />
           <el-table-column align="center" label="当月目标" prop="thisMonGoal" />
           <el-table-column align="center" label="当月实绩" prop="thisMonReal" />
