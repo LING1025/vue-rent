@@ -30,16 +30,23 @@
           <el-table-column align="center" label="客户来源-保有②" prop="retainNew" />
           <el-table-column align="center" label="客户来源-介绍③" prop="introduceNew" />
           <el-table-column align="center" label="新增契约租金(①+②+③)" prop="totalNew" />
-          <!--<el-table-column align="center" label="新增契约租金（交车）" prop="newOrderAmt" />
-          <el-table-column align="center" label="当月目标" prop="thisMonGoal" />
-          <el-table-column align="center" label="当月实绩" prop="thisMonReal" />
-          <el-table-column align="center" label="结构比" prop="textureRatio" />
-          <el-table-column align="center" label="达成率" prop="getRate" />
-          <el-table-column align="center" label="上月实绩" prop="LastMonGoal" />
-          <el-table-column align="center" label="环比" prop="linkRatio" />
-          <el-table-column align="center" label="去年实绩" prop="LastYearGoal" />
-          <el-table-column align="center" label="结构比" prop="textureRatioTwo" />
-          <el-table-column align="center" label="同期比较" prop="compare" />-->
+        </el-table>
+        <el-table
+          v-loading="listLoading"
+          :data="tableData2"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
+          <el-table-column align="center" label="新增契约租金（交车）" prop="tableTwoName" />
+          <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewCarN" />
+          <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldCarN" />
+          <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewCarN" />
+          <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
+          <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
       </el-main>
     </el-container>
@@ -50,7 +57,7 @@
 import { mapGetters } from 'vuex'
 import { dateTostring, format, getCurrentMonthFirst, currentDate } from '../../utils/dateSplice'
 import { getUserAuto } from '../../utils/auth'
-import { getThisMonthTar } from '../../api/reportTable/formTwo'
+import { getThisMonthTar, getCarSourceRent } from '../../api/reportTable/formTwo'
 
 export default {
   name: 'TrialWeekTable',
@@ -63,6 +70,7 @@ export default {
     return {
       total: 0,
       tableData: null,
+      tableData2: null,
       listLoading: true,
       orderQuery: {
         userAuto: getUserAuto(),
@@ -81,6 +89,15 @@ export default {
       this.orderQuery.startDate = format(dateTostring(this.orderQuery.startDate))
       this.orderQuery.endDate = format(dateTostring(this.orderQuery.endDate))
     },
+    getListTwo() {
+      getCarSourceRent(this.orderQuery).then(response => {
+        this.tableData2 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     getList() {
       this.queryDouble()
       this.orderQuery.orgUpAuto = 0
@@ -89,6 +106,7 @@ export default {
         this.tableData = response.data
         this.total = response.data.total
         this.listLoading = false
+        this.getListTwo()
       }).catch(() => {
         this.listLoading = false
       })
