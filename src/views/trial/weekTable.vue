@@ -48,6 +48,23 @@
           <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
           <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
+        <el-table
+          v-loading="listLoading"
+          :data="tableData3"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
+          <el-table-column align="center" label="新增契约台数（交车）" prop="tableThreeName" />
+          <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewNumN" />
+          <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldNumN" />
+          <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewNumN" />
+          <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldNumN" />
+          <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumsN" />
+        </el-table>
       </el-main>
     </el-container>
   </div>
@@ -71,6 +88,7 @@ export default {
       total: 0,
       tableData: null,
       tableData2: null,
+      tableData3: null,
       listLoading: true,
       orderQuery: {
         userAuto: getUserAuto(),
