@@ -45,8 +45,8 @@
           <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewCarN" />
           <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldCarN" />
           <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewCarN" />
-          <el-table-column align="center" label="华南-车辆来源-旧车4" prop="southOldCarN" />
-          <el-table-column align="center" label="新增契约租金(①+②+③+4)" prop="totalNumAmtN" />
+          <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
+          <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
       </el-main>
     </el-container>
