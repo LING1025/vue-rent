@@ -36,7 +36,7 @@ export function getCaseExecList(query) {
   })
 }
 
-/** 获取业绩周报表当月目标信息 **/
+/** 新增契约租金-客户来源 **/
 export function getThisMonthTar(query) {
   return request({
     url: '/tableTwo/queryThisMonthTar',
@@ -47,6 +47,18 @@ export function getThisMonthTar(query) {
       endDate: query.endDate,
       orgAuto: query.orgAuto,
       orgUpAuto: query.orgUpAuto
+    }
+  })
+}
+
+/** 新增契约租金-车辆来源 **/
+export function getCarSourceRent(query) {
+  return request({
+    url: '/tableTwo/queryCarSourceRent',
+    method: 'get',
+    params: {
+      startDate: query.startDate,
+      endDate: query.endDate
     }
   })
 }
