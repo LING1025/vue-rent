@@ -86,6 +86,7 @@ export default {
   data() {
     return {
       total: 0,
+      // timer: '',
       tableData: null,
       tableData2: null,
       tableData3: null,
@@ -156,6 +157,13 @@ export default {
       this.getListThree()
     }
   }
+  /* mounted() {
+    this.timer = setTimeout(this.getListTwo, 5000)
+    this.timer = setTimeout(this.getListThree, 5000)
+  },
+  beforeDestroy() {
+    clearTimeout(this.timer)
+  }*/
 }
 </script>
 
