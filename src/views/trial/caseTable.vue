@@ -151,54 +151,6 @@ export default {
         mode: 0,
         searchWord: ''
       }
-      /* tableData: [{
-        newOrderAmt: '新增契约租金(①+②+③)',
-        thisMonGoal: '',
-        thisMonReal: '',
-        textureRatio: '',
-        getRate: '',
-        LastMonGoal: '',
-        linkRatio: '',
-        LastYearGoal: '',
-        textureRatioTwo: '',
-        compare: ''
-      },
-      {
-        newOrderAmt: '客户来源-新拓①',
-        thisMonGoal: '',
-        thisMonReal: '',
-        textureRatio: '',
-        getRate: '',
-        LastMonGoal: '',
-        linkRatio: '',
-        LastYearGoal: '',
-        textureRatioTwo: '',
-        compare: ''
-      },
-      {
-        newOrderAmt: '客户来源-保有②',
-        thisMonGoal: '',
-        thisMonReal: '',
-        textureRatio: '',
-        getRate: '',
-        LastMonGoal: '',
-        linkRatio: '',
-        LastYearGoal: '',
-        textureRatioTwo: '',
-        compare: ''
-      },
-      {
-        newOrderAmt: '客户来源-介绍③',
-        thisMonGoal: '',
-        thisMonReal: '',
-        textureRatio: '',
-        getRate: '',
-        LastMonGoal: '',
-        linkRatio: '',
-        LastYearGoal: '',
-        textureRatioTwo: '',
-        compare: ''
-      }],*/
     }
   },
   created() {
