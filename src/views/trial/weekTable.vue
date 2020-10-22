@@ -48,6 +48,23 @@
           <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
           <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
+        <el-table
+          v-loading="listLoading"
+          :data="tableData3"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
+          <el-table-column align="center" label="新增契约台数（交车）" prop="tableTwoName" />
+          <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewCarN" />
+          <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldCarN" />
+          <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewCarN" />
+          <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
+          <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumAmtN" />
+        </el-table>
       </el-main>
     </el-container>
   </div>
@@ -69,8 +86,10 @@ export default {
   data() {
     return {
       total: 0,
+      // timer: '',
       tableData: null,
       tableData2: null,
+      tableData3: null,
       listLoading: true,
       orderQuery: {
         userAuto: getUserAuto(),
@@ -78,25 +97,23 @@ export default {
         endDate: currentDate(),
         orgAuto: 0,
         orgUpAuto: 0
+      },
+      carQuery: {
+        startDate: getCurrentMonthFirst(),
+        endDate: currentDate(),
+        typeQuery: 1
       }
     }
   },
   created() {
     this.getList()
+    this.getListTwo()
+    this.getListThree()
   },
   methods: {
     queryDouble() {
       this.orderQuery.startDate = format(dateTostring(this.orderQuery.startDate))
       this.orderQuery.endDate = format(dateTostring(this.orderQuery.endDate))
-    },
-    getListTwo() {
-      getCarSourceRent(this.orderQuery).then(response => {
-        this.tableData2 = response.data
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
     },
     getList() {
       this.queryDouble()
@@ -106,15 +123,47 @@ export default {
         this.tableData = response.data
         this.total = response.data.total
         this.listLoading = false
-        this.getListTwo()
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    getListTwo() {
+      this.carQuery.startDate = this.orderQuery.startDate
+      this.carQuery.endDate = this.orderQuery.endDate
+      this.carQuery.typeQuery = 1
+      getCarSourceRent(this.carQuery).then(response => {
+        this.tableData2 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    getListThree() {
+      this.carQuery.startDate = this.orderQuery.startDate
+      this.carQuery.endDate = this.orderQuery.endDate
+      this.carQuery.typeQuery = 2
+      getCarSourceRent(this.carQuery).then(response => {
+        this.tableData3 = response.data
+        this.total = response.data.total
+        this.listLoading = false
       }).catch(() => {
         this.listLoading = false
       })
     },
     handleFilter() {
       this.getList()
+      this.getListTwo()
+      this.getListThree()
     }
   }
+  /* mounted() {
+    this.timer = setTimeout(this.getListTwo, 5000)
+    this.timer = setTimeout(this.getListThree, 5000)
+  },
+  beforeDestroy() {
+    clearTimeout(this.timer)
+  }*/
 }
 </script>
 
