@@ -58,7 +58,8 @@ export function getCarSourceRent(query) {
     method: 'get',
     params: {
       startDate: query.startDate,
-      endDate: query.endDate
+      endDate: query.endDate,
+      typeQuery: query.typeQuery
     }
   })
 }

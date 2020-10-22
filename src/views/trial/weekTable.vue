@@ -58,18 +58,12 @@
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="新增契约租金（交车）" prop="tableTwoName" />
+          <el-table-column align="center" label="新增契约台数（交车）" prop="tableTwoName" />
           <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewCarN" />
           <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldCarN" />
           <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewCarN" />
           <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
-          <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
-          <!--<el-table-column align="center" label="新增契约台数（交车）" prop="tableThreeName" />
-          <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewNumN" />
-          <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldNumN" />
-          <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewNumN" />
-          <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldNumN" />
-          <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumsN" />-->
+          <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
       </el-main>
     </el-container>
@@ -105,28 +99,20 @@ export default {
       },
       carQuery: {
         startDate: getCurrentMonthFirst(),
-        endDate: currentDate()
+        endDate: currentDate(),
+        typeQuery: 1
       }
     }
   },
   created() {
     this.getList()
+    this.getListTwo()
+    this.getListThree()
   },
   methods: {
     queryDouble() {
       this.orderQuery.startDate = format(dateTostring(this.orderQuery.startDate))
       this.orderQuery.endDate = format(dateTostring(this.orderQuery.endDate))
-    },
-    getListTwo() {
-      this.carQuery.startDate = this.orderQuery.startDate
-      this.carQuery.endDate = this.orderQuery.endDate
-      getCarSourceRent(this.carQuery).then(response => {
-        this.tableData2 = response.data
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
     },
     getList() {
       this.queryDouble()
@@ -136,13 +122,38 @@ export default {
         this.tableData = response.data
         this.total = response.data.total
         this.listLoading = false
-        this.getListTwo()
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    getListTwo() {
+      this.carQuery.startDate = this.orderQuery.startDate
+      this.carQuery.endDate = this.orderQuery.endDate
+      this.carQuery.typeQuery = 1
+      getCarSourceRent(this.carQuery).then(response => {
+        this.tableData2 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    getListThree() {
+      this.carQuery.startDate = this.orderQuery.startDate
+      this.carQuery.endDate = this.orderQuery.endDate
+      this.carQuery.typeQuery = 2
+      getCarSourceRent(this.carQuery).then(response => {
+        this.tableData3 = response.data
+        this.total = response.data.total
+        this.listLoading = false
       }).catch(() => {
         this.listLoading = false
       })
     },
     handleFilter() {
       this.getList()
+      this.getListTwo()
+      this.getListThree()
     }
   }
 }
