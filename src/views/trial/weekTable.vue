@@ -107,25 +107,11 @@ export default {
   },
   created() {
     this.getList()
-    this.getListTwo()
-    this.getListThree()
   },
   methods: {
     queryDouble() {
       this.orderQuery.startDate = format(dateTostring(this.orderQuery.startDate))
       this.orderQuery.endDate = format(dateTostring(this.orderQuery.endDate))
-    },
-    getList() {
-      this.queryDouble()
-      this.orderQuery.orgUpAuto = 0
-      this.orderQuery.orgAuto = 0
-      getThisMonthTar(this.orderQuery).then(response => {
-        this.tableData = response.data
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
     },
     getListTwo() {
       this.carQuery.startDate = this.orderQuery.startDate
@@ -151,10 +137,22 @@ export default {
         this.listLoading = false
       })
     },
+    getList() {
+      this.queryDouble()
+      this.orderQuery.orgUpAuto = 0
+      this.orderQuery.orgAuto = 0
+      getThisMonthTar(this.orderQuery).then(response => {
+        this.tableData = response.data
+        this.total = response.data.total
+        this.listLoading = false
+        this.getListTwo()
+        this.getListThree()
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     handleFilter() {
       this.getList()
-      this.getListTwo()
-      this.getListThree()
     }
   }
   /* mounted() {
