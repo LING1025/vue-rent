@@ -4,10 +4,10 @@
       <el-header>
         <el-row>
           <el-col :span="4">
-            <el-date-picker v-model="cusQuery.startDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="cusQuery.startDate" type="date" format="yyyy/MM/dd" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
-            <el-date-picker v-model="cusQuery.endDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="cusQuery.endDate" type="date" format="yyyy/MM/dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import { currentDate, dateTostring, format, getCurrentMonthFirst } from '../../utils/dateSplice'
+import { currentDate, dateToStringTwo, formatTwo, getCurrentMonthFirst } from '../../utils/dateSplice'
 import { getCustomerNum } from '../../api/reportTable/formThree'
 export default {
   name: 'StaffStatement',
@@ -57,8 +57,8 @@ export default {
   },
   methods: {
     queryDouble() {
-      this.cusQuery.startDate = format(dateTostring(this.cusQuery.startDate))
-      this.cusQuery.endDate = format(dateTostring(this.cusQuery.endDate))
+      this.cusQuery.startDate = formatTwo(dateToStringTwo(this.cusQuery.startDate))
+      this.cusQuery.endDate = formatTwo(dateToStringTwo(this.cusQuery.endDate))
     },
     getList() {
       this.queryDouble()
