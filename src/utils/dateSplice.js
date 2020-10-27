@@ -11,6 +11,8 @@ export function dateTostring(date) {
     return date.toLocaleString().split(' ', 1)[0].replace(/\//g, '-') // 截取时间
   }
 }
+
+/** yyyy-MM-dd **/
 export function format(string) {
   if (string === '' || string == null) {
     return string
@@ -23,6 +25,31 @@ export function format(string) {
       strings[2] = '0' + strings[2]
     }
     return strings[0] + '-' + strings[1] + '-' + strings[2]
+  }
+}
+
+/** 时间间隔符号替换 **/
+export function dateToStringTwo(date) {
+  if (date === '' || date == null) {
+    return date
+  } else {
+    return date.toLocaleString().split(' ', 1)[0].replace(/-/g, '/') // 截取时间
+  }
+}
+
+/** yyyy/MM/dd **/
+export function formatTwo(string) {
+  if (string === '' || string == null) {
+    return string
+  } else {
+    const strings = string.split('/')
+    if (strings[1].length <= 1) {
+      strings[1] = '0' + strings[1]
+    }
+    if (strings[2].length <= 1) {
+      strings[2] = '0' + strings[2]
+    }
+    return strings[0] + '/' + strings[1] + '/' + strings[2]
   }
 }
 
