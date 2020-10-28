@@ -1,5 +1,13 @@
 <template>
-  <div/>
+  <download-excel
+    class="export-excel-wrapper"
+    :data="json_data"
+    :fields="json_fields"
+    name="远程诊断报告导出.xls"
+  >
+    <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+    <el-button type="primary" size="small">导出EXCEL</el-button>
+  </download-excel>
 </template>
 
 <script>
@@ -8,328 +16,47 @@ export default {
   name: 'TrialIndex',
   data() {
     return {
-      flag: false,
-      flag2: false
-    }
-  },
-  created() {
-    this.draws()
-  },
-  methods: {
-    draws() {
-      // 当月数据
-      var	thisMonth = [
-        {
-          'yearMon': '2019-08',
-          'days': '5',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 1,
-          'pmoney': 59760
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '13',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 4,
-          'pmoney': 753120
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '14',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 1,
-          'pmoney': 351180
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '16',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 7,
-          'pmoney': 957600
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '19',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 2,
-          'pmoney': 1056240
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '20',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 7,
-          'pmoney': 1852800
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '21',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 1,
-          'pmoney': 670860
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '22',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 3,
-          'pmoney': 1680240
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '23',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 3,
-          'pmoney': 929880
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '26',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 16,
-          'pmoney': 2661252
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '27',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 3,
-          'pmoney': 823320
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '28',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 3,
-          'pmoney': 891840
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '29',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 4,
-          'pmoney': 685080
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '30',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 9,
-          'pmoney': 1316160
-        },
-        {
-          'yearMon': '2019-08',
-          'days': '31',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcount': 47,
-          'pmoney': 11118456
+      json_fields: {
+        '头部-诊断名称': 'name', // 常规字段
+        '头部-联系电话': 'phone.mobile', // 支持嵌套属性
+        '头部-损坏区域代码': {
+          field: 'phone.landline',
+          // 自定义回调函数
+          callback: value => {
+            return `损坏区域代码 - ${value}`
+          }
         }
+      },
+      json_data: [
+        {
+          name: '损坏的组件一',
+          city: 'New York',
+          country: 'United States',
+          birthdate: '1978-03-15',
+          phone: {
+            mobile: '1-541-754-3010',
+            landline: '(541) 754-3010'
+          }
+        },
+        {
+          name: '损坏的组件二',
+          city: 'Athens',
+          country: 'Greece',
+          birthdate: '1987-11-23',
+          phone: {
+            mobile: '+1 855 275 5071',
+            landline: '(2741) 2621-244'
+          }
+        }
+      ],
+      json_meta: [
+        [
+          {
+            ' key ': ' charset ',
+            ' value ': ' utf- 8 '
+          }
+        ]
       ]
-      // 本月数据
-      var	lastMonth = [
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '5',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 1,
-          'pmoneyLast': 462600
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '10',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 1,
-          'pmoneyLast': 104400
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '11',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 1,
-          'pmoneyLast': 83040
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '15',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 4,
-          'pmoneyLast': 1305600
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '16',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 2,
-          'pmoneyLast': 217200
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '19',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 5,
-          'pmoneyLast': 1357680
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '22',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 5,
-          'pmoneyLast': 535680
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '23',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 8,
-          'pmoneyLast': 3068280
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '24',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 3,
-          'pmoneyLast': 1360200
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '26',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 3,
-          'pmoneyLast': 649356
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '29',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 6,
-          'pmoneyLast': 1593780
-        },
-        {
-          'yearMonLast': '2019-07',
-          'daysLast': '31',
-          'orgAuto': null,
-          'salesAuto': null,
-          'fname': null,
-          'pcountLast': 219,
-          'pmoneyLast': 47951448
-        }
-      ]
-      var taiNums = [] // 当月台数
-      var money = [] // 当月金额
-      var taiNumsLastMon = [] // 上个月台数
-      var moneyLastMon = [] // 上个月金额
-      var riqi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-
-      for (var i = 0; i < riqi.length; i++) {
-        this.flag = false
-        this.flag2 = false
-        var pcount
-        var pmoney
-        var pcount2
-        var pmoney2
-        // 当月
-        for (var j = 0; j < thisMonth.length; j++) {
-          // eslint-disable-next-line eqeqeq
-          if (riqi[i] == thisMonth[j].days) {
-            pcount = thisMonth[j].pcount
-            pmoney = thisMonth[j].pmoney
-            taiNums.push(thisMonth[j].pcount)
-            money.push(thisMonth[j].pmoney)
-            this.flag = true
-          }
-        }
-        if (!this.flag) {
-          // eslint-disable-next-line eqeqeq
-          if (pcount == null || pmoney == null) {
-            taiNums.push(0)
-            money.push(0)
-          } else {
-            taiNums.push(pcount)
-            money.push(pmoney)
-          }
-        }
-        // 上个月
-        for (var k = 0; k < lastMonth.length; k++) {
-          // eslint-disable-next-line eqeqeq
-          if (riqi[i] == lastMonth[k].daysLast) {
-            pcount2 = lastMonth[k].pcountLast
-            pmoney2 = lastMonth[k].pmoneyLast
-            taiNumsLastMon.push(lastMonth[k].pcountLast)
-            moneyLastMon.push(lastMonth[k].pmoneyLast)
-            this.flag2 = true
-          }
-        }
-        if (!this.flag2) {
-          // eslint-disable-next-line eqeqeq
-          if (pcount2 == null || pmoney2 == null) {
-            taiNumsLastMon.push(0)
-            moneyLastMon.push(0)
-          } else {
-            taiNumsLastMon.push(pcount2)
-            moneyLastMon.push(pmoney2)
-          }
-        }
-      }
-      console.log('这是获取的pcount')
-      console.log(taiNums)
-      console.log('这是获取的pcountLast')
-      console.log(taiNumsLastMon)
-      console.log('这是获取的pmoney')
-      console.log(money)
-      console.log('这是获取的pmoneyLast')
-      console.log(moneyLastMon)
     }
   }
 }

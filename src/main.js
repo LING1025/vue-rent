@@ -19,7 +19,9 @@ import BabelPolyfill from 'babel-polyfill'
 // import ECharts from 'echarts'
 // echarts 引入
 import echarts from 'echarts'
+import JsonExcel from 'vue-json-excel'
 
+Vue.component('downloadExcel', JsonExcel)
 Vue.use(BabelPolyfill)
 Vue.prototype.$echarts = echarts
 /**
