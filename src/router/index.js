@@ -80,7 +80,7 @@ export const constantRoutes = [
         meta: { title: '修改个人密码' }
       }
     ]
-  },*/
+  },
   {
     path: '/staff',
     component: Layout,
@@ -88,7 +88,7 @@ export const constantRoutes = [
     name: 'Staff',
     meta: { title: '员工' },
     children: [
-      /* {
+       {
         path: 'maintain',
         name: 'StaffMaintain',
         component: () => import('@/views/staff/maintain'),
@@ -129,13 +129,13 @@ export const constantRoutes = [
         name: 'StaffUserInforMain',
         component: () => import('@/views/staff/userInforMain'),
         meta: { title: '员工联络信息维护' }
-      },*/
+      },
       {
         path: 'statement',
         name: 'StaffStatement',
         component: () => import('@/views/staff/statement'),
         meta: { title: '信管报表' }
-      }/*,
+      },
       {
         path: 'commonSettings',
         name: 'StaffCommonSettings',
@@ -147,9 +147,9 @@ export const constantRoutes = [
         name: 'StaffLeaveSystem',
         component: () => import('@/views/staff/leaveSystem'),
         meta: { title: '请休假系统' }
-      }*/
+      }
     ]
-  }, /*
+  },
   {
     path: '/oa',
     component: Layout,
@@ -194,24 +194,33 @@ export const constantRoutes = [
         name: 'TrialOpTable',
         component: () => import('@/views/trial/opTable'),
         meta: { title: '营业报表' }
-      },
+      }
       /* {
         path: 'caseTable',
         name: 'TrialCaseTable',
         component: () => import('@/views/trial/caseTable'),
         meta: { title: '案件进度维护' }
       },*/
-      {
-        path: 'weekTable',
-        name: 'TrialWeekTable',
-        component: () => import('@/views/trial/weekTable'),
-        meta: { title: '新增契约租金报表' }
-      },
-      {
+    ]
+  },
+  {
+    path: '/tableWeek',
+    component: Layout,
+    redirect: '/tableWeek/TotalTb',
+    name: 'TableWeek',
+    meta: { title: '大陆出行事业业绩报表' },
+    children: [
+      /* {
         path: 'index',
-        name: 'TrialIndex',
-        component: () => import('@/views/trial/index'),
+        name: 'TableWeekIndex',
+        component: () => import('@/views/tableWeek/index'),
         meta: { title: '测试' }
+      },*/
+      {
+        path: 'totalTb',
+        name: 'TableWeekTotal',
+        component: () => import('@/views/tableWeek/totalTb'),
+        meta: { title: '大陆出行事业业绩报表' }
       }
     ]
   },
