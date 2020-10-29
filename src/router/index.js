@@ -206,13 +206,13 @@ export const constantRoutes = [
         name: 'TrialWeekTable',
         component: () => import('@/views/trial/weekTable'),
         meta: { title: '新增契约租金报表' }
-      }
-      /* {
+      },
+      {
         path: 'index',
         name: 'TrialIndex',
         component: () => import('@/views/trial/index'),
-        meta: { title: '回租报价' }
-      }*/
+        meta: { title: '测试' }
+      }
     ]
   },
   /* {
