@@ -13,7 +13,7 @@
 <script>
 
 export default {
-  name: 'TrialIndex',
+  name: 'TableWeekIndex',
   data() {
     return {
       json_fields: {

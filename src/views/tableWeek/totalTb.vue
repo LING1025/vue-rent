@@ -4,10 +4,10 @@
       <el-header>
         <el-row>
           <el-col :span="4">
-            <el-date-picker v-model="orderQuery.startDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="orderQuery.startDate" type="date" format="yyyy/MM/dd" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
-            <el-date-picker v-model="orderQuery.endDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="orderQuery.endDate" type="date" format="yyyy/MM/dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -65,6 +65,23 @@
           <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
           <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
+        <el-table
+          v-loading="listLoading"
+          :data="tableData4"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
+          <el-table-column align="center" label="保有客户台数（展期）" prop="tableName" />
+          <el-table-column align="center" label="前月保有客户台数" prop="lmCusNumN" />
+          <el-table-column align="center" label="新增业绩台数" prop="createNumN" />
+          <el-table-column align="center" label="结清-期满解约" prop="endNumN" />
+          <el-table-column align="center" label="结清-提前解约" prop="beforeEndNumN" />
+          <el-table-column align="center" label="本月保有客户台数" prop="tmCusNumN" />
+        </el-table>
       </el-main>
     </el-container>
   </div>
@@ -72,12 +89,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { dateTostring, format, getCurrentMonthFirst, currentDate } from '../../utils/dateSplice'
+import { getCurrentMonthFirst, currentDate, dateToStringTwo, formatTwo } from '../../utils/dateSplice'
 import { getUserAuto } from '../../utils/auth'
 import { getThisMonthTar, getCarSourceRent } from '../../api/reportTable/formTwo'
+import { getCustomerNum } from '../../api/reportTable/formThree'
 
 export default {
-  name: 'TrialWeekTable',
+  name: 'TableWeekTotalTb',
   computed: {
     ...mapGetters([
       'userAuto'
@@ -86,10 +104,10 @@ export default {
   data() {
     return {
       total: 0,
-      // timer: '',
       tableData: null,
       tableData2: null,
       tableData3: null,
+      tableData4: null,
       listLoading: true,
       orderQuery: {
         userAuto: getUserAuto(),
@@ -102,6 +120,10 @@ export default {
         startDate: getCurrentMonthFirst(),
         endDate: currentDate(),
         typeQuery: 1
+      },
+      cusQuery: {
+        startDate: getCurrentMonthFirst(),
+        endDate: currentDate()
       }
     }
   },
@@ -110,8 +132,8 @@ export default {
   },
   methods: {
     queryDouble() {
-      this.orderQuery.startDate = format(dateTostring(this.orderQuery.startDate))
-      this.orderQuery.endDate = format(dateTostring(this.orderQuery.endDate))
+      this.orderQuery.startDate = formatTwo(dateToStringTwo(this.orderQuery.startDate))
+      this.orderQuery.endDate = formatTwo(dateToStringTwo(this.orderQuery.endDate))
     },
     getListTwo() {
       this.carQuery.startDate = this.orderQuery.startDate
@@ -137,6 +159,17 @@ export default {
         this.listLoading = false
       })
     },
+    getListFour() {
+      this.cusQuery.startDate = this.orderQuery.startDate
+      this.cusQuery.endDate = this.orderQuery.endDate
+      getCustomerNum(this.cusQuery).then(response => {
+        this.tableData4 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     getList() {
       this.queryDouble()
       this.orderQuery.orgUpAuto = 0
@@ -147,6 +180,7 @@ export default {
         this.listLoading = false
         this.getListTwo()
         this.getListThree()
+        this.getListFour()
       }).catch(() => {
         this.listLoading = false
       })
@@ -155,13 +189,6 @@ export default {
       this.getList()
     }
   }
-  /* mounted() {
-    this.timer = setTimeout(this.getListTwo, 5000)
-    this.timer = setTimeout(this.getListThree, 5000)
-  },
-  beforeDestroy() {
-    clearTimeout(this.timer)
-  }*/
 }
 </script>
 
