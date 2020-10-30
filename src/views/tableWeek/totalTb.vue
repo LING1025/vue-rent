@@ -12,10 +12,14 @@
           <el-col :span="4">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
           </el-col>
+          <div class="export">
+            <el-button style="margin-top: 2px;" type="primary" @click="exportExcel">导出EXCEL</el-button>
+          </div>
         </el-row>
       </el-header>
       <el-main>
         <el-table
+          id="tableOne"
           v-loading="listLoading"
           :data="tableData"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -32,6 +36,7 @@
           <el-table-column align="center" label="新增契约租金(①+②+③)" prop="totalNew" />
         </el-table>
         <el-table
+          id="tableTwo"
           v-loading="listLoading"
           :data="tableData2"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -49,6 +54,7 @@
           <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
         <el-table
+          id="tableThree"
           v-loading="listLoading"
           :data="tableData3"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -66,6 +72,7 @@
           <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
         <el-table
+          id="tableFour"
           v-loading="listLoading"
           :data="tableData4"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -93,6 +100,8 @@ import { getCurrentMonthFirst, currentDate, dateToStringTwo, formatTwo } from '.
 import { getUserAuto } from '../../utils/auth'
 import { getThisMonthTar, getCarSourceRent } from '../../api/reportTable/formTwo'
 import { getCustomerNum } from '../../api/reportTable/formThree'
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 
 export default {
   name: 'TableWeekTotalTb',
@@ -187,6 +196,18 @@ export default {
     },
     handleFilter() {
       this.getList()
+    },
+    exportExcel() {
+      /* generate workbook object from table */
+      var wb = XLSX.utils.table_to_book(document.querySelector('#tableOne'), { raw: true }) // 由于js-xlsx提供了自动加工功能，会识别数据格式,导致导出的Excel数据和table显示数据不完全一致,raw：表示导出数据是否是未加工的。
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '出行事业业绩周报.xlsx')
+      } catch (e) {
+        if (typeof console !== 'undefined') { console.log(e, wbout) }
+      }
+      return wbout
     }
   }
 }
