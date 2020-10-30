@@ -210,12 +210,12 @@ export const constantRoutes = [
     name: 'TableWeek',
     meta: { title: '大陆出行事业业绩报表' },
     children: [
-      /* {
+      {
         path: 'index',
         name: 'TableWeekIndex',
         component: () => import('@/views/tableWeek/index'),
         meta: { title: '测试' }
-      },*/
+      },
       {
         path: 'totalTb',
         name: 'TableWeekTotal',
