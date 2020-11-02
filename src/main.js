@@ -24,6 +24,7 @@ import JsonExcel from 'vue-json-excel'
 Vue.component('downloadExcel', JsonExcel)
 Vue.use(BabelPolyfill)
 Vue.prototype.$echarts = echarts
+Vue.use(htmlToPdf) // 页面转pdf格式
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -43,7 +44,6 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-Vue.use(htmlToPdf)
 // Vue.prototype.echarts = ECharts
 // Vue.use(ECharts)
 
