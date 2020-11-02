@@ -12,25 +12,15 @@
           <el-col :span="4">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
           </el-col>
-          <el-col :span="4">
-            <el-button type="primary" plain @click="printOut">导出PDF</el-button>
-          </el-col>
+          <div class="export">
+            <el-button style="margin-top: 2px;" type="primary" @click="exportExcel">导出EXCEL
+            </el-button>
+          </div>
         </el-row>
       </el-header>
-      <el-main id="demo" style="background-color:#fff;">
+      <el-main>
         <el-table
-          :data="tableTime"
-          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
-          stripe
-          border
-          fit
-          min
-          style="width: 100%">
-          <el-table-column align="center" label="本期业绩计算时间：" prop="benQi"/>
-          <el-table-column align="center" label="上月业绩计算时间：" prop="lMon"/>
-          <el-table-column align="center" label="去年业绩计算时间：" prop="lYear"/>
-        </el-table>
-        <el-table
+          id="tableOne"
           v-loading="listLoading"
           :data="tableData"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -47,6 +37,7 @@
           <el-table-column align="center" label="新增契约租金(①+②+③)" prop="totalNew" />
         </el-table>
         <el-table
+          id="tableTwo"
           v-loading="listLoading"
           :data="tableData2"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -64,6 +55,7 @@
           <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
         <el-table
+          id="tableThree"
           v-loading="listLoading"
           :data="tableData3"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -81,6 +73,7 @@
           <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumAmtN" />
         </el-table>
         <el-table
+          id="tableFour"
           v-loading="listLoading"
           :data="tableData4"
           :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
@@ -108,7 +101,8 @@ import { getCurrentMonthFirst, currentDate, dateToStringTwo, formatTwo } from '.
 import { getUserAuto } from '../../utils/auth'
 import { getThisMonthTar, getCarSourceRent } from '../../api/reportTable/formTwo'
 import { getCustomerNum } from '../../api/reportTable/formThree'
-import htmlToPdf from '../../utils/htmlToPdf'
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 
 export default {
   name: 'TableWeekTotalTb',
@@ -124,11 +118,6 @@ export default {
       tableData2: null,
       tableData3: null,
       tableData4: null,
-      tableTime: [{
-        benQi: '',
-        lMon: '',
-        lYear: ''
-      }],
       listLoading: true,
       orderQuery: {
         userAuto: getUserAuto(),
@@ -202,12 +191,6 @@ export default {
         this.getListTwo()
         this.getListThree()
         this.getListFour()
-        this.tableTime.benQi = this.orderQuery.startDate + '~' + this.orderQuery.endDate
-        console.log(this.tableTime.benQi)
-        this.tableTime.lMon = this.orderQuery.startDate.split('/')[0] + '/' + this.orderQuery.startDate.split('/')[1] - 1 + '/' + this.orderQuery.startDate.split('/')[2] + '~' + this.orderQuery.endDate.split('/')[0] + '/' + this.orderQuery.endDate.startDate.split('/')[1] - 1 + '/' + this.orderQuery.endDate.split('/')[2]
-        console.log(this.tableTime.lMon)
-        // this.tableTime.lYear = this.orderQuery.startDate.slice(0, 4) - 1 + '/' + this.orderQuery.startDate.slice(4, 10) + '~' + this.orderQuery.endDate.slice(0, 4) - 1 + this.orderQuery.endDate.slice(4, 10)
-        // console.log(this.tableTime.lYear)
       }).catch(() => {
         this.listLoading = false
       })
@@ -215,8 +198,27 @@ export default {
     handleFilter() {
       this.getList()
     },
-    printOut() {
-      htmlToPdf.downloadPDF(document.querySelector('#demo'), '出行事业业绩周报')
+    exportExcel() {
+      var workbook = XLSX.utils.book_new()
+      // 由于js-xlsx提供了自动加工功能，会识别数据格式,导致导出的Excel数据和table显示数据不完全一致,raw：表示导出数据是否是未加工的。
+      // 导出一个table 用table_to_book
+      /* generate workbook object from table */
+      var wb1 = XLSX.utils.table_to_sheet(document.querySelector('#tableOne'), { raw: true })
+      XLSX.utils.book_append_sheet(workbook, wb1, 'sheet1')
+      var wb2 = XLSX.utils.table_to_sheet(document.querySelector('#tableTwo'), { raw: true })
+      XLSX.utils.book_append_sheet(workbook, wb2, 'sheet2')
+      var wb3 = XLSX.utils.table_to_sheet(document.querySelector('#tableThree'), { raw: true })
+      XLSX.utils.book_append_sheet(workbook, wb3, 'sheet3')
+      var wb4 = XLSX.utils.table_to_sheet(document.querySelector('#tableFour'), { raw: true })
+      XLSX.utils.book_append_sheet(workbook, wb4, 'sheet4')
+      /* get binary string as output */
+      var wbout = XLSX.write(workbook, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '出行事业业绩周报.xlsx')
+      } catch (e) {
+        if (typeof console !== 'undefined') { console.log(e, wbout) }
+      }
+      return wbout
     }
   }
 }
