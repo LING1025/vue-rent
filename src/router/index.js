@@ -218,7 +218,7 @@ export const constantRoutes = [
       },*/
       {
         path: 'totalTb',
-        name: 'TableWeekTotal',
+        name: 'TableWeekTotalTb',
         component: () => import('@/views/tableWeek/totalTb'),
         meta: { title: '大陆出行事业业绩周报表' }
       }
