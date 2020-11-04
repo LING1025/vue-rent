@@ -4,10 +4,10 @@
       <el-header>
         <el-row>
           <el-col :span="4">
-            <el-date-picker v-model="orderQuery.startDate" type="date" format="yyyy/MM/dd" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="orderQuery.startDate" type="date" format="yyyy/MM/dd" value-format="yyyy/MM/dd" placeholder="请选择开始日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
-            <el-date-picker v-model="orderQuery.endDate" type="date" format="yyyy/MM/dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
+            <el-date-picker v-model="orderQuery.endDate" type="date" format="yyyy/MM/dd" value-format="yyyy/MM/dd" placeholder="请选择结束日期" style="width: 100%" @keyup.enter.native="handleFilter" /><!--使用format指定输入框的格式；使用value-format指定绑定值的格式。-->
           </el-col>
           <el-col :span="4">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -144,6 +144,7 @@ export default {
     queryDouble() {
       this.orderQuery.startDate = formatTwo(dateToStringTwo(this.orderQuery.startDate))
       this.orderQuery.endDate = formatTwo(dateToStringTwo(this.orderQuery.endDate))
+      console.log(this.orderQuery.endDate)
     },
     getListTwo() {
       this.carQuery.startDate = this.orderQuery.startDate
@@ -203,8 +204,8 @@ export default {
       // 由于js-xlsx提供了自动加工功能，会识别数据格式,导致导出的Excel数据和table显示数据不完全一致,raw：表示导出数据是否是未加工的。
       // 导出一个table 用table_to_book
       /* generate workbook object from table */
-      var wb1 = XLSX.utils.table_to_sheet(document.querySelector('#tableOne'), { raw: true })
-      XLSX.utils.book_append_sheet(workbook, wb1, 'sheet1')
+      var wb1 = XLSX.utils.table_to_sheet(document.querySelector('#tableOne'), { raw: true }) // #tableOne是table表的id名
+      XLSX.utils.book_append_sheet(workbook, wb1, 'sheet1') // sheet的命名
       var wb2 = XLSX.utils.table_to_sheet(document.querySelector('#tableTwo'), { raw: true })
       XLSX.utils.book_append_sheet(workbook, wb2, 'sheet2')
       var wb3 = XLSX.utils.table_to_sheet(document.querySelector('#tableThree'), { raw: true })

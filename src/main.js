@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+import 'babel-polyfill'// ie兼容性插件
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -14,17 +15,14 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-import htmlToPdf from '@/utils/htmlToPdf'
-import BabelPolyfill from 'babel-polyfill'
+// import htmlToPdf from '@/utils/htmlToPdf'
 // import ECharts from 'echarts'
 // echarts 引入
 import echarts from 'echarts'
-import JsonExcel from 'vue-json-excel'
 
-Vue.component('downloadExcel', JsonExcel)
-Vue.use(BabelPolyfill)
+// Vue.use(BabelPolyfill)
 Vue.prototype.$echarts = echarts
-Vue.use(htmlToPdf) // 页面转pdf格式
+// Vue.use(htmlToPdf) // 页面转pdf格式
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
