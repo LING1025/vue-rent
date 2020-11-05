@@ -81,6 +81,24 @@
           <el-table-column align="center" label="结构比" prop="construction" />
           <el-table-column align="center" label="同期对比" prop="comparison" />
         </el-table>
+        <el-table
+          id="tableFour"
+          v-loading="listLoading"
+          :data="tableData4"
+          :header-cell-style="{background:'#336699',color:'#FFFFFF'}"
+          stripe
+          border
+          fit
+          min
+          style="width: 100%"
+        >
+          <el-table-column width="200px" align="center" label="保有客户台数（展期）" prop="titleName" />
+          <el-table-column align="center" label="当月实绩" prop="thisMonAct" />
+          <el-table-column align="center" label="上月实绩" prop="lastMonAct" />
+          <el-table-column align="center" label="环比" prop="link" />
+          <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
+          <el-table-column align="center" label="同期对比" prop="comparison" />
+        </el-table>
       </el-main>
     </el-container>
   </div>
@@ -90,7 +108,7 @@
 import { mapGetters } from 'vuex'
 import { getCurrentMonthFirst, currentDate, dateToStringTwo, formatTwo } from '../../utils/dateSplice'
 import { getUserAuto } from '../../utils/auth'
-import { getRentAmtList, getCarRent } from '../../api/reportTable/formTwo'
+import { getRentAmtList, getCarRent, getNum } from '../../api/reportTable/formTwo'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 
@@ -160,6 +178,17 @@ export default {
         this.listLoading = false
       })
     },
+    getListFour() {
+      this.cusQuery.startDate = this.orderQuery.startDate
+      this.cusQuery.endDate = this.orderQuery.endDate
+      getNum(this.cusQuery).then(response => {
+        this.tableData4 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     getList() {
       this.queryDouble()
       this.orderQuery.orgUpAuto = 0
@@ -170,6 +199,7 @@ export default {
         this.listLoading = false
         this.getListTwo()
         this.getListThree()
+        this.getListFour()
       }).catch(() => {
         this.listLoading = false
       })

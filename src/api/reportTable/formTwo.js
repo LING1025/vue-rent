@@ -103,3 +103,15 @@ export function getCustomerNum(query) {
     }
   })
 }
+
+/** 新增保有客户台数 **/
+export function getNum(query) {
+  return request({
+    url: '/table/queryNum',
+    method: 'get',
+    params: {
+      startDate: query.startDate,
+      endDate: query.endDate
+    }
+  })
+}
