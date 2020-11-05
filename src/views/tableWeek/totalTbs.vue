@@ -114,11 +114,6 @@ import XLSX from 'xlsx'
 
 export default {
   name: 'TableWeekTotalTbs',
-  computed: {
-    ...mapGetters([
-      'userAuto'
-    ])
-  },
   data() {
     return {
       total: 0,
@@ -144,6 +139,11 @@ export default {
         endDate: currentDate()
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userAuto'
+    ])
   },
   created() {
     this.getList()
