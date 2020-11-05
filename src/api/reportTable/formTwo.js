@@ -37,24 +37,9 @@ export function getCaseExecList(query) {
 }
 
 /** 新增契约租金-客户来源 **/
-export function getThisMonthTar(query) {
-  return request({
-    url: '/tableTwo/queryThisMonthTar',
-    method: 'get',
-    params: {
-      userAuto: query.userAuto,
-      startDate: query.startDate,
-      endDate: query.endDate,
-      orgAuto: query.orgAuto,
-      orgUpAuto: query.orgUpAuto
-    }
-  })
-}
-
-/** 新增契约租金-客户来源 **/
 export function getRentAmtList(query) {
   return request({
-    url: '/table/queryRentAmtList',
+    url: '/tableTwo/queryRentAmtList',
     method: 'get',
     params: {
       userAuto: query.userAuto,
@@ -62,19 +47,6 @@ export function getRentAmtList(query) {
       endDate: query.endDate,
       orgAuto: query.orgAuto,
       orgUpAuto: query.orgUpAuto
-    }
-  })
-}
-
-/** 新增契约租金-车辆来源 **/
-export function getCarSourceRent(query) {
-  return request({
-    url: '/tableTwo/queryCarSourceRent',
-    method: 'get',
-    params: {
-      startDate: query.startDate,
-      endDate: query.endDate,
-      typeQuery: query.typeQuery
     }
   })
 }
@@ -82,7 +54,7 @@ export function getCarSourceRent(query) {
 /** 新增契约租金-车辆来源 **/
 export function getCarRent(query) {
   return request({
-    url: '/table/queryCarRent',
+    url: '/tableTwo/queryCarRent',
     method: 'get',
     params: {
       startDate: query.startDate,
@@ -93,21 +65,9 @@ export function getCarRent(query) {
 }
 
 /** 新增保有客户台数 **/
-export function getCustomerNum(query) {
-  return request({
-    url: '/tableTwo/queryCustomerNum',
-    method: 'get',
-    params: {
-      startDate: query.startDate,
-      endDate: query.endDate
-    }
-  })
-}
-
-/** 新增保有客户台数 **/
 export function getNum(query) {
   return request({
-    url: '/table/queryNum',
+    url: '/tableTwo/queryNum',
     method: 'get',
     params: {
       startDate: query.startDate,
