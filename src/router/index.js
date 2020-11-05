@@ -206,7 +206,7 @@ export const constantRoutes = [
   {
     path: '/tableWeek',
     component: Layout,
-    redirect: '/tableWeek/TotalTb',
+    redirect: '/tableWeek/TotalTbs',
     name: 'TableWeek',
     meta: { title: '大陆出行事业业绩周报表' },
     children: [
@@ -217,9 +217,9 @@ export const constantRoutes = [
         meta: { title: '测试' }
       },*/
       {
-        path: 'totalTb',
-        name: 'TableWeekTotalTb',
-        component: () => import('@/views/tableWeek/totalTb'),
+        path: 'totalTbs',
+        name: 'TableWeekTotalTbs',
+        component: () => import('@/views/tableWeek/totalTbs'),
         meta: { title: '大陆出行事业业绩周报表' }
       }
     ]

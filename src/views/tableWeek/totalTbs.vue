@@ -30,11 +30,16 @@
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="新增契约租金（交车）" prop="tableName" />
-          <el-table-column align="center" label="客户来源-新拓①" prop="newExsNew" />
-          <el-table-column align="center" label="客户来源-保有②" prop="retainNew" />
-          <el-table-column align="center" label="客户来源-介绍③" prop="introduceNew" />
-          <el-table-column align="center" label="新增契约租金(①+②+③)" prop="totalNew" />
+          <el-table-column width="200px" align="center" label="新增契约租金（交车）" prop="titleName" />
+          <el-table-column align="center" label="当月目标" prop="thisMonTar" />
+          <el-table-column align="center" label="当月实绩" prop="thisMonAct" />
+          <el-table-column align="center" label="结构比" prop="structure" />
+          <el-table-column align="center" label="达成率" prop="reach" />
+          <el-table-column align="center" label="上月实绩" prop="lastMonAct" />
+          <el-table-column align="center" label="环比" prop="link" />
+          <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
+          <el-table-column align="center" label="结构比" prop="construction" />
+          <el-table-column align="center" label="同期对比" prop="comparison" />
         </el-table>
         <el-table
           id="tableTwo"
@@ -47,12 +52,14 @@
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="新增契约租金（交车）" prop="tableTwoName" />
-          <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewCarN" />
-          <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldCarN" />
-          <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewCarN" />
-          <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
-          <el-table-column align="center" label="新增契约租金(①+②+③+④)" prop="totalNumAmtN" />
+          <el-table-column width="200px" align="center" label="新增契约租金（交车）" prop="titleName" />
+          <el-table-column align="center" label="当月实绩" prop="thisMonAct" />
+          <el-table-column align="center" label="结构比" prop="structure" />
+          <el-table-column align="center" label="上月实绩" prop="lastMonAct" />
+          <el-table-column align="center" label="环比" prop="link" />
+          <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
+          <el-table-column align="center" label="结构比" prop="construction" />
+          <el-table-column align="center" label="同期对比" prop="comparison" />
         </el-table>
         <el-table
           id="tableThree"
@@ -65,12 +72,14 @@
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="新增契约台数（交车）" prop="tableTwoName" />
-          <el-table-column align="center" label="华东-车辆来源-新车①" prop="eastNewCarN" />
-          <el-table-column align="center" label="华东-车辆来源-旧车②" prop="eastOldCarN" />
-          <el-table-column align="center" label="华南-车辆来源-新车③" prop="southNewCarN" />
-          <el-table-column align="center" label="华南-车辆来源-旧车④" prop="southOldCarN" />
-          <el-table-column align="center" label="新增契约台数(①+②+③+④)" prop="totalNumAmtN" />
+          <el-table-column width="200px" align="center" label="新增契约台数（交车）" prop="titleName" />
+          <el-table-column align="center" label="当月实绩" prop="thisMonAct" />
+          <el-table-column align="center" label="结构比" prop="structure" />
+          <el-table-column align="center" label="上月实绩" prop="lastMonAct" />
+          <el-table-column align="center" label="环比" prop="link" />
+          <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
+          <el-table-column align="center" label="结构比" prop="construction" />
+          <el-table-column align="center" label="同期对比" prop="comparison" />
         </el-table>
         <el-table
           id="tableFour"
@@ -83,12 +92,12 @@
           min
           style="width: 100%"
         >
-          <el-table-column align="center" label="保有客户台数（展期）" prop="tableName" />
-          <el-table-column align="center" label="前月保有客户台数" prop="lmCusNumN" />
-          <el-table-column align="center" label="新增业绩台数" prop="createNumN" />
-          <el-table-column align="center" label="结清-期满解约" prop="endNumN" />
-          <el-table-column align="center" label="结清-提前解约" prop="beforeEndNumN" />
-          <el-table-column align="center" label="本月保有客户台数" prop="tmCusNumN" />
+          <el-table-column width="200px" align="center" label="保有客户台数（展期）" prop="titleName" />
+          <el-table-column align="center" label="当月实绩" prop="thisMonAct" />
+          <el-table-column align="center" label="上月实绩" prop="lastMonAct" />
+          <el-table-column align="center" label="环比" prop="link" />
+          <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
+          <el-table-column align="center" label="同期对比" prop="comparison" />
         </el-table>
       </el-main>
     </el-container>
@@ -99,13 +108,12 @@
 import { mapGetters } from 'vuex'
 import { getCurrentMonthFirst, currentDate, dateToStringTwo, formatTwo } from '../../utils/dateSplice'
 import { getUserAuto } from '../../utils/auth'
-import { getThisMonthTar, getCarSourceRent } from '../../api/reportTable/formTwo'
-import { getCustomerNum } from '../../api/reportTable/formThree'
+import { getRentAmtList, getCarRent, getNum } from '../../api/reportTable/formTwo'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 
 export default {
-  name: 'TableWeekTotalTb',
+  name: 'TableWeekTotalTbs',
   computed: {
     ...mapGetters([
       'userAuto'
@@ -150,7 +158,7 @@ export default {
       this.carQuery.startDate = this.orderQuery.startDate
       this.carQuery.endDate = this.orderQuery.endDate
       this.carQuery.typeQuery = 1
-      getCarSourceRent(this.carQuery).then(response => {
+      getCarRent(this.carQuery).then(response => {
         this.tableData2 = response.data
         this.total = response.data.total
         this.listLoading = false
@@ -162,7 +170,7 @@ export default {
       this.carQuery.startDate = this.orderQuery.startDate
       this.carQuery.endDate = this.orderQuery.endDate
       this.carQuery.typeQuery = 2
-      getCarSourceRent(this.carQuery).then(response => {
+      getCarRent(this.carQuery).then(response => {
         this.tableData3 = response.data
         this.total = response.data.total
         this.listLoading = false
@@ -173,7 +181,7 @@ export default {
     getListFour() {
       this.cusQuery.startDate = this.orderQuery.startDate
       this.cusQuery.endDate = this.orderQuery.endDate
-      getCustomerNum(this.cusQuery).then(response => {
+      getNum(this.cusQuery).then(response => {
         this.tableData4 = response.data
         this.total = response.data.total
         this.listLoading = false
@@ -185,7 +193,7 @@ export default {
       this.queryDouble()
       this.orderQuery.orgUpAuto = 0
       this.orderQuery.orgAuto = 0
-      getThisMonthTar(this.orderQuery).then(response => {
+      getRentAmtList(this.orderQuery).then(response => {
         this.tableData = response.data
         this.total = response.data.total
         this.listLoading = false
