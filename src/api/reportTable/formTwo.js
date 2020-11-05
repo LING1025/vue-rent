@@ -52,7 +52,7 @@ export function getThisMonthTar(query) {
 }
 
 /** 新增契约租金-客户来源 **/
-export function queryRentAmtList(query) {
+export function getRentAmtList(query) {
   return request({
     url: '/table/queryRentAmtList',
     method: 'get',
@@ -70,6 +70,19 @@ export function queryRentAmtList(query) {
 export function getCarSourceRent(query) {
   return request({
     url: '/tableTwo/queryCarSourceRent',
+    method: 'get',
+    params: {
+      startDate: query.startDate,
+      endDate: query.endDate,
+      typeQuery: query.typeQuery
+    }
+  })
+}
+
+/** 新增契约租金-车辆来源 **/
+export function getCarRent(query) {
+  return request({
+    url: '/table/queryCarRent',
     method: 'get',
     params: {
       startDate: query.startDate,

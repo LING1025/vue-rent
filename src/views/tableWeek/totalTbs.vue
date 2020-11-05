@@ -90,7 +90,7 @@
 import { mapGetters } from 'vuex'
 import { getCurrentMonthFirst, currentDate, dateToStringTwo, formatTwo } from '../../utils/dateSplice'
 import { getUserAuto } from '../../utils/auth'
-import { queryRentAmtList } from '../../api/reportTable/formTwo'
+import { getRentAmtList, getCarRent } from '../../api/reportTable/formTwo'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 
@@ -136,14 +136,40 @@ export default {
       this.orderQuery.endDate = formatTwo(dateToStringTwo(this.orderQuery.endDate))
       console.log(this.orderQuery.endDate)
     },
+    getListTwo() {
+      this.carQuery.startDate = this.orderQuery.startDate
+      this.carQuery.endDate = this.orderQuery.endDate
+      this.carQuery.typeQuery = 1
+      getCarRent(this.carQuery).then(response => {
+        this.tableData2 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    getListThree() {
+      this.carQuery.startDate = this.orderQuery.startDate
+      this.carQuery.endDate = this.orderQuery.endDate
+      this.carQuery.typeQuery = 2
+      getCarRent(this.carQuery).then(response => {
+        this.tableData3 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     getList() {
       this.queryDouble()
       this.orderQuery.orgUpAuto = 0
       this.orderQuery.orgAuto = 0
-      queryRentAmtList(this.orderQuery).then(response => {
+      getRentAmtList(this.orderQuery).then(response => {
         this.tableData = response.data
         this.total = response.data.total
         this.listLoading = false
+        this.getListTwo()
+        this.getListThree()
       }).catch(() => {
         this.listLoading = false
       })
