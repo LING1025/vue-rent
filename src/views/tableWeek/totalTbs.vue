@@ -152,7 +152,6 @@ export default {
     queryDouble() {
       this.orderQuery.startDate = formatTwo(dateToStringTwo(this.orderQuery.startDate))
       this.orderQuery.endDate = formatTwo(dateToStringTwo(this.orderQuery.endDate))
-      console.log(this.orderQuery.endDate)
     },
     getListTwo() {
       this.carQuery.startDate = this.orderQuery.startDate

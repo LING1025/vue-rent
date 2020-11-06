@@ -31,7 +31,8 @@
     "vue-json-excel": "^0.3.0",
     "vue-router": "3.0.6",
     "vuex": "3.1.0",
-    "xlsx": "^0.16.8"
+    "xlsx": "^0.16.8",
+    "xlsx-style": "^0.8.13"
   },
   "devDependencies": {
     "@babel/core": "7.0.0",
