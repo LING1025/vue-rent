@@ -217,6 +217,12 @@ export const constantRoutes = [
         meta: { title: '测试' }
       },
       {
+        path: 'index2',
+        name: 'TableWeekIndex2',
+        component: () => import('@/views/tableWeek/index2'),
+        meta: { title: '测试2' }
+      },
+      {
         path: 'totalTbs',
         name: 'TableWeekTotalTbs',
         component: () => import('@/views/tableWeek/totalTbs'),

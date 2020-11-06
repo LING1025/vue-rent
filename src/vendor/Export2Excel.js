@@ -146,10 +146,10 @@ export function export_table_to_excel(id) {
 }
 
 export function export_json_to_excel({
-  title,
   multiHeader = [],
   header,
   data,
+  sheetname,
   filename,
   merges = [],
   autoWidth = true,
@@ -158,59 +158,83 @@ export function export_json_to_excel({
   /* 原始数据 */
   filename = filename || 'excel-list'
   data = [...data]
-  data.unshift(header);
-  data.unshift(title);
+
+  for (var i = 0; i < header.length; i++) {
+    data[i].unshift(header[i])
+  }
+
+// data.unshift(header)
+
   for (let i = multiHeader.length - 1; i > -1; i--) {
     data.unshift(multiHeader[i])
   }
 
-  var ws_name = "新增契约租金（交车）总表";
+  var ws_name = sheetname
   var wb = new Workbook(),
-    ws = sheet_from_array_of_arrays(data);
+    ws = []
+  for (var j = 0; j < header.length; j++) {
+    ws.push(sheet_from_array_of_arrays(data[j]))
+  }
 
   if (merges.length > 0) {
-    if (!ws['!merges']) ws['!merges'] = [];
+    if (!ws["!merges"]) ws["!merges"] = []
     merges.forEach(item => {
-      ws['!merges'].push(XLSX.utils.decode_range(item))
+      ws["!merges"].push(XLSX.utils.decode_range(item))
     })
   }
 
   if (autoWidth) {
-    /*设置worksheet每列的最大宽度*/
-    const colWidth = data.map(row => row.map(val => {
-      /*先判断是否为null/undefined*/
-      if (val == null || val == undefined) {
-        return {
-          'wch': 10
-        };
-      }
-      /*再判断是否为中文*/
-      else if (val.toString().charCodeAt(0) > 255) {
-        return {
-          'wch': val.toString().length * 2
-        };
-      } else {
-        return {
-          'wch': val.toString().length
-        };
-      }
-    }))
+    //设置worksheet每列的最大宽度/
+    var colWidth = []
+    for (var k = 0; k < header.length; k++) {
+      colWidth.push(
+        data[k].map(row =>
+          row.map(val => {
+            //先判断是否为null/undefined/
+            if (val == null) {
+              return {
+                wch: 10
+              }
+            } else if (val.toString().charCodeAt(0) > 255) {
+              //再判断是否为中文/
+              return {
+                wch: val.toString().length * 2
+              }
+            } else {
+              return {
+                wch: val.toString().length
+              }
+            }
+          })
+        )
+      )
+    }
     /*以第一行为初始值*/
-    let result = colWidth[0];
-    for (let i = 1; i < colWidth.length; i++) {
-      for (let j = 0; j < colWidth[i].length; j++) {
-        if (result[j]['wch'] < colWidth[i][j]['wch']) {
-          result[j]['wch'] = colWidth[i][j]['wch'];
+    let result = []
+    for (var k = 0; k < colWidth.length; k++) {
+      result[k] = colWidth[k][0]
+      for (let i = 1; i < colWidth[k].length; i++) {
+        for (let j = 0; j < colWidth[k][i].length; j++) {
+          if (result[k][j]["wch"] < colWidth[k][i][j]["wch"]) {
+            result[k][j]["wch"] = colWidth[k][i][j]["wch"]
+          }
         }
       }
     }
-    ws['!cols'] = result;
+// 分别给sheet表设置宽度
+    for (var l = 0; l < result.length; l++) {
+      ws[l]["!cols"] = result[l]
+    }
   }
 
   /* 将工作表添加到工作簿 */
-  wb.SheetNames.push(ws_name);
-  wb.Sheets[ws_name] = ws;
-  var dataInfo = wb.Sheets[wb.SheetNames[0]];
+  for (var k = 0; k < header.length; k++) {
+    wb.SheetNames.push(ws_name[k])
+    wb.Sheets[ws_name[k]] = ws[k]
+    var dataInfo = wb.Sheets[wb.SheetNames[0]];
+    var dataInfo2 = wb.Sheets[wb.SheetNames[1]];
+    var dataInfo3 = wb.Sheets[wb.SheetNames[2]];
+  }
 
   const borderAll = {  //单元格外侧框线
     top: {
@@ -228,7 +252,7 @@ export function export_json_to_excel({
   };
   //给所以单元格加上边框
   for (var i in dataInfo) {
-    if (i == '!ref' || i == '!merges' || i == '!cols' || i == 'A1') {
+    if (i === '!ref' || i === '!merges' || i === '!cols') {
 
     } else {
       dataInfo[i + ''].s = {
@@ -237,40 +261,44 @@ export function export_json_to_excel({
     }
   }
 
-  // 去掉标题边框
-  let arr = ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "I1", "J1", "K1", "L1", "M1", "N1", "O1", "P1", "Q1", "R1", "S1", "T1", "U1", "V1", "W1", "X1", "Y1", "Z1"];
-  arr.some(function (v) {
-    let a = merges[0].split(':')
-    if (v == a[1]) {
-      dataInfo[v].s = {}
-      return true;
+  for (var d2 in dataInfo2) {
+    if (d2 === '!ref' || d2 === '!merges' || d2 === '!cols') {
+
     } else {
-      dataInfo[v].s = {}
+      dataInfo2[d2 + ''].s = {
+        border: borderAll
+      }
     }
-  })
+  }
+
+  for (var d3 in dataInfo3) {
+    if (d3 === '!ref' || d3 === '!merges' || d3 === '!cols') {
+
+    } else {
+      dataInfo3[d3 + ''].s = {
+        border: borderAll
+      }
+    }
+  }
 
   //设置主标题样式
-  dataInfo["A1"].s = {
-    font: {
-      name: '宋体',
-      sz: 18,
-      color: {rgb: "#000000"},
-      bold: true,
-      italic: false,
-      underline: false
-    },
-    alignment: {
-      horizontal: "center",
-      vertical: "center"
-    },
-    // fill: {
-    //   fgColor: {rgb: "008000"},
-    // },
-  };
-
-  // console.log(merges)
-  // console.log(dataInfo)
-
+  // dataInfo["A1"].s = {
+  //   font: {
+  //     name: '宋体',
+  //     sz: 18,
+  //     color: {rgb: "#000000"},
+  //     bold: true,
+  //     italic: false,
+  //     underline: false
+  //   },
+  //   alignment: {
+  //     horizontal: "center",
+  //     vertical: "center"
+  //   },
+  //   // fill: {
+  //   //   fgColor: {rgb: "008000"},
+  //   // },
+  // };
 
   var wbout = XLSX.write(wb, {
     bookType: bookType,

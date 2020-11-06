@@ -2,6 +2,8 @@
   <div class="export">
     <el-button style="margin-top: 2px;" type="primary" @click="exportExcel">导出EXCEL
     </el-button>
+    <el-button style="margin-top: 2px;" type="primary" @click="exportExcel2">导出EXCEL(不同的sheet下载多个文件)
+    </el-button>
   </div>
 </template>
 
@@ -10,7 +12,8 @@
 import { getUserAuto } from '../../utils/auth'
 import { currentDate, dateToStringTwo, formatTwo, getCurrentMonthFirst } from '../../utils/dateSplice'
 import { mapGetters } from 'vuex'
-import { getRentAmtList } from '../../api/reportTable/formTwo'
+import { getCarRent, getRentAmtList } from '../../api/reportTable/formTwo'
+import excel from '../../libs/excel'
 
 export default {
   name: 'TableWeekIndex',
@@ -18,7 +21,7 @@ export default {
     return {
       total: 0,
       tableData: '',
-      // tableData2: null,
+      tableData2: '',
       // tableData3: null,
       // tableData4: null,
       listLoading: true,
@@ -54,6 +57,18 @@ export default {
       this.orderQuery.startDate = formatTwo(dateToStringTwo(this.orderQuery.startDate))
       this.orderQuery.endDate = formatTwo(dateToStringTwo(this.orderQuery.endDate))
     },
+    getListTwo() {
+      this.carQuery.startDate = this.orderQuery.startDate
+      this.carQuery.endDate = this.orderQuery.endDate
+      this.carQuery.typeQuery = 1
+      getCarRent(this.carQuery).then(response => {
+        this.tableData2 = response.data
+        this.total = response.data.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     getList() {
       this.queryDouble()
       this.orderQuery.orgUpAuto = 0
@@ -62,6 +77,7 @@ export default {
         this.tableData = response.data
         this.total = response.data.total
         this.listLoading = false
+        this.getListTwo()
       }).catch(() => {
         this.listLoading = false
       })
@@ -103,6 +119,27 @@ export default {
     formatJson(filterVal, jsonData) {
       const values = (jsonData || [])
       return values.map(v => filterVal.map(j => v[j]))
+    },
+    exportExcel2() {
+      var that = this
+      const params1 = {
+        // dataList中的字段 title,key 需要一一对应
+        title: ['新增契约租金（交车）', '当月目标', '当月实绩', '结构比', '达成率', '上月实绩', '环比', '去年实绩', '结构比', '同期对比'],
+        key: ['titleName', 'thisMonTar', 'thisMonAct', 'structure', 'reach', 'lastMonAct', 'link', 'lastYearAct', 'construction', 'comparison'],
+        data: that.tableData, // 数据源
+        autoWidth: true,
+        // 时间戳函数自己定义formatDate
+        filename: 'sheet1'
+      }
+      const params2 = {
+        title: ['新增契约租金（交车）', '当月实绩', '结构比', '上月实绩', '环比', '去年实绩', '结构比', '同期对比'],
+        key: ['titleName', 'thisMonAct', 'structure', 'lastMonAct', 'link', 'lastYearAct', 'construction', 'comparison'],
+        data: that.tableData2,
+        autoWidth: true,
+        filename: 'sheet2'
+      }
+      excel.exportArrayToExcel(params1)
+      excel.exportArrayToExcel2(params2)
     }
   }
 }

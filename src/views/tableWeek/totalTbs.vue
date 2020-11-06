@@ -39,7 +39,7 @@
           <el-table-column align="center" label="环比" prop="link" />
           <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
           <el-table-column align="center" label="结构比" prop="construction" />
-          <el-table-column align="center" label="同期对比" prop="comparison" />
+          <el-table-column align="center" label="同期比较" prop="comparison" />
         </el-table>
         <el-table
           id="tableTwo"
@@ -59,7 +59,7 @@
           <el-table-column align="center" label="环比" prop="link" />
           <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
           <el-table-column align="center" label="结构比" prop="construction" />
-          <el-table-column align="center" label="同期对比" prop="comparison" />
+          <el-table-column align="center" label="同期比较" prop="comparison" />
         </el-table>
         <el-table
           id="tableThree"
@@ -79,7 +79,7 @@
           <el-table-column align="center" label="环比" prop="link" />
           <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
           <el-table-column align="center" label="结构比" prop="construction" />
-          <el-table-column align="center" label="同期对比" prop="comparison" />
+          <el-table-column align="center" label="同期比较" prop="comparison" />
         </el-table>
         <el-table
           id="tableFour"
@@ -97,7 +97,7 @@
           <el-table-column align="center" label="上月实绩" prop="lastMonAct" />
           <el-table-column align="center" label="环比" prop="link" />
           <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
-          <el-table-column align="center" label="同期对比" prop="comparison" />
+          <el-table-column align="center" label="同期比较" prop="comparison" />
         </el-table>
       </el-main>
     </el-container>
