@@ -81,7 +81,7 @@
           <el-table-column align="center" label="结构比" prop="construction" />
           <el-table-column align="center" label="同期比较" prop="comparison" />
         </el-table>
-        <el-table
+        <!--<el-table
           id="tableFour"
           v-loading="listLoading"
           :data="tableData4"
@@ -98,7 +98,7 @@
           <el-table-column align="center" label="环比" prop="link" />
           <el-table-column align="center" label="去年实绩" prop="lastYearAct" />
           <el-table-column align="center" label="同期比较" prop="comparison" />
-        </el-table>
+        </el-table>-->
       </el-main>
     </el-container>
   </div>
@@ -108,7 +108,7 @@
 import { mapGetters } from 'vuex'
 import { getCurrentMonthFirst, currentDate, dateToStringTwo, formatTwo } from '../../utils/dateSplice'
 import { getUserAuto } from '../../utils/auth'
-import { getRentAmtList, getCarRent, getNum } from '../../api/reportTable/formTwo'
+import { getRentAmtList, getCarRent } from '../../api/reportTable/formTwo'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 
@@ -177,17 +177,17 @@ export default {
         this.listLoading = false
       })
     },
-    getListFour() {
-      this.cusQuery.startDate = this.orderQuery.startDate
-      this.cusQuery.endDate = this.orderQuery.endDate
-      getNum(this.cusQuery).then(response => {
-        this.tableData4 = response.data
-        this.total = response.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
-    },
+    // getListFour() {
+    //   this.cusQuery.startDate = this.orderQuery.startDate
+    //   this.cusQuery.endDate = this.orderQuery.endDate
+    //   getNum(this.cusQuery).then(response => {
+    //     this.tableData4 = response.data
+    //     this.total = response.data.total
+    //     this.listLoading = false
+    //   }).catch(() => {
+    //     this.listLoading = false
+    //   })
+    // },
     getList() {
       this.queryDouble()
       this.orderQuery.orgUpAuto = 0
@@ -198,7 +198,7 @@ export default {
         this.listLoading = false
         this.getListTwo()
         this.getListThree()
-        this.getListFour()
+        // this.getListFour()
       }).catch(() => {
         this.listLoading = false
       })
@@ -217,12 +217,12 @@ export default {
       XLSX.utils.book_append_sheet(workbook, wb2, 'sheet2')
       var wb3 = XLSX.utils.table_to_sheet(document.querySelector('#tableThree'), { raw: true })
       XLSX.utils.book_append_sheet(workbook, wb3, 'sheet3')
-      var wb4 = XLSX.utils.table_to_sheet(document.querySelector('#tableFour'), { raw: true })
-      XLSX.utils.book_append_sheet(workbook, wb4, 'sheet4')
+      // var wb4 = XLSX.utils.table_to_sheet(document.querySelector('#tableFour'), { raw: true })
+      // XLSX.utils.book_append_sheet(workbook, wb4, 'sheet4')
       /* get binary string as output */
       var wbout = XLSX.write(workbook, { bookType: 'xlsx', bookSST: true, type: 'array' })
       try {
-        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '出行事业业绩周报.xlsx')
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '大陆出行事业业绩周报.xlsx')
       } catch (e) {
         if (typeof console !== 'undefined') { console.log(e, wbout) }
       }
