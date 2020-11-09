@@ -212,17 +212,17 @@ export default {
       // 导出一个table 用table_to_book
       /* generate workbook object from table */
       var wb1 = XLSX.utils.table_to_sheet(document.querySelector('#tableOne'), { raw: true }) // #tableOne是table表的id名
-      XLSX.utils.book_append_sheet(workbook, wb1, 'sheet1') // sheet的命名
+      XLSX.utils.book_append_sheet(workbook, wb1, '新增契约租金（交车）') // sheet的命名
       var wb2 = XLSX.utils.table_to_sheet(document.querySelector('#tableTwo'), { raw: true })
-      XLSX.utils.book_append_sheet(workbook, wb2, 'sheet2')
+      XLSX.utils.book_append_sheet(workbook, wb2, '新增契约租金')
       var wb3 = XLSX.utils.table_to_sheet(document.querySelector('#tableThree'), { raw: true })
-      XLSX.utils.book_append_sheet(workbook, wb3, 'sheet3')
+      XLSX.utils.book_append_sheet(workbook, wb3, '新增契约台数')
       // var wb4 = XLSX.utils.table_to_sheet(document.querySelector('#tableFour'), { raw: true })
       // XLSX.utils.book_append_sheet(workbook, wb4, 'sheet4')
       /* get binary string as output */
       var wbout = XLSX.write(workbook, { bookType: 'xlsx', bookSST: true, type: 'array' })
       try {
-        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '大陆出行事业业绩周报.xlsx')
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '大陆出行事业业绩周报表.xlsx')
       } catch (e) {
         if (typeof console !== 'undefined') { console.log(e, wbout) }
       }
