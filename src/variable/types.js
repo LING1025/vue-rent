@@ -84,7 +84,8 @@ const yearOption = [
   { key: 2017, display_name: '2017年' },
   { key: 2018, display_name: '2018年' },
   { key: 2019, display_name: '2019年' },
-  { key: 2020, display_name: '2020年' }
+  { key: 2020, display_name: '2020年' },
+  { key: 2021, display_name: '2021年' }
 
 ]
 
