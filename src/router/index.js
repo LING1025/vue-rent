@@ -241,7 +241,7 @@ export const constantRoutes = [
         path: 'tbThree',
         name: 'TableThreeTbThree',
         component: () => import('@/views/tableThree/tbThree'),
-        meta: { title: '年度新增呆账&回收周报表' }
+        meta: { title: '年度新增呆账&回收报表' }
       }
     ]
   },
