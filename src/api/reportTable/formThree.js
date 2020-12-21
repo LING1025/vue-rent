@@ -11,3 +11,14 @@ export function getYearList(query) {
     }
   })
 }
+
+/** 呆账：周期下拉选 **/
+/* export function getWeekList(query) {
+  return request({
+    url: '/tableThree/queryWeekList',
+    method: 'get',
+    params: {
+      year: query.year
+    }
+  })
+}*/

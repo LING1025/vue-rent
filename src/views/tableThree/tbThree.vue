@@ -4,8 +4,13 @@
       <el-header>
         <el-row>
           <el-col :span="4">
-            <el-select v-model="listQuery.year" clearable placeholder="请选择年份">
+            <el-select v-model="listQuery.year" clearable placeholder="==请选择年份==">
               <el-option v-for="item in yearOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+            </el-select>
+          </el-col>
+          <el-col :span="4">
+            <el-select v-model="listQuery.week" clearable placeholder="==请选择周==">
+              <el-option v-for="item in weekOptions" :key="item.key" :label="item.display_name" :value="item.display_name" />
             </el-select>
           </el-col>
           <el-col :span="4">
@@ -47,6 +52,7 @@ export default {
       list: null,
       listLoading: true,
       yearOptions: option.yearOption,
+      weekOptions: option.weekOption,
       listQuery: {
         year: '2020年',
         week: ''
