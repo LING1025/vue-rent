@@ -222,7 +222,7 @@ export default {
       /* get binary string as output */
       var wbout = XLSX.write(workbook, { bookType: 'xlsx', bookSST: true, type: 'array' })
       try {
-        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '大陆出行事业业绩周报表.xlsx')
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), currentDate() + '_' + '大陆出行事业业绩周报表.xlsx')
       } catch (e) {
         if (typeof console !== 'undefined') { console.log(e, wbout) }
       }
