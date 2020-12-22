@@ -235,13 +235,13 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/tableThree/TbThree',
     name: 'TableThree',
-    meta: { title: '大陆出行事业业绩周报表' },
+    meta: { title: '年度新增呆账&回收报表' },
     children: [
       {
         path: 'tbThree',
         name: 'TableThreeTbThree',
         component: () => import('@/views/tableThree/tbThree'),
-        meta: { title: '年度新增呆账&回收周报表' }
+        meta: { title: '年度新增呆账&回收报表' }
       }
     ]
   },
