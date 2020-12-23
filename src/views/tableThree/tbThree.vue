@@ -57,18 +57,18 @@ export default {
     return {
       total: 0,
       list: null,
-      listLoading: true,
+      listLoading: false,
       yearOptions: option.yearOption,
       weekOptions: option.weekOption,
       listQuery: {
         year: '2020年',
-        week: ''
+        week: null
       }
     }
   },
-  created() {
-    this.getList()
-  },
+  // created() {
+  //   this.getList() // 进页面自动查询
+  // },
   methods: {
     getList() {
       getYearList(this.listQuery).then(response => {
@@ -80,6 +80,7 @@ export default {
       })
     },
     handleFilter() {
+      this.listLoading = true
       this.getList()
     },
     exportExcel() {
