@@ -91,6 +91,7 @@ const yearOption = [
 
 // 周
 const weekOption = [
+  { key: 0, display_name: '全部' },
   { key: 1, display_name: '第1周' },
   { key: 2, display_name: '第2周' },
   { key: 3, display_name: '第3周' },
