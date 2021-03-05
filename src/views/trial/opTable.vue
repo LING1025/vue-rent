@@ -244,6 +244,13 @@ export default {
             sums[index] = ((sums[8] / sums[7]) * 100).toFixed(0) + '%'
           }
         }
+        if (index === 12) {
+          if (sums[10] === 0) {
+            sums[index] = 0 + '%'
+          } else {
+            sums[index] = ((sums[11] / sums[10]) * 100).toFixed(0) + '%'
+          }
+        }
         const values = (data || []).map(item => Number(item[columns.property]))
         if (!values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
