@@ -39,6 +39,13 @@
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
           <el-table-column align="center" label="营业额达成率" prop="vlv" />
+          <el-table-column align="center" label="送件数" prop="deliveryNum" />
+          <el-table-column align="center" label="核准数" prop="checkNum" />
+          <el-table-column align="center" label="核准率" prop="checkRate" />
+          <el-table-column align="center" label="驳回" prop="rejectNum" />
+          <el-table-column align="center" label="核准" prop="approveNum" />
+          <el-table-column align="center" label="条件核准" prop="conditionNum" />
+          <el-table-column align="center" label="附条件" prop="subNum" />
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="handleClick(scope.row)">查看</el-button>
@@ -68,6 +75,13 @@
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
           <el-table-column align="center" label="营业额达成率" prop="vlv" />
+          <el-table-column align="center" label="送件数" prop="deliveryNum" />
+          <el-table-column align="center" label="核准数" prop="checkNum" />
+          <el-table-column align="center" label="核准率" prop="checkRate" />
+          <el-table-column align="center" label="驳回" prop="rejectNum" />
+          <el-table-column align="center" label="核准" prop="approveNum" />
+          <el-table-column align="center" label="条件核准" prop="conditionNum" />
+          <el-table-column align="center" label="附条件" prop="subNum" />
           <el-table-column align="center" label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="handleClickNext(scope.row)">查看</el-button>
@@ -95,6 +109,13 @@
           <el-table-column align="center" label="目标营业额" prop="targetVolume" />
           <el-table-column align="center" label="达成营业额" prop="realVolume" />
           <el-table-column align="center" label="营业额达成率" prop="vlv" />
+          <el-table-column align="center" label="送件数" prop="deliveryNum" />
+          <el-table-column align="center" label="核准数" prop="checkNum" />
+          <el-table-column align="center" label="核准率" prop="checkRate" />
+          <el-table-column align="center" label="驳回" prop="rejectNum" />
+          <el-table-column align="center" label="核准" prop="approveNum" />
+          <el-table-column align="center" label="条件核准" prop="conditionNum" />
+          <el-table-column align="center" label="附条件" prop="subNum" />
         </el-table>
       </el-main>
     </el-container>
@@ -221,6 +242,13 @@ export default {
             sums[index] = 0 + '%'
           } else {
             sums[index] = ((sums[8] / sums[7]) * 100).toFixed(0) + '%'
+          }
+        }
+        if (index === 12) {
+          if (sums[10] === 0) {
+            sums[index] = 0 + '%'
+          } else {
+            sums[index] = ((sums[11] / sums[10]) * 100).toFixed(0) + '%'
           }
         }
         const values = (data || []).map(item => Number(item[columns.property]))
