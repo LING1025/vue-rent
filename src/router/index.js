@@ -235,13 +235,19 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/tableThree/TbThree',
     name: 'TableThree',
-    meta: { title: '年度新增呆账&回收报表' },
+    meta: { title: '报表模块' },
     children: [
       {
         path: 'tbThree',
         name: 'TableThreeTbThree',
         component: () => import('@/views/tableThree/tbThree'),
         meta: { title: '年度新增呆账&回收报表' }
+      },
+      {
+        path: 'tbFour',
+        name: 'TableFourTbFour',
+        component: () => import('@/views/tableThree/tbFour'),
+        meta: { title: '专案明细报表' }
       }
     ]
   },
