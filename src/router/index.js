@@ -203,6 +203,7 @@ export const constantRoutes = [
       },*/
     ]
   },
+  /*
   {
     path: '/tableWeek',
     component: Layout,
@@ -229,7 +230,7 @@ export const constantRoutes = [
         meta: { title: '大陆出行事业业绩周报表' }
       }
     ]
-  },
+  },*/
   {
     path: '/tableThree',
     component: Layout,
