@@ -14,6 +14,11 @@
               <el-option v-for="item in proNameListResponse" :key="item.projectAuto" :label="item.projectName" :value="item.projectName" />
             </el-select>
           </el-col>
+          <el-col :span="4">
+            <el-select v-model="proQuery.customerName" clearable filterable placeholder="请选择客户来源">
+              <el-option v-for="item in cusNameListResponse" :key="item.num" :label="item.customerName" :value="item.customerName" />
+            </el-select>
+          </el-col>
           <el-col :span="6">
             <el-button type="primary" plain icon="el-icon-search" @click="handleFilter">查询</el-button>
           </el-col>
@@ -77,7 +82,7 @@
 
 <script>
 import { currentDate, getCurrentMonthFirst } from '../../utils/dateSplice'
-import { getProNameList, getProList } from '../../api/reportTable/formFour'
+import { getProNameList, getProList, getCusNameList } from '../../api/reportTable/formFour'
 import XLSX from 'xlsx'
 import FileSaver from 'file-saver'
 
@@ -87,27 +92,38 @@ export default {
     return {
       total: 0,
       list: null,
-      listClick: null,
       listLoading: false,
       proQuery: {
         startDT: getCurrentMonthFirst(),
         endDT: currentDate(),
-        projectName: ''
+        projectName: '',
+        customerName: ''
       },
       /* 专案名称下拉选查询参数*/
       proNameListResponse: null,
       proNameListParam: {
         projectName: ''
+      },
+      /* 客户来源下拉选查询参数*/
+      cusNameListResponse: null,
+      cusNameListParam: {
+        customerName: ''
       }
     }
   },
   created() {
-    this.getProNameList()
+    this.getProjectName()
+    this.getCusName()
   },
   methods: {
-    getProNameList() {
+    getProjectName() {
       getProNameList(this.proNameListParam).then(response => {
         this.proNameListResponse = response.data
+      })
+    },
+    getCusName() {
+      getCusNameList(this.cusNameListParam).then(response => {
+        this.cusNameListResponse = response.data
       })
     },
     getList() {
@@ -120,7 +136,6 @@ export default {
       })
     },
     handleFilter() {
-      this.listLoading = true
       this.getList()
     },
     exportExcel() {

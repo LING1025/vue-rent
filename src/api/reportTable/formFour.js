@@ -16,6 +16,21 @@ export function getProNameList(query) {
 }
 
 /**
+ * 客户来源名称下拉选
+ * @param query
+ * @returns {AxiosPromise}
+ */
+export function getCusNameList(query) {
+  return request({
+    url: '/tableFour/queryCusNameList',
+    method: 'get',
+    params: {
+      customerName: query.customerName
+    }
+  })
+}
+
+/**
  * 获取专案明细
  * @param query
  * @returns {AxiosPromise}
@@ -27,7 +42,8 @@ export function getProList(query) {
     params: {
       startDT: query.startDT,
       endDT: query.endDT,
-      projectName: query.projectName
+      projectName: query.projectName,
+      customerName: query.customerName
     }
   })
 }
